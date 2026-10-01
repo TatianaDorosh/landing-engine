@@ -1,22 +1,48 @@
-## Development
+# landing-engine — правила проєкту
 
-When starting the dev server, use background mode:
+## Що це
+Двигун для лендінгів малого бізнесу. Сторінки збираються з готових блоків, як з конструктора. Спершу українська мова, пізніше англійська. Власниця проєкту — Тетяна, PM, не програміст: пояснюй коротко і простими словами, українською.
 
-```
-astro dev --background
-```
+## Структура
+- src/blocks/<тип>/<тип>-<варіант>.astro — блоки. Назви лише латиницею, малими літерами, через дефіс: hero-result.astro, prices-levels.astro, booking-form.astro.
+- src/config/<сайт>.ts — дані конкретного сайту: назва, контакти, послуги, ціни, тексти, тема, мова.
+- src/pages/<сторінка>.astro — сторінка = ЛИШЕ список блоків у потрібному порядку з передачею даних з конфігу. Ніякої логіки і верстки в сторінках.
+- src/layouts/Base.astro — спільний <head>: мета-теги, шрифти, тема.
+- src/pages/index.astro — вітрина: усі блоки один під одним, над кожним підпис з його назвою.
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+## Правила блоків
+1. Блок самодостатній: отримує ВСІ дані тільки через props. Жодних захардкоджених назв, телефонів, цін, адрес усередині блоку.
+2. Кожен блок — це <section> з id і атрибутом data-block="<назва-блоку>".
+3. Блок має працювати в будь-якому місці будь-якої сторінки. Не залежить від сусідніх блоків.
+4. Кольори і шрифти — лише через CSS-змінні теми (наприклад var(--color-accent)), щоб іншу тему можна було задати в конфігу без зміни блоків.
+5. Стилі — Tailwind (зібраний, не CDN). Мінімум JavaScript: лише там, де без нього ніяк (карусель, акордеон, форма), звичайний <script> без важких бібліотек.
+6. Спочатку мобільна версія (390px), потім комп'ютер (1280px). Обидві мають виглядати охайно.
+7. Доступність: справжні <button>, <a>, <label> для полів, aria-label для кнопок-іконок, контраст тексту не менше 4.5:1, зона натискання не менше 44px.
+8. Тексти інтерфейсу (кнопки, підписи полів, повідомлення про помилки) — не в блоці, а з конфігу мови, щоб потім додати англійську.
+9. Не змінюй props наявного блоку так, що зламаються сторінки, які його використовують. Потрібне інше — створи новий варіант блоку.
+10. Кожен новий блок одразу додається у вітрину (index.astro) з демо-даними.
 
-## Documentation
+## Фото, шрифти, карти
+- Фото тільки локальні, у WebP, до 200 КБ, назви малими латинськими без пробілів. НІКОЛИ не вигадуй посилань на Unsplash чи інші сайти.
+- Шрифти локальні, font-display: swap.
+- Карта лише у форматі https://maps.google.com/maps?q=LAT,LNG&z=16&output=embed
 
-Full documentation: https://docs.astro.build
+## Дані клієнта
+Ніколи не вигадуй дані клієнта: телефони, адреси, ціни, імена, відгуки, рейтинги. Якщо даних немає — постав помітну заглушку [ЗАПОВНИТИ]. Для демо-сайтів демо-дані дозволені, але вони лежать лише в конфігу демо.
 
-Consult these guides before working on related tasks:
+## SEO і якість
+- title 50–60 символів; description; Open Graph і Twitter-теги з повними адресами прямо в HTML; og:site_name; favicon; JSON-LD LocalBusiness (або точніший тип).
+- Цілі: PageSpeed mobile 90+, SEO 100, Accessibility 90+.
 
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+## Форма заявки
+Web3Forms (ключ у конфігу), маска телефону +380 (обробляє 0…, 38…, 380… і вставку), дата від сьогодні, час у робочих годинах з конфігу, honeypot, вибір способу зв'язку (Telegram, Viber, SMS, дзвінок) і галочка «Не телефонуйте мені», згода з посиланням на політику приватності.
+
+## Демо-режим
+У конфігу portfolio: { enabled, author, contactUrl }. Якщо enabled — плашка у футері «Демо-сайт · Створено: Тетяна Дорош · Замовити такий сайт» і вікно «Це демо-сайт» при кліку на месенджери. Для клієнта enabled: false.
+
+## Як працювати
+- Роби лише те, що просять у задачі. Не чіпай файли, які не стосуються задачі.
+- Великі задачі — по етапах, після кожного етапу зупиняйся.
+- Після змін запускай npm run build і переконуйся, що немає помилок.
+- Повідомляй: які файли змінено і що перевірено.
+- Commit і push у main — лише коли це сказано в задачі.
