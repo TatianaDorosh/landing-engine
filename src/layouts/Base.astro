@@ -1,39 +1,116 @@
 ---
 import "../styles/global.css";
-
-interface MetaTag {
-	name?: string;
-	property?: string;
-	content: string;
-}
+import type { SiteConfig } from "../config/types";
 
 interface Props {
-	title: string;
-	description: string;
-	meta?: MetaTag[];
+	config: SiteConfig;
+	title?: string;
+	description?: string;
+	ogImage?: string;
+	noindex?: boolean;
 }
 
-const { title, description, meta = [] } = Astro.props;
+const { config, title, description, ogImage, noindex = false } = Astro.props;
+
+const pageTitle = title ?? config.seo.title;
+const pageDescription = description ?? config.seo.description;
+const pageImage = ogImage ?? config.seo.ogImage;
+const canonical = new URL(Astro.url.pathname, config.siteUrl).href;
+const imageUrl = new URL(pageImage, config.siteUrl).href;
+const ogLocale = config.locale === "uk" ? "uk_UA" : "en_US";
+
+function cssFont(name: string) {
+	return `"${name.replace(/["\\]/g, "")}"`;
+}
+
+const themeVars: Array<[string, string]> = [
+	["--theme-bg", config.theme.colors.bg],
+	["--theme-surface", config.theme.colors.surface],
+	["--theme-text", config.theme.colors.text],
+	["--theme-muted", config.theme.colors.muted],
+	["--theme-primary", config.theme.colors.primary],
+	["--theme-primary-contrast", config.theme.colors.primaryContrast],
+	["--theme-accent", config.theme.colors.accent],
+	["--theme-border", config.theme.colors.border],
+	["--theme-font-heading", cssFont(config.theme.fonts.heading)],
+	["--theme-font-body", cssFont(config.theme.fonts.body)],
+	["--theme-radius", config.theme.radius],
+];
+
+const themeCss = `:root {\n${themeVars.map(([name, value]) => `\t${name}: ${value} !important;`).join("\n")}\n}`;
+
+const jsonLd: Record<string, unknown> = {
+	"@context": "https://schema.org",
+	"@type": config.businessType,
+	name: config.name,
+	url: config.siteUrl,
+	telephone: config.contacts.phone,
+	image: imageUrl,
+};
+
+if (config.contacts.address || config.contacts.city) {
+	jsonLd.address = {
+		"@type": "PostalAddress",
+		...(config.contacts.address ? { streetAddress: config.contacts.address } : {}),
+		...(config.contacts.city ? { addressLocality: config.contacts.city } : {}),
+		addressCountry: "UA",
+	};
+}
+
+if (config.contacts.geo) {
+	jsonLd.geo = {
+		"@type": "GeoCoordinates",
+		latitude: config.contacts.geo.lat,
+		longitude: config.contacts.geo.lng,
+	};
+}
+
+if (config.contacts.hoursSchema?.length) {
+	jsonLd.openingHoursSpecification = config.contacts.hoursSchema.map((hours) => ({
+		"@type": "OpeningHoursSpecification",
+		dayOfWeek: hours.dayOfWeek,
+		opens: hours.opens,
+		closes: hours.closes,
+	}));
+}
+
+if (config.rating) {
+	jsonLd.aggregateRating = {
+		"@type": "AggregateRating",
+		ratingValue: config.rating.value,
+		reviewCount: config.rating.count,
+	};
+}
+
+const jsonLdText = JSON.stringify(jsonLd, null, 2).replaceAll("<", "\\u003c");
 ---
 
 <!doctype html>
-<html lang="uk">
+<html lang={config.locale}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		{
-			meta.map((tag) =>
-				tag.property ? (
-					<meta property={tag.property} content={tag.content} />
-				) : (
-					<meta name={tag.name} content={tag.content} />
-				),
-			)
-		}
+		<meta name="theme-color" content={config.theme.colors.primary} />
+		<title>{pageTitle}</title>
+		<meta name="description" content={pageDescription} />
+		<link rel="canonical" href={canonical} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={config.name} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={pageDescription} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={imageUrl} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content={ogLocale} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={pageDescription} />
+		<meta name="twitter:image" content={imageUrl} />
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<style is:inline set:html={themeCss}></style>
+		<script type="application/ld+json" is:inline set:html={jsonLdText}></script>
 	</head>
 	<body>
 		<slot />

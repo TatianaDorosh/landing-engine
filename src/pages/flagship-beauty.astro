@@ -1,5 +1,10 @@
 ---
 import Base from "../layouts/Base.astro";
+import { demoBeauty } from "../config/demo-beauty";
 ---
 
-<Base title="Флагман Б'юті" description="Флагман Б'юті" />
+<Base config={demoBeauty}>
+	<main>
+		<h1>{demoBeauty.name}</h1>
+	</main>
+</Base>

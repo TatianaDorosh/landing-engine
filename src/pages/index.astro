@@ -1,7 +1,49 @@
 ---
 import Base from "../layouts/Base.astro";
+import { demoBeauty } from "../config/demo-beauty";
+import { getUi } from "../i18n";
+
+const ui = getUi(demoBeauty.locale);
+
+const swatches = [
+	{ name: "--theme-bg", value: demoBeauty.theme.colors.bg },
+	{ name: "--theme-surface", value: demoBeauty.theme.colors.surface },
+	{ name: "--theme-text", value: demoBeauty.theme.colors.text },
+	{ name: "--theme-muted", value: demoBeauty.theme.colors.muted },
+	{ name: "--theme-primary", value: demoBeauty.theme.colors.primary },
+	{ name: "--theme-primary-contrast", value: demoBeauty.theme.colors.primaryContrast },
+	{ name: "--theme-accent", value: demoBeauty.theme.colors.accent },
+	{ name: "--theme-border", value: demoBeauty.theme.colors.border },
+];
 ---
 
-<Base title="Вітрина блоків" description="Вітрина блоків лендінг-двигуна">
-	<h1>Вітрина блоків</h1>
+<Base config={demoBeauty} noindex={true} title="Вітрина блоків landing-engine">
+	<div class="mx-auto max-w-5xl px-4 py-8 xl:px-8">
+		<h1 class="text-3xl">Вітрина блоків</h1>
+		<section id="theme" data-block="theme-preview" class="pt-8">
+			<h2 class="text-3xl">Тема: кольори і шрифти</h2>
+			<ul class="mt-6 grid list-none grid-cols-2 gap-3 p-0 xl:grid-cols-4">
+				{
+					swatches.map((swatch) => (
+						<li class="rounded-theme border border-border bg-surface p-3">
+							<div
+								class="h-14 rounded-theme border border-border"
+								style={`background-color: var(${swatch.name})`}
+							/>
+							<p class="mt-2 break-all text-xs">{swatch.name}</p>
+							<p class="text-xs text-muted">{swatch.value}</p>
+						</li>
+					))
+				}
+			</ul>
+			<h3 class="mt-8 text-4xl">{demoBeauty.name}</h3>
+			<p class="mt-3 max-w-prose font-body">{demoBeauty.tagline}</p>
+			<button
+				type="button"
+				class="mt-6 inline-flex min-h-11 items-center justify-center rounded-theme bg-primary px-5 text-primary-contrast"
+			>
+				{ui.buttons.book}
+			</button>
+		</section>
+	</div>
 </Base>
