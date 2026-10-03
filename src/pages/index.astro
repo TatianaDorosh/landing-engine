@@ -1,9 +1,11 @@
 ---
 import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import Hero from "../blocks/hero/hero-result.astro";
+import Trust from "../blocks/trust/trust-strip.astro";
+import Services from "../blocks/services/services-cards.astro";
 import { demoBeauty } from "../config/demo-beauty";
-import { getUi } from "../i18n";
-
-const ui = getUi(demoBeauty.locale);
+import { header, hero, trust, services } from "../data/demo-beauty";
 
 const swatches = [
 	{ name: "--theme-bg", value: demoBeauty.theme.colors.bg },
@@ -18,32 +20,38 @@ const swatches = [
 ---
 
 <Base config={demoBeauty} noindex={true} title="Вітрина блоків landing-engine">
-	<div class="mx-auto max-w-5xl px-4 py-8 xl:px-8">
+	<div class="mx-auto max-w-6xl px-4 pb-4 pt-8 xl:px-8">
 		<h1 class="text-3xl">Вітрина блоків</h1>
-		<section id="theme" data-block="theme-preview" class="pt-8">
-			<h2 class="text-3xl">Тема: кольори і шрифти</h2>
-			<ul class="mt-6 grid list-none grid-cols-2 gap-3 p-0 xl:grid-cols-4">
-				{
-					swatches.map((swatch) => (
-						<li class="rounded-theme border border-border bg-surface p-3">
-							<div
-								class="h-14 rounded-theme border border-border"
-								style={`background-color: var(${swatch.name})`}
-							/>
-							<p class="mt-2 break-all text-xs">{swatch.name}</p>
-							<p class="text-xs text-muted">{swatch.value}</p>
-						</li>
-					))
-				}
-			</ul>
-			<h3 class="mt-8 text-4xl">{demoBeauty.name}</h3>
-			<p class="mt-3 max-w-prose font-body">{demoBeauty.tagline}</p>
-			<button
-				type="button"
-				class="mt-6 inline-flex min-h-11 items-center justify-center rounded-theme bg-primary px-5 text-primary-contrast"
-			>
-				{ui.buttons.book}
-			</button>
-		</section>
 	</div>
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">theme-preview</p>
+	<section id="theme" data-block="theme-preview" class="mx-auto max-w-6xl px-4 py-6 xl:px-8">
+		<h2 class="text-3xl">Тема: кольори і шрифти</h2>
+		<ul class="mt-6 grid list-none grid-cols-2 gap-3 p-0 xl:grid-cols-4">
+			{
+				swatches.map((swatch) => (
+					<li class="rounded-theme border border-border bg-surface p-3">
+						<div
+							class="h-14 rounded-theme border border-border"
+							style={`background-color: var(${swatch.name})`}
+						/>
+						<p class="mt-2 text-sm [font-variant-ligatures:none]">{swatch.name}</p>
+						<p class="text-sm text-muted">{swatch.value}</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">layout-header</p>
+	<Header {...header} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">hero-result</p>
+	<Hero {...hero} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">trust-strip</p>
+	<Trust {...trust} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">services-cards</p>
+	<Services {...services} />
 </Base>

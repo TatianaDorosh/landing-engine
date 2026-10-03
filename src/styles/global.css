@@ -2,8 +2,8 @@
 @import "@fontsource-variable/manrope";
 @import "@fontsource-variable/cormorant-garamond";
 
-/* Запасні значення, такі самі як у demo-beauty. Base.astro пізніше підставить тему з конфігу. */
-:root {
+/* Запасні значення. :where має нульову вагу, тож тема з Base.astro завжди перемагає. */
+:where(:root) {
 	--theme-bg: #FBF8F5;
 	--theme-surface: #FFFFFF;
 	--theme-text: #2B2522;

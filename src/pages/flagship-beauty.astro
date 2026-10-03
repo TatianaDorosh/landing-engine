@@ -1,10 +1,18 @@
 ---
 import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import Hero from "../blocks/hero/hero-result.astro";
+import Trust from "../blocks/trust/trust-strip.astro";
+import Services from "../blocks/services/services-cards.astro";
 import { demoBeauty } from "../config/demo-beauty";
+import { header, hero, trust, services } from "../data/demo-beauty";
 ---
 
 <Base config={demoBeauty}>
+	<Header {...header} />
 	<main>
-		<h1>{demoBeauty.name}</h1>
+		<Hero {...hero} />
+		<Trust {...trust} />
+		<Services {...services} />
 	</main>
 </Base>

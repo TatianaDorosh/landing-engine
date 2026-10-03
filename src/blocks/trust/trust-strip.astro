@@ -1,0 +1,27 @@
+---
+interface Item {
+	value: string;
+	label: string;
+}
+
+interface Props {
+	items: Item[];
+}
+
+const { items } = Astro.props;
+---
+
+<section id="trust" data-block="trust-strip">
+	<div class="mx-auto max-w-6xl px-4 py-10 xl:px-8">
+		<ul class="grid list-none grid-cols-2 gap-6 p-0 xl:grid-cols-4">
+			{
+				items.map((item) => (
+					<li>
+						<p class="font-heading text-3xl text-primary">{item.value}</p>
+						<p class="mt-1 text-sm text-muted">{item.label}</p>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

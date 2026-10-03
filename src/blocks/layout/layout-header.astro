@@ -1,0 +1,122 @@
+---
+interface NavItem {
+	label: string;
+	href: string;
+}
+
+interface Props {
+	name: string;
+	nav: NavItem[];
+	ctaLabel: string;
+	ctaHref: string;
+}
+
+const { name, nav, ctaLabel, ctaHref } = Astro.props;
+const menuId = "layout-header-menu";
+---
+
+<header
+	data-block="layout-header"
+	class="sticky top-0 z-50 border-b border-border bg-bg/90 backdrop-blur-md"
+>
+	<div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 xl:px-8">
+		<a href="#hero" class="font-heading text-2xl text-text">{name}</a>
+
+		<nav class="hidden items-center gap-x-3 text-sm lg:flex xl:gap-x-5" aria-label="Основна навігація">
+			{
+				nav.map((item) => (
+					<a href={item.href} class="text-text hover:text-primary">
+						{item.label}
+					</a>
+				))
+			}
+		</nav>
+
+		<div class="flex items-center gap-2">
+			<a
+				href={ctaHref}
+				class="hidden min-h-11 items-center justify-center rounded-theme bg-primary px-5 text-primary-contrast lg:inline-flex"
+			>
+				{ctaLabel}
+			</a>
+			<button
+				type="button"
+				data-menu-toggle
+				class="inline-flex h-11 w-11 items-center justify-center rounded-theme border border-border text-text lg:hidden"
+				aria-expanded="false"
+				aria-controls={menuId}
+				aria-label="Відкрити меню"
+			>
+				<svg data-icon-open xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+				</svg>
+				<svg data-icon-close xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden h-6 w-6" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+
+	<div id={menuId} data-mobile-nav class="hidden border-t border-border bg-bg lg:hidden" hidden>
+		<nav class="mx-auto flex max-w-6xl flex-col px-4 py-2 xl:px-8" aria-label="Мобільна навігація">
+			{
+				nav.map((item) => (
+					<a href={item.href} class="flex min-h-11 items-center text-text">
+						{item.label}
+					</a>
+				))
+			}
+			<a
+				href={ctaHref}
+				class="mt-2 inline-flex min-h-11 items-center justify-center rounded-theme bg-primary px-5 text-primary-contrast"
+			>
+				{ctaLabel}
+			</a>
+		</nav>
+	</div>
+</header>
+
+<script>
+	const headers = () => document.querySelectorAll("[data-block='layout-header']");
+
+	function setOpen(header, open) {
+		const toggle = header.querySelector("[data-menu-toggle]");
+		const panel = header.querySelector("[data-mobile-nav]");
+		const iconOpen = header.querySelector("[data-icon-open]");
+		const iconClose = header.querySelector("[data-icon-close]");
+		if (!toggle || !panel) return;
+
+		toggle.setAttribute("aria-expanded", open ? "true" : "false");
+		toggle.setAttribute("aria-label", open ? "Закрити меню" : "Відкрити меню");
+		panel.classList.toggle("hidden", !open);
+		if (open) panel.removeAttribute("hidden");
+		else panel.setAttribute("hidden", "");
+		iconOpen?.classList.toggle("hidden", open);
+		iconClose?.classList.toggle("hidden", !open);
+	}
+
+	document.addEventListener("click", (event) => {
+		const target = event.target;
+		if (!(target instanceof Element)) return;
+
+		const toggle = target.closest("[data-menu-toggle]");
+		if (toggle) {
+			const header = toggle.closest("[data-block='layout-header']");
+			if (!header) return;
+			const open = toggle.getAttribute("aria-expanded") === "true";
+			setOpen(header, !open);
+			return;
+		}
+
+		const link = target.closest("[data-mobile-nav] a");
+		if (link) {
+			const header = link.closest("[data-block='layout-header']");
+			if (header) setOpen(header, false);
+		}
+	});
+
+	document.addEventListener("keydown", (event) => {
+		if (event.key !== "Escape") return;
+		headers().forEach((header) => setOpen(header, false));
+	});
+</script>

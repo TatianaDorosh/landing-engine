@@ -37,7 +37,7 @@ const themeVars: Array<[string, string]> = [
 	["--theme-radius", config.theme.radius],
 ];
 
-const themeCss = `:root {\n${themeVars.map(([name, value]) => `\t${name}: ${value} !important;`).join("\n")}\n}`;
+const themeCss = `:root {\n${themeVars.map(([name, value]) => `\t${name}: ${value};`).join("\n")}\n}`;
 
 const jsonLd: Record<string, unknown> = {
 	"@context": "https://schema.org",
