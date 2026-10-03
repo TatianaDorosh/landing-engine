@@ -2,15 +2,19 @@
 interface Props {
 	label: string;
 	ratio?: string;
+	class?: string;
 }
 
-const { label, ratio = "4/3" } = Astro.props;
+const { label, ratio = "4/3", class: className } = Astro.props;
 const safeRatio = /^\d+\/\d+$/.test(ratio) ? ratio : "4/3";
 ---
 
 <div
-	class="flex items-center justify-center bg-border px-4 text-center text-sm text-muted"
-	style={`aspect-ratio: ${safeRatio}`}
+	class:list={[
+		"flex w-full items-center justify-center bg-border px-4 text-center text-sm text-muted",
+		className,
+	]}
+	style={className ? undefined : `aspect-ratio: ${safeRatio}`}
 >
 	{label}
 </div>
