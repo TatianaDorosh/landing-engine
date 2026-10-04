@@ -49,9 +49,9 @@ const { title, items } = Astro.props;
 							)}
 						</div>
 						<div class="flex flex-1 flex-col p-4">
-							<h3 class="font-heading text-2xl">{typograf(item.name)}</h3>
-							<p class="mt-1 text-sm text-muted">{item.role}</p>
-							<p class="mt-1 text-sm text-muted">{item.details}</p>
+							<h3 class="font-body text-2xl font-semibold">{typograf(item.name)}</h3>
+							<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{item.role}</p>
+							<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{item.details}</p>
 							{item.certificates && item.certificates.length > 0 && (
 								<button
 									type="button"
@@ -85,7 +85,7 @@ const { title, items } = Astro.props;
 					>
 						<div class="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-theme bg-bg p-4">
 							<div class="flex items-start justify-between gap-3">
-								<h3 class="font-heading text-2xl">{typograf(item.name)}</h3>
+								<h3 class="font-body text-2xl font-semibold">{typograf(item.name)}</h3>
 								<button
 									type="button"
 									data-certs-close

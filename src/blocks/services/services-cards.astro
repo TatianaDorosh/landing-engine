@@ -35,9 +35,9 @@ const { title, currency, items } = Astro.props;
 								<PhotoPlaceholder label={item.imageLabel} ratio="4/3" />
 							)}
 							<div class="flex flex-1 flex-col p-5">
-								<h3 class="text-2xl">{typograf(item.title)}</h3>
+								<h3 class="font-body text-2xl font-semibold">{typograf(item.title)}</h3>
 								<p class="mt-3 font-body leading-relaxed">{item.text}</p>
-								<p class="mt-4 font-heading text-2xl text-primary">
+								<p class="mt-4 font-heading text-[28px] text-primary">
 									від {item.priceFrom} {currency}
 								</p>
 								<a href={item.href} class="mt-auto inline-flex min-h-11 items-center pt-4 text-primary">

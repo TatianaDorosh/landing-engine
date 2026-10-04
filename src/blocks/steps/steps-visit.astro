@@ -17,13 +17,23 @@ const { title, items } = Astro.props;
 <section id="steps" data-block="steps-visit">
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
 		<h2 class="text-3xl">{typograf(title)}</h2>
-		<ol class="mt-8 grid list-none gap-0 p-0 xl:grid-cols-4 xl:gap-6">
+		<ol class="mt-8 flex list-none flex-col gap-6 p-0 lg:grid lg:grid-cols-4 lg:gap-6">
 			{
 				items.map((item, index) => (
-					<li class="relative border-l border-border py-4 pl-6 xl:border-l-0 xl:py-0 xl:pl-0">
-						<span class="font-heading text-5xl text-primary">{index + 1}</span>
-						<h3 class="mt-2 text-lg">{typograf(item.title)}</h3>
-						<p class="mt-1 text-sm text-muted">{item.text}</p>
+					<li class="relative flex items-start gap-4 lg:flex-col lg:gap-3">
+						{index < items.length - 1 && (
+							<span
+								class="absolute bottom-[-24px] left-[21px] top-11 w-px bg-border lg:bottom-auto lg:left-11 lg:top-[22px] lg:h-px lg:w-[calc(100%-1.25rem)] lg:-translate-y-1/2"
+								aria-hidden="true"
+							></span>
+						)}
+						<span class="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-primary bg-bg font-body text-lg font-semibold text-primary">
+							{index + 1}
+						</span>
+						<div>
+							<h3 class="font-body text-lg font-semibold text-text">{typograf(item.title)}</h3>
+							<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{item.text}</p>
+						</div>
 					</li>
 				))
 			}
