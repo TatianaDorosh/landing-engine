@@ -1,0 +1,124 @@
+---
+import PhotoPlaceholder from "./PhotoPlaceholder.astro";
+import { typograf } from "../lib/typograf";
+
+interface Certificate {
+	label: string;
+	image?: { src: string; alt: string };
+}
+
+interface Member {
+	name: string;
+	certificates?: Certificate[];
+}
+
+interface Props {
+	items: Member[];
+}
+
+const { items } = Astro.props;
+---
+
+{
+	items.map(
+		(item, index) =>
+			item.certificates &&
+			item.certificates.length > 0 && (
+				<div
+					data-certs={index}
+					class="fixed inset-0 z-[80] hidden items-center justify-center bg-text/80 p-4"
+					role="dialog"
+					aria-modal="true"
+					aria-label={`Сертифікати: ${item.name}`}
+					hidden
+				>
+					<div class="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-theme bg-bg p-4">
+						<div class="flex items-start justify-between gap-3">
+							<h3 class="font-body text-2xl font-semibold">{typograf(item.name)}</h3>
+							<button
+								type="button"
+								data-certs-close
+								class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-theme bg-surface text-text"
+								aria-label="Закрити"
+							>
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6" aria-hidden="true">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+								</svg>
+							</button>
+						</div>
+						<ul class="mt-4 grid list-none grid-cols-2 gap-3 p-0">
+							{item.certificates.map((certificate) => (
+								<li class="overflow-hidden rounded-theme">
+									{certificate.image ? (
+										<img
+											src={certificate.image.src}
+											alt={certificate.image.alt}
+											class="aspect-[4/3] w-full object-cover"
+										/>
+									) : (
+										<PhotoPlaceholder label={certificate.label} class="aspect-[4/3]" />
+									)}
+								</li>
+							))}
+						</ul>
+					</div>
+				</div>
+			),
+	)
+}
+
+<script>
+	const roots = new Set();
+	document.querySelectorAll("[data-certs]").forEach((dialog) => {
+		const root = dialog.closest("section");
+		if (root) roots.add(root);
+	});
+
+	roots.forEach((root) => {
+		if (!(root instanceof HTMLElement) || root.dataset.certsBound === "true") return;
+		root.dataset.certsBound = "true";
+		let lastTrigger = null;
+
+		function openDialog(index, trigger) {
+			const dialog = root.querySelector(`[data-certs="${index}"]`);
+			if (!(dialog instanceof HTMLElement)) return;
+			lastTrigger = trigger;
+			dialog.hidden = false;
+			dialog.classList.remove("hidden");
+			dialog.classList.add("flex");
+			document.body.style.overflow = "hidden";
+			const close = dialog.querySelector("[data-certs-close]");
+			if (close instanceof HTMLElement) close.focus();
+		}
+
+		function closeDialog(dialog) {
+			dialog.hidden = true;
+			dialog.classList.add("hidden");
+			dialog.classList.remove("flex");
+			document.body.style.overflow = "";
+			if (lastTrigger instanceof HTMLElement) lastTrigger.focus();
+		}
+
+		root.addEventListener("click", (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			const open = target.closest("[data-certs-open]");
+			if (open && root.contains(open)) {
+				openDialog(open.getAttribute("data-certs-open"), open);
+				return;
+			}
+			const close = target.closest("[data-certs-close]");
+			const dialog = target.closest("[data-certs]");
+			if (close && dialog instanceof HTMLElement) closeDialog(dialog);
+			if (target instanceof HTMLElement && target.hasAttribute("data-certs")) closeDialog(target);
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (event.key !== "Escape") return;
+			const dialog = [...root.querySelectorAll("[data-certs]")].find(
+				(item) => item instanceof HTMLElement && !item.hidden,
+			);
+			if (dialog instanceof HTMLElement) closeDialog(dialog);
+		});
+	});
+</script>

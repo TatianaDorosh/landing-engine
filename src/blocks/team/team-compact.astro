@@ -1,0 +1,68 @@
+---
+import CertificatesDialog from "../../components/CertificatesDialog.astro";
+import PhotoPlaceholder from "../../components/PhotoPlaceholder.astro";
+import { typograf } from "../../lib/typograf";
+
+interface Certificate {
+	label: string;
+	image?: { src: string; alt: string };
+}
+
+interface Member {
+	name: string;
+	role: string;
+	details: string;
+	image?: { src: string; alt: string };
+	imageLabel?: string;
+	certificates?: Certificate[];
+}
+
+interface Props {
+	title: string;
+	items: Member[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<section id="team" data-block="team-compact">
+	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		<ul class="mt-6 grid list-none gap-3 p-0 lg:grid-cols-3">
+			{
+				items.map((item, index) => (
+					<li class="h-full">
+						<article class="flex h-full items-start gap-4 rounded-theme border border-border bg-surface p-5">
+							<div
+								class="h-[72px] w-[72px] shrink-0 overflow-hidden rounded-full lg:h-[88px] lg:w-[88px]"
+								aria-hidden="true"
+							>
+								{item.image ? (
+									<img src={item.image.src} alt="" class="h-full w-full object-cover" />
+								) : (
+									<PhotoPlaceholder label="" class="h-full" />
+								)}
+							</div>
+							<div>
+								<h3 class="font-body text-lg font-semibold">{typograf(item.name)}</h3>
+								<p class="mt-1 font-body text-[15px] leading-[1.5] text-text">{item.role}</p>
+								<p class="font-body text-[15px] leading-[1.5] text-muted">{item.details}</p>
+								{item.certificates && item.certificates.length > 0 && (
+									<button
+										type="button"
+										data-certs-open={index}
+										class="mt-1 inline-flex min-h-11 items-center text-[15px] text-primary underline-offset-2 hover:underline"
+										aria-haspopup="dialog"
+									>
+										Сертифікати
+									</button>
+								)}
+							</div>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+	<CertificatesDialog items={items} />
+</section>
