@@ -58,7 +58,7 @@ const { title, items, image, imageLabel } = Astro.props;
 						height={image.height}
 						loading="lazy"
 						decoding="async"
-						class="absolute inset-0 h-full w-full object-cover object-[65%_70%]"
+						class="absolute inset-0 h-full w-full object-cover object-center"
 					/>
 				) : (
 					<PhotoPlaceholder label={imageLabel} class="absolute inset-0 h-full" />
