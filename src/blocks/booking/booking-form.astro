@@ -15,11 +15,15 @@ interface Props {
 	masters: string[];
 	privacyHref: string;
 	config: SiteConfig;
+	steps?: string[];
+	messengersTitle?: string;
 }
 
-const { title, text, services, masters, privacyHref, config } = Astro.props;
+const { title, text, services, masters, privacyHref, config, steps = [], messengersTitle = "" } = Astro.props;
 const ui = getUi(config.locale);
 const phoneDisplay = config.contacts.phoneDisplay ?? config.contacts.phone;
+const telegramHandle = config.contacts.telegram?.replace(/^@/, "") ?? "";
+const viberNumber = config.contacts.viber?.replace(/\D/g, "") ?? "";
 const fieldClass =
 	"w-full min-w-0 max-w-full rounded-theme border border-border bg-bg px-3 font-body text-base text-text";
 const methods = [
@@ -32,12 +36,68 @@ const methods = [
 
 <section id="booking" data-block="booking-form" class="scroll-mt-24">
 	<div class="mx-auto grid max-w-6xl items-start gap-8 px-4 py-12 xl:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] xl:px-8">
-		<div class="min-w-0">
-			<h2 class="text-3xl">{typograf(title)}</h2>
-			<p class="mt-4 font-body text-[15px] leading-[1.6] text-muted xl:text-base">{text}</p>
+		<div class="contents xl:sticky xl:top-[85px] xl:col-start-1 xl:row-start-1 xl:block xl:self-start">
+			<div class="order-1 min-w-0">
+				<h2 class="text-3xl">{typograf(title)}</h2>
+				<p class="mt-4 font-body text-[15px] leading-[1.6] text-muted xl:text-base">{text}</p>
+			</div>
+			<div class="order-3 min-w-0 xl:mt-8">
+				{
+					steps.length > 0 && (
+						<div>
+							<h3 class="font-body text-[17px] font-semibold">{typograf("Як це працює")}</h3>
+							<ol class="mt-4 flex list-none flex-col gap-3 p-0">
+								{steps.map((step, index) => (
+									<li class="flex items-start gap-3">
+										<span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-primary font-body text-[15px] font-semibold text-primary">
+											{index + 1}
+										</span>
+										<p class="font-body text-[15px] leading-[1.5] text-text">{step}</p>
+									</li>
+								))}
+							</ol>
+						</div>
+					)
+				}
+				{
+					(telegramHandle || viberNumber) && (
+						<div class="mt-6">
+							{messengersTitle && <p class="font-body text-[15px] font-semibold">{messengersTitle}</p>}
+							<div class="mt-3 flex flex-wrap gap-2">
+								{telegramHandle && (
+									<a
+										href={`https://t.me/${telegramHandle}`}
+										data-messenger="telegram"
+										class="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 font-body text-[15px] text-text"
+									>
+										<svg viewBox="0 0 24 24" class="h-5 w-5 text-primary" fill="currentColor" aria-hidden="true">
+											<path d="M21.2 4.4 2.9 11.2c-.9.3-.9.9-.2 1.1l4.7 1.5 10.8-6.8c.5-.3 1-.1.6.2l-8.7 7.9-.3 4.6c.5 0 .7-.2 1-.5l2.4-2.3 5 3.7c.9.5 1.6.2 1.8-.9l3.3-15.4c.3-1.3-.5-1.9-1.5-1.5Z" />
+										</svg>
+										Telegram
+									</a>
+								)}
+								{viberNumber && (
+									<a
+										href={`viber://chat?number=%2B${viberNumber}`}
+										data-messenger="viber"
+										class="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 font-body text-[15px] text-text"
+									>
+										<svg viewBox="0 0 24 24" class="h-5 w-5 text-primary" fill="currentColor" aria-hidden="true">
+											<path d="M12.2 3C7.6 3 4.2 6.2 4 10.6c-.1 2.3.7 4.3 2.2 5.8l-.7 3.2c-.1.5.4.9.8.6l3.3-1.8c.8.3 1.7.4 2.6.4 4.7 0 8.1-3.3 8.3-7.8C20.7 6.3 17.2 3 12.2 3Zm4.6 9.4c-.2.5-1.1 1-1.5 1.1-.4.1-.8.2-2.4-.5-2-.9-3.3-3-3.4-3.1-.1-.2-.9-1.2-.9-2.3s.6-1.6.8-1.8c.2-.2.4-.3.6-.3h.4c.1 0 .3 0 .5.4.2.5.6 1.6.7 1.7.1.1.1.3 0 .5-.1.2-.2.3-.3.5l-.2.3c-.1.1-.2.2-.1.4.2.3.7 1.1 1.5 1.8.9.8 1.7 1 2 .9.2-.1.4-.2.6-.4.1-.2.3-.1.5-.1l1.4.7c.2.1.4.2.4.3.1.2 0 .8-.2 1.1Z" />
+										</svg>
+										Viber
+									</a>
+								)}
+							</div>
+						</div>
+					)
+				}
+				{config.contacts.hours && <p class="mt-4 font-body text-[15px] leading-[1.5] text-muted">{config.contacts.hours}</p>}
+			</div>
 		</div>
-		<div class="min-w-0 rounded-theme border border-border bg-surface p-5 xl:p-6">
-			<form class="grid gap-4" novalidate data-booking-form>
+		<div class="order-2 min-w-0 rounded-theme border border-border bg-surface p-6 xl:col-start-2 xl:row-start-1">
+			<form class="grid gap-3.5" novalidate data-booking-form>
+				<div class="grid gap-3.5 md:grid-cols-2">
 				<div>
 					<label for="booking-name" class="font-body text-[15px] font-semibold">{ui.form.name}</label>
 					<input
@@ -67,7 +127,9 @@ const methods = [
 					/>
 					<p id="booking-error-phone" class="mt-1 font-body text-sm text-primary" data-error="phone" hidden></p>
 				</div>
+				</div>
 
+				<div class="grid gap-3.5 md:grid-cols-2">
 				<div>
 					<label for="booking-service" class="font-body text-[15px] font-semibold">{ui.form.service}</label>
 					<select
@@ -98,8 +160,9 @@ const methods = [
 						{masters.map((name) => <option value={name}>{name}</option>)}
 					</select>
 				</div>
+				</div>
 
-				<div class="grid gap-4 sm:grid-cols-2">
+				<div class="grid gap-3.5 md:grid-cols-2">
 					<div class="min-w-0">
 						<label for="booking-date" class="font-body text-[15px] font-semibold">{ui.form.date}</label>
 						<input
@@ -130,10 +193,10 @@ const methods = [
 
 				<fieldset class="min-w-0 border-0 p-0" data-field="method">
 					<legend class="font-body text-[15px] font-semibold">{ui.form.contactMethod}</legend>
-					<div class="mt-2 flex flex-wrap gap-2">
+					<div class="mt-2 flex flex-nowrap gap-2">
 						{
 							methods.map((method) => (
-								<label class="inline-flex min-h-11 items-center gap-2 rounded-theme border border-border px-3 font-body text-[15px]">
+								<label class="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border border-border px-3 font-body text-[15px]">
 									<input
 										type="radio"
 										name="contact"
@@ -147,23 +210,33 @@ const methods = [
 							))
 						}
 					</div>
+					<label class="mt-2 inline-flex min-h-11 items-center gap-3 font-body text-[15px]">
+						<input type="checkbox" name="doNotCall" data-field="do-not-call" class="h-4 w-4 shrink-0" />
+						{ui.form.doNotCall}
+					</label>
 				</fieldset>
 
-				<label class="inline-flex min-h-11 items-center gap-3 font-body text-[15px]">
-					<input type="checkbox" name="doNotCall" data-field="do-not-call" class="h-4 w-4 shrink-0" />
-					{ui.form.doNotCall}
-				</label>
-
 				<div>
-					<label for="booking-comment" class="font-body text-[15px] font-semibold">{ui.form.comment}</label>
-					<p class="mt-1 font-body text-sm text-muted">Можна вказати номер сертифіката</p>
-					<textarea
-						id="booking-comment"
-						name="comment"
-						rows="3"
-						data-field="comment"
-						class:list={[fieldClass, "mt-1 py-3"]}
-					></textarea>
+					<button
+						type="button"
+						data-comment-toggle
+						class="inline-flex min-h-11 items-center font-body text-[15px] text-primary"
+						aria-expanded="false"
+						aria-controls="booking-comment-panel"
+					>
+						+ Додати коментар
+					</button>
+					<div id="booking-comment-panel" data-comment-panel hidden>
+						<label for="booking-comment" class="font-body text-[15px] font-semibold">{ui.form.comment}</label>
+						<p class="mt-1 font-body text-sm text-muted">Можна вказати номер сертифіката</p>
+						<textarea
+							id="booking-comment"
+							name="comment"
+							rows="3"
+							data-field="comment"
+							class:list={[fieldClass, "mt-1 py-3"]}
+						></textarea>
+					</div>
 				</div>
 
 				<p class="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
@@ -406,6 +479,16 @@ const methods = [
 
 		dateInput.addEventListener("change", refillTime);
 		refillTime();
+
+		const commentToggle = root.querySelector("[data-comment-toggle]");
+		const commentPanel = root.querySelector("[data-comment-panel]");
+		const commentField = field(root, "comment");
+		commentToggle?.addEventListener("click", () => {
+			const open = commentToggle.getAttribute("aria-expanded") !== "true";
+			commentToggle.setAttribute("aria-expanded", open ? "true" : "false");
+			if (commentPanel) commentPanel.hidden = !open;
+			if (open && commentField instanceof HTMLTextAreaElement) commentField.focus();
+		});
 
 		phoneInput.addEventListener("focus", () => {
 			if (!phoneInput.value) phoneInput.value = "+380";
