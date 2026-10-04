@@ -35,13 +35,13 @@ const methods = [
 ---
 
 <section id="booking" data-block="booking-form" class="scroll-mt-24">
-	<div class="mx-auto grid max-w-6xl items-start gap-8 px-4 py-12 xl:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] xl:px-8">
-		<div class="contents xl:sticky xl:top-[85px] xl:col-start-1 xl:row-start-1 xl:block xl:self-start">
+	<div class="mx-auto grid max-w-6xl items-start gap-8 px-4 py-12 lg:grid-cols-12 xl:px-8">
+		<div class="contents lg:sticky lg:top-[85px] lg:col-span-6 lg:block lg:self-start">
 			<div class="order-1 min-w-0">
 				<h2 class="text-3xl">{typograf(title)}</h2>
 				<p class="mt-4 font-body text-[15px] leading-[1.6] text-muted xl:text-base">{text}</p>
 			</div>
-			<div class="order-3 min-w-0 xl:mt-8">
+			<div class="order-3 min-w-0 lg:mt-8">
 				{
 					steps.length > 0 && (
 						<div>
@@ -95,7 +95,7 @@ const methods = [
 				{config.contacts.hours && <p class="mt-4 font-body text-[15px] leading-[1.5] text-muted">{config.contacts.hours}</p>}
 			</div>
 		</div>
-		<div class="order-2 min-w-0 rounded-theme border border-border bg-surface p-6 xl:col-start-2 xl:row-start-1">
+		<div class="order-2 min-w-0 rounded-theme border border-border bg-surface p-6 lg:col-span-6">
 			<form class="grid gap-3.5" novalidate data-booking-form>
 				<div class="grid gap-3.5 md:grid-cols-2">
 				<div>
