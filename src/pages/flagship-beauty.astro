@@ -13,7 +13,10 @@ import Steps from "../blocks/steps/steps-visit.astro";
 import Reviews from "../blocks/reviews/reviews-cards.astro";
 import Gifts from "../blocks/gifts/gifts-certificates.astro";
 import { demoBeauty } from "../config/demo-beauty";
+import { getUi } from "../i18n";
 import { header, hero, trust, services, safety, gallery, beforeAfter, prices, team, steps, reviews, gifts } from "../data/demo-beauty";
+
+const ui = getUi(demoBeauty.locale);
 ---
 
 <Base config={demoBeauty}>
@@ -26,7 +29,7 @@ import { header, hero, trust, services, safety, gallery, beforeAfter, prices, te
 		<Gallery {...gallery} />
 		<BeforeAfter {...beforeAfter} />
 		<Prices {...prices} />
-		<Team {...team} />
+		<Team {...team} bookLabel={ui.buttons.book} />
 		<Steps {...steps} />
 		<Reviews {...reviews} />
 		<Gifts {...gifts} />

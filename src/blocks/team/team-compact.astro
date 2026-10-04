@@ -15,20 +15,22 @@ interface Member {
 	image?: { src: string; alt: string };
 	imageLabel?: string;
 	certificates?: Certificate[];
+	bookingHref?: string;
 }
 
 interface Props {
 	title: string;
 	items: Member[];
+	bookLabel: string;
 }
 
-const { title, items } = Astro.props;
+const { title, items, bookLabel } = Astro.props;
 ---
 
 <section id="team" data-block="team-compact">
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
 		<h2 class="text-3xl">{typograf(title)}</h2>
-		<ul class="mt-6 grid list-none gap-3 p-0 lg:grid-cols-3 lg:gap-6">
+		<ul class="mt-6 grid list-none gap-3 p-0 md:grid-cols-2 lg:grid-cols-3">
 			{
 				items.map((item, index) => {
 					const space = item.name.indexOf(" ");
@@ -36,34 +38,41 @@ const { title, items } = Astro.props;
 					const restName = space === -1 ? "\u00A0" : item.name.slice(space + 1);
 					return (
 						<li class="h-full">
-							<article class="flex h-full items-start gap-4 rounded-theme border border-border bg-surface p-5 lg:flex-col lg:items-center lg:p-7 lg:text-center">
-								<div
-									class="h-[88px] w-[88px] shrink-0 overflow-hidden rounded-full lg:h-[120px] lg:w-[120px]"
-									aria-hidden="true"
-								>
-									{item.image ? (
-										<img src={item.image.src} alt="" class="h-full w-full object-cover" />
-									) : (
-										<PhotoPlaceholder label="" class="h-full" />
-									)}
-								</div>
-								<div class="flex min-h-0 flex-1 flex-col lg:w-full lg:items-center">
-									<h3 class="font-body text-lg font-semibold leading-snug lg:text-xl">
+							<article class="flex h-full flex-col rounded-theme border border-border bg-surface p-6 text-left">
+								<div class="flex items-center gap-4">
+									<div class="h-[72px] w-[72px] shrink-0 overflow-hidden rounded-full" aria-hidden="true">
+										{item.image ? (
+											<img src={item.image.src} alt="" class="h-full w-full object-cover" />
+										) : (
+											<PhotoPlaceholder label="" class="h-full" />
+										)}
+									</div>
+									<h3 class="font-body text-xl font-semibold leading-[1.25]">
 										<span class="block">{typograf(firstName)}</span>
 										<span class="block">{typograf(restName)}</span>
 									</h3>
-									<p class="mt-1 font-body text-[15px] leading-[1.5] text-text">{item.role}</p>
-									<p class="font-body text-[15px] leading-[1.5] text-muted">{item.details}</p>
+								</div>
+								<div class="mb-3 mt-4 border-t border-border" aria-hidden="true"></div>
+								<p class="font-body text-[15px] leading-[1.5] text-text">{item.role}</p>
+								<p class="font-body text-[15px] leading-[1.5] text-muted">{item.details}</p>
+								<div class="mt-auto flex items-center justify-between gap-3 pt-4">
 									{item.certificates && item.certificates.length > 0 && (
 										<button
 											type="button"
 											data-certs-open={index}
-											class="mt-1 inline-flex min-h-11 items-center text-[15px] text-primary underline-offset-2 hover:underline lg:mt-auto"
+											class="inline-flex min-h-11 items-center text-left text-[15px] text-muted underline underline-offset-2"
 											aria-haspopup="dialog"
 										>
 											Сертифікати
 										</button>
 									)}
+									<a
+										href={item.bookingHref ?? "#booking"}
+										data-master={item.name}
+										class="ml-auto inline-flex min-h-11 items-center text-[15px] font-semibold text-primary"
+									>
+										{bookLabel} →
+									</a>
 								</div>
 							</article>
 						</li>
