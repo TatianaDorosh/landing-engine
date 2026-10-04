@@ -12,7 +12,8 @@ import Team from "../blocks/team/team-compact.astro";
 import Steps from "../blocks/steps/steps-visit.astro";
 import Reviews from "../blocks/reviews/reviews-cards.astro";
 import Gifts from "../blocks/gifts/gifts-certificates.astro";
-import Booking from "../blocks/booking/booking-form.astro";
+import BookingCta from "../blocks/booking/booking-cta.astro";
+import BookingDrawer from "../blocks/booking/booking-drawer.astro";
 import Faq from "../blocks/faq/faq-accordion.astro";
 import Myths from "../blocks/faq/faq-myths.astro";
 import ContactsMap from "../blocks/contacts/contacts-map.astro";
@@ -39,7 +40,22 @@ const ui = getUi(demoBeauty.locale);
 		<Steps {...steps} />
 		<Reviews {...reviews} />
 		<Gifts {...gifts} />
-		<Booking {...booking} config={demoBeauty} />
+		<BookingCta
+			title={booking.ctaTitle}
+			text={booking.text}
+			steps={booking.steps}
+			messengersTitle={booking.messengersTitle}
+			ctaLabel={booking.ctaLabel}
+			config={demoBeauty}
+		/>
+		<BookingDrawer
+			title={booking.title}
+			note="Підтвердимо запис у месенджері протягом 15 хвилин у робочий час"
+			services={booking.services}
+			masters={booking.masters}
+			privacyHref={booking.privacyHref}
+			config={demoBeauty}
+		/>
 		<Faq {...faq} telegram={demoBeauty.contacts.telegram} />
 		<Myths {...myths} />
 		<ContactsMap {...contacts} contacts={demoBeauty.contacts} />

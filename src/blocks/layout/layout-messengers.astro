@@ -1,5 +1,6 @@
 ---
 import type { SiteConfig } from "../../config/types";
+import { getUi } from "../../i18n";
 
 interface Props {
 	config: SiteConfig;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const { config, alwaysVisible = false } = Astro.props;
+const ui = getUi(config.locale);
 const { contacts } = config;
 
 function handle(value: string) {
@@ -46,13 +48,19 @@ const buttons = [
 	hidden={!alwaysVisible}
 	class="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] xl:inset-x-auto xl:bottom-6 xl:right-6 xl:flex-col xl:gap-3 xl:border-0 xl:bg-transparent xl:pb-0"
 >
+	<a
+		href="#booking"
+		class="inline-flex min-h-16 flex-1 items-center justify-center bg-primary px-4 font-body text-primary-contrast xl:hidden"
+	>
+		{ui.buttons.book}
+	</a>
 	{
 		buttons.map((item) => (
 			<a
 				href={item.href}
 				data-messenger={item.id}
 				aria-label={item.label}
-				class="inline-flex min-h-16 flex-1 flex-col items-center justify-center gap-1 text-text xl:size-[52px] xl:min-h-0 xl:flex-none xl:rounded-full xl:bg-primary xl:text-primary-contrast"
+				class="inline-flex size-16 shrink-0 items-center justify-center text-text xl:size-[52px] xl:min-h-0 xl:flex-none xl:rounded-full xl:bg-primary xl:text-primary-contrast"
 			>
 				{item.id === "telegram" && (
 					<svg viewBox="0 0 24 24" class="h-6 w-6 text-primary xl:text-primary-contrast" fill="currentColor" aria-hidden="true">
@@ -69,9 +77,6 @@ const buttons = [
 						<path d="M6.6 2.8c.4-.4 1-.5 1.5-.3l2.2.9c.5.2.9.7.9 1.3l-.1 2.4c0 .5-.3 1-.8 1.2l-1.3.6a12.2 12.2 0 0 0 5.6 5.6l.6-1.3c.2-.5.7-.8 1.2-.8l2.4-.1c.6 0 1.1.4 1.3.9l.9 2.2c.2.5 0 1.1-.3 1.5l-1.6 1.6c-.4.4-1 .6-1.6.5C10.2 18.4 5.6 13.8 4.7 6c-.1-.6.1-1.2.5-1.6L6.6 2.8Z" />
 					</svg>
 				)}
-				<span class="font-body text-sm xl:sr-only" aria-hidden="true">
-					{item.label}
-				</span>
 			</a>
 		))
 	}
@@ -89,15 +94,18 @@ const buttons = [
 	function bindMessengers(root) {
 		if (!(root instanceof HTMLElement) || root.dataset.messengersBound === "true") return;
 		root.dataset.messengersBound = "true";
-		if (root.dataset.static === "true") return;
-
 		const hero = document.querySelector("#hero");
 		const booking = document.querySelector("#booking");
+		const drawer = document.querySelector("[data-block='booking-drawer']");
 		let heroGone = !hero;
 		let bookingOn = false;
 
+		function drawerOpen() {
+			return drawer instanceof HTMLElement && drawer.getAttribute("data-open") === "true";
+		}
+
 		function update() {
-			const open = heroGone && !bookingOn;
+			const open = root.dataset.static === "true" ? !drawerOpen() : heroGone && !bookingOn && !drawerOpen();
 			root.dataset.open = open ? "true" : "false";
 			if (open) root.removeAttribute("hidden");
 			else root.setAttribute("hidden", "");
@@ -112,23 +120,31 @@ const buttons = [
 			update();
 		}
 
-		if (hero) {
-			new IntersectionObserver(([entry]) => {
-				heroGone = !entry.isIntersecting;
-				update();
-			}).observe(hero);
+		if (root.dataset.static !== "true") {
+			if (hero) {
+				new IntersectionObserver(([entry]) => {
+					heroGone = !entry.isIntersecting;
+					update();
+				}).observe(hero);
+			}
+
+			if (booking) {
+				new IntersectionObserver(([entry]) => {
+					bookingOn = entry.isIntersecting;
+					update();
+				}).observe(booking);
+			}
+
+			window.addEventListener("scroll", readPosition, { passive: true });
+			window.addEventListener("resize", readPosition);
+			readPosition();
 		}
 
-		if (booking) {
-			new IntersectionObserver(([entry]) => {
-				bookingOn = entry.isIntersecting;
-				update();
-			}).observe(booking);
+		if (drawer instanceof HTMLElement) {
+			new MutationObserver(update).observe(drawer, { attributes: true, attributeFilter: ["data-open"] });
 		}
 
-		window.addEventListener("scroll", readPosition, { passive: true });
-		window.addEventListener("resize", readPosition);
-		readPosition();
+		update();
 	}
 
 	document.querySelectorAll("[data-block='layout-messengers']").forEach(bindMessengers);

@@ -14,6 +14,7 @@ import Steps from "../blocks/steps/steps-visit.astro";
 import Reviews from "../blocks/reviews/reviews-cards.astro";
 import Gifts from "../blocks/gifts/gifts-certificates.astro";
 import Booking from "../blocks/booking/booking-form.astro";
+import BookingCta from "../blocks/booking/booking-cta.astro";
 import BookingDrawer from "../blocks/booking/booking-drawer.astro";
 import BookingOnline from "../blocks/booking/booking-online-service.astro";
 import Faq from "../blocks/faq/faq-accordion.astro";
@@ -73,7 +74,17 @@ const ui = getUi(demoBeauty.locale);
 	<Gifts {...gifts} />
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">booking-form</p>
-	<Booking {...booking} config={demoBeauty} />
+	<Booking {...booking} config={demoBeauty} sectionId="booking-form" />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">booking-cta</p>
+	<BookingCta
+		title={booking.ctaTitle}
+		text={booking.text}
+		steps={booking.steps}
+		messengersTitle={booking.messengersTitle}
+		ctaLabel={booking.ctaLabel}
+		config={demoBeauty}
+	/>
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">booking-drawer</p>
 	<div class="mx-auto max-w-6xl px-4 pb-8 xl:px-8">

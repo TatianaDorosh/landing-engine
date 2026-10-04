@@ -17,14 +17,15 @@ interface Props {
 	config: SiteConfig;
 	steps?: string[];
 	messengersTitle?: string;
+	sectionId?: string;
 }
 
-const { title, text, services, masters, privacyHref, config, steps = [], messengersTitle = "" } = Astro.props;
+const { title, text, services, masters, privacyHref, config, steps = [], messengersTitle = "", sectionId = "booking" } = Astro.props;
 const telegramHandle = config.contacts.telegram?.replace(/^@/, "") ?? "";
 const viberNumber = config.contacts.viber?.replace(/\D/g, "") ?? "";
 ---
 
-<section id="booking" data-block="booking-form" class="scroll-mt-24">
+<section id={sectionId} data-block="booking-form" class="scroll-mt-24">
 	<div class="mx-auto grid max-w-6xl items-start gap-8 px-4 py-12 lg:grid-cols-12 xl:px-8">
 		<div class="contents lg:sticky lg:top-[85px] lg:col-span-6 lg:block lg:self-start">
 			<div class="order-1 min-w-0">
