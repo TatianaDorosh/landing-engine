@@ -47,6 +47,11 @@ export interface UiStrings {
 		plaque: string;
 		order: string;
 	};
+	prices: {
+		/** {count} — скільки позицій у вкладці. */
+		showAll: string;
+		collapse: string;
+	};
 }
 
 export const uk = {
@@ -95,5 +100,9 @@ export const uk = {
 		text: 'Це зразок, а не сторінка реальної студії. Повідомлення в месенджер не відкривається.',
 		plaque: 'Демо-сайт · Створено: {author} · Замовити такий сайт',
 		order: 'Замовити такий сайт',
+	},
+	prices: {
+		showAll: 'Показати всі ціни ({count})',
+		collapse: 'Згорнути',
 	},
 } satisfies UiStrings;

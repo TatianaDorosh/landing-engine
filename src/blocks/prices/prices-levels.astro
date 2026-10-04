@@ -1,4 +1,6 @@
 ---
+import type { Locale } from "../../config/types";
+import { getUi } from "../../i18n";
 import { typograf } from "../../lib/typograf";
 
 interface PriceRow {
@@ -20,9 +22,16 @@ interface Props {
 	ctaLabel: string;
 	bookLabel: string;
 	currency: string;
+	maxVisible?: number;
+	locale?: Locale;
 }
 
-const { title, note, tabs, ctaLabel, bookLabel, currency } = Astro.props;
+const { title, note, tabs, ctaLabel, bookLabel, currency, maxVisible = 8, locale = "uk" } = Astro.props;
+const ui = getUi(locale);
+
+function showAllLabel(count: number) {
+	return ui.prices.showAll.replace("{count}", String(count));
+}
 
 function money(value: number) {
 	return `${value} ${currency}`;
@@ -53,70 +62,94 @@ function money(value: number) {
 			}
 		</div>
 
-		{
-			tabs.map((tab, index) => (
-				<div
-					role="tabpanel"
-					id={`prices-panel-${index}`}
-					data-price-panel={index}
-					aria-labelledby={`prices-tab-${index}`}
-					hidden={index !== 0}
-					class:list={["mt-6", index !== 0 && "hidden"]}
-				>
-					<table class="hidden w-full border-collapse text-left xl:table">
-						<thead>
-							<tr class="border-b border-border text-[15px] text-muted">
-								<th class="py-3 pr-4 font-medium" scope="col">Послуга</th>
-								<th class="py-3 pr-4 font-medium" scope="col">Тривалість</th>
-								<th class="py-3 pr-4 font-medium" scope="col">{tab.levels[0]}</th>
-								<th class="py-3 font-medium" scope="col">{tab.levels[1]}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{tab.rows.map((row) => (
-								<tr class="border-b border-border">
-									<th class="py-4 pr-4 font-semibold" scope="row">
-										{row.service}
-										<a
-											href="#booking"
-											data-service={row.service}
-											class="mt-1 block text-sm font-normal text-primary"
-										>
-											{bookLabel}
-										</a>
-									</th>
-									<td class="py-4 pr-4 text-muted">{row.duration}</td>
-									<td class="py-4 pr-4">{money(row.prices[0])}</td>
-									<td class="py-4">{money(row.prices[1])}</td>
+		<div class="mt-6 grid">
+			{
+				tabs.map((tab, index) => (
+					<div
+						role="tabpanel"
+						id={`prices-panel-${index}`}
+						data-price-panel={index}
+						aria-labelledby={`prices-tab-${index}`}
+						aria-hidden={index === 0 ? "false" : "true"}
+						inert={index !== 0}
+						class:list={["col-start-1 row-start-1", index !== 0 && "pointer-events-none invisible"]}
+					>
+						<table class="hidden w-full border-collapse text-left xl:table">
+							<thead>
+								<tr class="border-b border-border text-[15px] text-muted">
+									<th class="py-3 pr-4 font-medium" scope="col">Послуга</th>
+									<th class="py-3 pr-4 font-medium" scope="col">Тривалість</th>
+									<th class="py-3 pr-4 font-medium" scope="col">{tab.levels[0]}</th>
+									<th class="py-3 font-medium" scope="col">{tab.levels[1]}</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{tab.rows.map((row, rowIndex) => (
+									<tr
+										class:list={["border-b border-border", rowIndex >= maxVisible && "hidden"]}
+										data-price-extra={rowIndex >= maxVisible ? "" : undefined}
+									>
+										<th class="py-4 pr-4 font-semibold" scope="row">
+											{row.service}
+											<a
+												href="#booking"
+												data-service={row.service}
+												class="mt-1 block text-sm font-normal text-primary"
+											>
+												{bookLabel}
+											</a>
+										</th>
+										<td class="py-4 pr-4 text-muted">{row.duration}</td>
+										<td class="py-4 pr-4">{money(row.prices[0])}</td>
+										<td class="py-4">{money(row.prices[1])}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
 
-					<ul class="grid list-none gap-3 p-0 xl:hidden">
-						{tab.rows.map((row) => (
-							<li class="rounded-theme border border-border bg-surface p-4">
-								<h3 class="font-body text-lg font-semibold">{typograf(row.service)}</h3>
-								<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{row.duration}</p>
-								<p class="mt-3">
-									{tab.levels[0]} — {money(row.prices[0])}
-								</p>
-								<p>
-									{tab.levels[1]} — {money(row.prices[1])}
-								</p>
-								<a
-									href="#booking"
-									data-service={row.service}
-									class="mt-3 inline-flex min-h-11 items-center text-sm text-primary"
+						<ul class="grid list-none gap-3 p-0 xl:hidden">
+							{tab.rows.map((row, rowIndex) => (
+								<li
+									class:list={[
+										"rounded-theme border border-border bg-surface p-4",
+										rowIndex >= maxVisible && "hidden",
+									]}
+									data-price-extra={rowIndex >= maxVisible ? "" : undefined}
 								>
-									{bookLabel}
-								</a>
-							</li>
-						))}
-					</ul>
-				</div>
-			))
-		}
+									<h3 class="font-body text-lg font-semibold">{typograf(row.service)}</h3>
+									<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{row.duration}</p>
+									<p class="mt-3">
+										{tab.levels[0]} — {money(row.prices[0])}
+									</p>
+									<p>
+										{tab.levels[1]} — {money(row.prices[1])}
+									</p>
+									<a
+										href="#booking"
+										data-service={row.service}
+										class="mt-3 inline-flex min-h-11 items-center text-sm text-primary"
+									>
+										{bookLabel}
+									</a>
+								</li>
+							))}
+						</ul>
+						{tab.rows.length > maxVisible && (
+							<button
+								type="button"
+								data-price-more
+								class="mt-4 inline-flex min-h-11 items-center font-body text-[15px] text-primary"
+								aria-expanded="false"
+								data-label-show={showAllLabel(tab.rows.length)}
+								data-label-hide={ui.prices.collapse}
+							>
+								{showAllLabel(tab.rows.length)}
+							</button>
+						)}
+					</div>
+				))
+			}
+		</div>
 
 		<p class="mt-6 font-body text-[15px] leading-[1.5] text-muted">{note}</p>
 		<a
@@ -145,10 +178,27 @@ function money(value: number) {
 			});
 			panels.forEach((panel) => {
 				const on = panel.getAttribute("data-price-panel") === String(index);
-				panel.toggleAttribute("hidden", !on);
-				panel.classList.toggle("hidden", !on);
+				panel.classList.toggle("invisible", !on);
+				panel.classList.toggle("pointer-events-none", !on);
+				panel.setAttribute("aria-hidden", on ? "false" : "true");
+				if (on) panel.removeAttribute("inert");
+				else panel.setAttribute("inert", "");
 			});
 		}
+
+		root.querySelectorAll("[data-price-more]").forEach((button) => {
+			button.addEventListener("click", () => {
+				const panel = button.closest("[data-price-panel]");
+				if (!panel) return;
+				const open = button.getAttribute("aria-expanded") !== "true";
+				button.setAttribute("aria-expanded", open ? "true" : "false");
+				panel.querySelectorAll("[data-price-extra]").forEach((row) => {
+					row.classList.toggle("hidden", !open);
+				});
+				const label = button.getAttribute(open ? "data-label-hide" : "data-label-show");
+				if (label) button.textContent = label;
+			});
+		});
 
 		tabs.forEach((tab) => {
 			tab.addEventListener("click", () => show(tab.getAttribute("data-price-tab")));
