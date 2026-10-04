@@ -1,0 +1,37 @@
+---
+import { typograf } from "../../lib/typograf";
+
+interface Item {
+	myth: string;
+	fact: string;
+	author: string;
+}
+
+interface Props {
+	title: string;
+	items: Item[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<section id="myths" data-block="faq-myths">
+	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		<ul class="mt-6 grid list-none gap-3 p-0 xl:grid-cols-3">
+			{
+				items.map((item) => (
+					<li class="h-full">
+						<article class="flex h-full flex-col rounded-theme border border-border bg-surface p-6">
+							<p class="font-body text-sm text-muted">Міф</p>
+							<h3 class="mt-1 font-body text-[17px] font-semibold">{typograf(item.myth)}</h3>
+							<p class="mt-4 font-body text-sm font-semibold text-primary">Факт</p>
+							<p class="mt-1 font-body text-[15px] leading-[1.5]">{item.fact}</p>
+							<p class="mt-auto pt-4 font-body text-sm text-muted">{item.author}</p>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

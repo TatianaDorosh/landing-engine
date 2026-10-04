@@ -9,9 +9,10 @@ interface Props {
 	nav: NavItem[];
 	ctaLabel: string;
 	ctaHref: string;
+	nameHref?: string;
 }
 
-const { name, nav, ctaLabel, ctaHref } = Astro.props;
+const { name, nav, ctaLabel, ctaHref, nameHref = "#hero" } = Astro.props;
 const menuId = "layout-header-menu";
 ---
 
@@ -20,7 +21,7 @@ const menuId = "layout-header-menu";
 	class="sticky top-0 z-50 border-b border-border bg-bg/90 backdrop-blur-md"
 >
 	<div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 xl:px-8">
-		<a href="#hero" class="font-heading text-2xl text-text">{name}</a>
+		<a href={nameHref} class="font-heading text-2xl text-text">{name}</a>
 
 		<nav class="hidden items-center gap-x-3 text-sm lg:flex xl:gap-x-5" aria-label="Основна навігація">
 			{

@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import Header from "../../blocks/layout/layout-header.astro";
+import Footer from "../../blocks/layout/layout-footer.astro";
+import PrivacyPolicy from "../../components/PrivacyPolicy.astro";
+import { demoBeauty } from "../../config/demo-beauty";
+import { header } from "../../data/demo-beauty";
+---
+
+<Base config={demoBeauty} noindex={true} title="Політика приватності — Mira Studio">
+	<Header {...header} nameHref="/flagship-beauty/" />
+	<main>
+		<PrivacyPolicy config={demoBeauty} />
+	</main>
+	<Footer config={demoBeauty} privacyHref="/flagship-beauty/privacy/" />
+</Base>
