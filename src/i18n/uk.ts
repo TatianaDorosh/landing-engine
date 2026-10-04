@@ -6,6 +6,7 @@ export interface UiStrings {
 		book: string;
 		submit: string;
 		more: string;
+		close: string;
 	};
 	form: {
 		name: string;
@@ -61,6 +62,7 @@ export const uk = {
 		book: 'Записатися',
 		submit: 'Надіслати заявку',
 		more: 'Детальніше',
+		close: 'Закрити',
 	},
 	form: {
 		name: "Ім'я",

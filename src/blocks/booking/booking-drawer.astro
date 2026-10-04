@@ -1,0 +1,281 @@
+---
+import BookingFormCore from "../../components/BookingFormCore.astro";
+import type { SiteConfig } from "../../config/types";
+import { getUi } from "../../i18n";
+import { typograf } from "../../lib/typograf";
+
+interface ServiceGroup {
+	group: string;
+	items: string[];
+}
+
+interface Props {
+	title: string;
+	note: string;
+	services: ServiceGroup[];
+	masters: string[];
+	privacyHref: string;
+	config: SiteConfig;
+}
+
+const { title, note, services, masters, privacyHref, config } = Astro.props;
+const ui = getUi(config.locale);
+const titleId = "booking-drawer-title";
+---
+
+<div
+	data-block="booking-drawer"
+	data-open="false"
+	class="invisible fixed inset-0 z-[90]"
+	aria-hidden="true"
+	inert
+>
+	<button
+		type="button"
+		data-booking-backdrop
+		class="absolute inset-0 bg-text/50 opacity-0"
+		tabindex="-1"
+		aria-label={ui.buttons.close}
+	></button>
+	<div
+		data-booking-panel
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby={titleId}
+		class="absolute inset-0 flex flex-col bg-bg md:inset-y-0 md:left-auto md:right-0 md:w-[480px]"
+	>
+		<div class="flex shrink-0 items-start justify-between gap-3 border-b border-border px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
+			<div class="min-w-0">
+				<h2 id={titleId} class="font-body text-[17px] font-semibold">{typograf(title)}</h2>
+				<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{note}</p>
+			</div>
+			<button
+				type="button"
+				data-booking-close
+				class="inline-flex size-11 shrink-0 items-center justify-center rounded-theme text-text"
+				aria-label={ui.buttons.close}
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+				</svg>
+			</button>
+		</div>
+		<div class="min-h-0 flex-1 overflow-y-auto px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+			<BookingFormCore
+				services={services}
+				masters={masters}
+				privacyHref={privacyHref}
+				config={config}
+				idPrefix="booking-drawer"
+				stacked
+				successClose
+			/>
+		</div>
+	</div>
+</div>
+
+<style is:global>
+	[data-block="booking-drawer"] [data-booking-backdrop],
+	[data-block="booking-drawer"] [data-booking-panel] {
+		transition: transform 200ms ease, opacity 200ms ease;
+	}
+
+	[data-block="booking-drawer"] [data-booking-panel] {
+		transform: translateY(100%);
+	}
+
+	@media (min-width: 48rem) {
+		[data-block="booking-drawer"] [data-booking-panel] {
+			transform: translateX(100%);
+		}
+	}
+
+	[data-block="booking-drawer"][data-open="true"] [data-booking-backdrop] {
+		opacity: 1;
+	}
+
+	[data-block="booking-drawer"][data-open="true"] [data-booking-panel] {
+		transform: translate(0, 0);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		[data-block="booking-drawer"] [data-booking-backdrop],
+		[data-block="booking-drawer"] [data-booking-panel] {
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	function drawerField(root, name) {
+		return root.querySelector("[data-field='" + name + "']");
+	}
+
+	function chooseDrawerOption(select, value) {
+		if (!select || !value) return;
+		const existing = [...select.options].find((option) => option.value === value);
+		if (existing) {
+			select.value = value;
+			return;
+		}
+		const option = document.createElement("option");
+		option.value = value;
+		option.textContent = value;
+		select.append(option);
+		select.value = value;
+	}
+
+	function bookingHref(link) {
+		const href = link.getAttribute("href") || "";
+		return href === "#booking" || href.endsWith("#booking");
+	}
+
+	const drawerApis = new WeakMap();
+
+	function bindDrawer(drawer) {
+		if (!(drawer instanceof HTMLElement)) return null;
+		const existing = drawerApis.get(drawer);
+		if (existing) return existing;
+		drawer.dataset.drawerBound = "true";
+		const panel = drawer.querySelector("[data-booking-panel]");
+		const formRoot = drawer.querySelector("[data-booking-root]");
+		let opener = null;
+		let lockedScroll = 0;
+		let closeTimer = 0;
+
+		function reducedMotion() {
+			return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		}
+
+		function lockScroll() {
+			lockedScroll = window.scrollY;
+			document.body.style.position = "fixed";
+			document.body.style.top = "-" + lockedScroll + "px";
+			document.body.style.width = "100%";
+		}
+
+		function unlockScroll() {
+			document.body.style.position = "";
+			document.body.style.top = "";
+			document.body.style.width = "";
+			window.scrollTo(0, lockedScroll);
+		}
+
+		function focusEntry() {
+			const success = formRoot?.querySelector("[data-success]");
+			if (success && !success.hidden) {
+				const closeButton = success.querySelector("[data-booking-success-close]");
+				if (closeButton instanceof HTMLElement) closeButton.focus();
+				else success.querySelector("[data-success-title]")?.focus();
+				return;
+			}
+			const names = ["name", "phone", "service", "date", "time"];
+			for (const name of names) {
+				const input = drawerField(formRoot, name);
+				if (input instanceof HTMLInputElement || input instanceof HTMLSelectElement || input instanceof HTMLTextAreaElement) {
+					if (input.value === "") {
+						input.focus();
+						return;
+					}
+				}
+			}
+			drawerField(formRoot, "name")?.focus();
+		}
+
+		function openDrawer(trigger) {
+			opener = trigger instanceof HTMLElement ? trigger : null;
+			window.clearTimeout(closeTimer);
+			drawer.classList.remove("invisible");
+			drawer.removeAttribute("inert");
+			drawer.setAttribute("aria-hidden", "false");
+			lockScroll();
+			const show = () => {
+				drawer.setAttribute("data-open", "true");
+				focusEntry();
+			};
+			if (reducedMotion()) show();
+			else requestAnimationFrame(show);
+		}
+
+		function closeDrawer() {
+			if (drawer.getAttribute("data-open") !== "true") return;
+			drawer.setAttribute("data-open", "false");
+			unlockScroll();
+			const finish = () => {
+				if (drawer.getAttribute("data-open") === "true") return;
+				drawer.setAttribute("inert", "");
+				drawer.setAttribute("aria-hidden", "true");
+				drawer.classList.add("invisible");
+				if (opener) opener.focus();
+			};
+			window.clearTimeout(closeTimer);
+			closeTimer = window.setTimeout(finish, reducedMotion() ? 0 : 200);
+		}
+
+		function trapFocus(event) {
+			if (drawer.getAttribute("data-open") !== "true" || event.key !== "Tab" || !(panel instanceof HTMLElement)) return;
+			const focusable = [...panel.querySelectorAll("a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])")].filter((node) => {
+				if (!(node instanceof HTMLElement)) return false;
+				if (node.closest("[hidden]")) return false;
+				return node.tabIndex !== -1;
+			});
+			if (!focusable.length) return;
+			const first = focusable[0];
+			const last = focusable[focusable.length - 1];
+			if (event.shiftKey && document.activeElement === first) {
+				event.preventDefault();
+				last.focus();
+			} else if (!event.shiftKey && document.activeElement === last) {
+				event.preventDefault();
+				first.focus();
+			}
+		}
+
+		drawer.addEventListener("click", (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			if (target.closest("[data-booking-close], [data-booking-backdrop], [data-booking-success-close]")) closeDrawer();
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (drawer.getAttribute("data-open") !== "true") return;
+			if (event.key === "Escape") {
+				event.preventDefault();
+				closeDrawer();
+				return;
+			}
+			trapFocus(event);
+		});
+
+		const api = { openDrawer };
+		drawerApis.set(drawer, api);
+		return api;
+	}
+
+	const drawers = [...document.querySelectorAll("[data-block='booking-drawer']")].map((drawer) => bindDrawer(drawer)).filter(Boolean);
+
+	if (drawers.length && document.documentElement.dataset.bookingDrawerOpen !== "true") {
+		document.documentElement.dataset.bookingDrawerOpen = "true";
+		document.addEventListener(
+			"click",
+			(event) => {
+				const target = event.target;
+				if (!(target instanceof Element)) return;
+				const link = target.closest("a[href]");
+				if (!(link instanceof HTMLAnchorElement) || !bookingHref(link)) return;
+				const drawer = document.querySelector("[data-block='booking-drawer']");
+				if (!(drawer instanceof HTMLElement) || drawer.contains(link)) return;
+				event.preventDefault();
+				event.stopPropagation();
+				const formRoot = drawer.querySelector("[data-booking-root]");
+				const service = link.getAttribute("data-service");
+				const master = link.getAttribute("data-master");
+				if (service) chooseDrawerOption(drawerField(formRoot, "service"), service);
+				if (master) chooseDrawerOption(drawerField(formRoot, "master"), master);
+				const api = bindDrawer(drawer);
+				api?.openDrawer(link);
+			},
+			true,
+		);
+	}
+</script>
