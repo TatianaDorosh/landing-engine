@@ -16,8 +16,8 @@ const { eyebrow, title, text, primaryCta, secondaryCta, image, imageLabel } = As
 ---
 
 <section id="hero" data-block="hero-result">
-	<div class="mx-auto grid max-w-6xl items-center gap-6 px-4 py-8 lg:grid-cols-2 lg:gap-10 lg:px-8 lg:py-8">
-		<div>
+	<div class="mx-auto grid max-w-6xl items-center gap-6 px-4 py-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-stretch lg:gap-10 lg:px-8 lg:py-12">
+		<div class="lg:flex lg:h-full lg:flex-col lg:justify-center">
 			<p class="text-sm text-muted">{eyebrow}</p>
 			<h1 class="mt-3 font-heading text-[36px] leading-[1.15] lg:text-[56px]">{typograf(title)}</h1>
 			<p class="mt-4 max-w-xl font-body text-base leading-relaxed">{text}</p>
@@ -36,18 +36,18 @@ const { eyebrow, title, text, primaryCta, secondaryCta, image, imageLabel } = As
 				</a>
 			</div>
 		</div>
-		<div class="overflow-hidden rounded-theme">
+		<div class="overflow-hidden rounded-theme lg:h-full lg:min-h-80">
 			{
 				image ? (
 					<img
 						src={image.src}
 						alt={image.alt}
-						class="aspect-[4/3] w-full object-cover lg:aspect-[4/5] lg:max-h-[560px]"
+						class="aspect-[4/3] w-full object-cover lg:aspect-auto lg:h-full lg:min-h-80"
 					/>
 				) : (
 					<PhotoPlaceholder
 						label={imageLabel}
-						class="aspect-[4/3] lg:aspect-[4/5] lg:max-h-[560px]"
+						class="aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-80"
 					/>
 				)
 			}
