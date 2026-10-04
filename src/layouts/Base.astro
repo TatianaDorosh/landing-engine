@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import DemoModal from "../components/DemoModal.astro";
 import type { SiteConfig } from "../config/types";
 
 interface Props {
@@ -114,5 +115,6 @@ const jsonLdText = JSON.stringify(jsonLd, null, 2).replaceAll("<", "\\u003c");
 	</head>
 	<body>
 		<slot />
+		{config.portfolio.enabled && <DemoModal config={config} />}
 	</body>
 </html>

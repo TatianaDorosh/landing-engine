@@ -1,0 +1,117 @@
+---
+import type { SiteConfig } from "../config/types";
+import { getUi } from "../i18n";
+import { typograf } from "../lib/typograf";
+
+interface Props {
+	config: SiteConfig;
+}
+
+const { config } = Astro.props;
+const ui = getUi(config.locale);
+---
+
+<div
+	id="demo-modal"
+	class="fixed inset-0 z-[80] hidden items-center justify-center bg-text/80 p-4"
+	role="dialog"
+	aria-modal="true"
+	aria-labelledby="demo-modal-title"
+	hidden
+>
+	<div class="w-full max-w-md rounded-theme bg-surface p-6" data-demo-panel>
+		<h2 id="demo-modal-title" class="text-3xl" tabindex="-1">{typograf(ui.demo.title)}</h2>
+		<p class="mt-3 font-body text-[15px] leading-[1.6] xl:text-base">{ui.demo.text}</p>
+		<div class="mt-6 flex flex-col gap-3 sm:flex-row">
+			<a
+				href={config.portfolio.contactUrl}
+				target="_blank"
+				rel="noopener"
+				class="inline-flex min-h-11 items-center justify-center rounded-theme bg-primary px-5 text-center text-primary-contrast"
+			>
+				{ui.demo.order}
+			</a>
+			<button
+				type="button"
+				data-demo-close
+				class="inline-flex min-h-11 items-center justify-center rounded-theme border border-border px-5"
+			>
+				Закрити
+			</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	const dialog = document.getElementById("demo-modal");
+	if (dialog) {
+		const panel = dialog.querySelector("[data-demo-panel]");
+		const title = document.getElementById("demo-modal-title");
+		const closeButton = dialog.querySelector("[data-demo-close]");
+		let opener = null;
+
+		function focusable() {
+			return [...dialog.querySelectorAll("a[href], button")].filter((item) => !item.hasAttribute("disabled"));
+		}
+
+		function open() {
+			opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+			dialog.hidden = false;
+			dialog.classList.remove("hidden");
+			dialog.classList.add("flex");
+			document.documentElement.style.overflow = "hidden";
+			document.body.style.overflow = "hidden";
+			if (title) title.focus();
+		}
+
+		function close() {
+			dialog.hidden = true;
+			dialog.classList.add("hidden");
+			dialog.classList.remove("flex");
+			document.documentElement.style.overflow = "";
+			document.body.style.overflow = "";
+			if (opener) opener.focus();
+		}
+
+		document.addEventListener("click", (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			const link = target.closest("a[data-messenger], a[href^='tel:']");
+			if (!link || dialog.contains(link)) return;
+			event.preventDefault();
+			open();
+		});
+
+		dialog.addEventListener("click", (event) => {
+			if (event.target === dialog) close();
+		});
+
+		closeButton?.addEventListener("click", close);
+
+		document.addEventListener("keydown", (event) => {
+			if (dialog.hidden) return;
+			if (event.key === "Escape") {
+				event.preventDefault();
+				close();
+				return;
+			}
+			if (event.key !== "Tab") return;
+			const items = focusable();
+			if (!items.length) return;
+			const first = items[0];
+			const last = items[items.length - 1];
+			const active = document.activeElement;
+			if (event.shiftKey && (active === first || active === title)) {
+				event.preventDefault();
+				last.focus();
+			} else if (!event.shiftKey && (active === last || active === title || !dialog.contains(active))) {
+				event.preventDefault();
+				first.focus();
+			}
+		});
+
+		panel?.addEventListener("click", (event) => {
+			event.stopPropagation();
+		});
+	}
+</script>

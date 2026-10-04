@@ -1,0 +1,135 @@
+---
+import type { SiteConfig } from "../../config/types";
+
+interface Props {
+	config: SiteConfig;
+	/** На вітрині панель видно одразу, без появи після прокрутки. */
+	alwaysVisible?: boolean;
+}
+
+const { config, alwaysVisible = false } = Astro.props;
+const { contacts } = config;
+
+function handle(value: string) {
+	return value.replace(/^@/, "");
+}
+
+const buttons = [
+	contacts.telegram
+		? {
+				id: "telegram",
+				label: "Telegram",
+				href: `https://t.me/${handle(contacts.telegram)}`,
+			}
+		: null,
+	contacts.viber
+		? {
+				id: "viber",
+				label: "Viber",
+				href: `viber://chat?number=%2B${contacts.viber.replace(/\D/g, "")}`,
+			}
+		: null,
+	contacts.phone
+		? {
+				id: "phone",
+				label: "Телефон",
+				href: `tel:${contacts.phone}`,
+			}
+		: null,
+].filter((item) => item !== null);
+---
+
+<div
+	data-block="layout-messengers"
+	data-static={alwaysVisible ? "true" : "false"}
+	data-open={alwaysVisible ? "true" : "false"}
+	hidden={!alwaysVisible}
+	class="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] xl:inset-x-auto xl:bottom-6 xl:right-6 xl:flex-col xl:gap-3 xl:border-0 xl:bg-transparent xl:pb-0"
+>
+	{
+		buttons.map((item) => (
+			<a
+				href={item.href}
+				data-messenger={item.id}
+				aria-label={item.label}
+				class="inline-flex min-h-16 flex-1 flex-col items-center justify-center gap-1 text-text xl:size-[52px] xl:min-h-0 xl:flex-none xl:rounded-full xl:bg-primary xl:text-primary-contrast"
+			>
+				{item.id === "telegram" && (
+					<svg viewBox="0 0 24 24" class="h-6 w-6 text-primary xl:text-primary-contrast" fill="currentColor" aria-hidden="true">
+						<path d="M21.2 4.4 2.9 11.2c-.9.3-.9.9-.2 1.1l4.7 1.5 10.8-6.8c.5-.3 1-.1.6.2l-8.7 7.9-.3 4.6c.5 0 .7-.2 1-.5l2.4-2.3 5 3.7c.9.5 1.6.2 1.8-.9l3.3-15.4c.3-1.3-.5-1.9-1.5-1.5Z" />
+					</svg>
+				)}
+				{item.id === "viber" && (
+					<svg viewBox="0 0 24 24" class="h-6 w-6 text-primary xl:text-primary-contrast" fill="currentColor" aria-hidden="true">
+						<path d="M12.2 3C7.6 3 4.2 6.2 4 10.6c-.1 2.3.7 4.3 2.2 5.8l-.7 3.2c-.1.5.4.9.8.6l3.3-1.8c.8.3 1.7.4 2.6.4 4.7 0 8.1-3.3 8.3-7.8C20.7 6.3 17.2 3 12.2 3Zm4.6 9.4c-.2.5-1.1 1-1.5 1.1-.4.1-.8.2-2.4-.5-2-.9-3.3-3-3.4-3.1-.1-.2-.9-1.2-.9-2.3s.6-1.6.8-1.8c.2-.2.4-.3.6-.3h.4c.1 0 .3 0 .5.4.2.5.6 1.6.7 1.7.1.1.1.3 0 .5-.1.2-.2.3-.3.5l-.2.3c-.1.1-.2.2-.1.4.2.3.7 1.1 1.5 1.8.9.8 1.7 1 2 .9.2-.1.4-.2.6-.4.1-.2.3-.1.5-.1l1.4.7c.2.1.4.2.4.3.1.2 0 .8-.2 1.1Z" />
+					</svg>
+				)}
+				{item.id === "phone" && (
+					<svg viewBox="0 0 24 24" class="h-6 w-6 text-primary xl:text-primary-contrast" fill="currentColor" aria-hidden="true">
+						<path d="M6.6 2.8c.4-.4 1-.5 1.5-.3l2.2.9c.5.2.9.7.9 1.3l-.1 2.4c0 .5-.3 1-.8 1.2l-1.3.6a12.2 12.2 0 0 0 5.6 5.6l.6-1.3c.2-.5.7-.8 1.2-.8l2.4-.1c.6 0 1.1.4 1.3.9l.9 2.2c.2.5 0 1.1-.3 1.5l-1.6 1.6c-.4.4-1 .6-1.6.5C10.2 18.4 5.6 13.8 4.7 6c-.1-.6.1-1.2.5-1.6L6.6 2.8Z" />
+					</svg>
+				)}
+				<span class="font-body text-sm xl:sr-only" aria-hidden="true">
+					{item.label}
+				</span>
+			</a>
+		))
+	}
+</div>
+
+<style is:global>
+	@media (width < 80rem) {
+		body:has([data-block="layout-messengers"]:not([hidden])) {
+			padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+		}
+	}
+</style>
+
+<script>
+	function bindMessengers(root) {
+		if (!(root instanceof HTMLElement) || root.dataset.messengersBound === "true") return;
+		root.dataset.messengersBound = "true";
+		if (root.dataset.static === "true") return;
+
+		const hero = document.querySelector("#hero");
+		const booking = document.querySelector("#booking");
+		let heroGone = !hero;
+		let bookingOn = false;
+
+		function update() {
+			const open = heroGone && !bookingOn;
+			root.dataset.open = open ? "true" : "false";
+			if (open) root.removeAttribute("hidden");
+			else root.setAttribute("hidden", "");
+		}
+
+		function readPosition() {
+			if (hero) heroGone = hero.getBoundingClientRect().bottom <= 0;
+			if (booking) {
+				const box = booking.getBoundingClientRect();
+				bookingOn = box.top < window.innerHeight && box.bottom > 0;
+			}
+			update();
+		}
+
+		if (hero) {
+			new IntersectionObserver(([entry]) => {
+				heroGone = !entry.isIntersecting;
+				update();
+			}).observe(hero);
+		}
+
+		if (booking) {
+			new IntersectionObserver(([entry]) => {
+				bookingOn = entry.isIntersecting;
+				update();
+			}).observe(booking);
+		}
+
+		window.addEventListener("scroll", readPosition, { passive: true });
+		window.addEventListener("resize", readPosition);
+		readPosition();
+	}
+
+	document.querySelectorAll("[data-block='layout-messengers']").forEach(bindMessengers);
+</script>

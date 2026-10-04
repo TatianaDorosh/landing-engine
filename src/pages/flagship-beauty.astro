@@ -16,6 +16,7 @@ import Booking from "../blocks/booking/booking-form.astro";
 import Faq from "../blocks/faq/faq-accordion.astro";
 import Myths from "../blocks/faq/faq-myths.astro";
 import ContactsMap from "../blocks/contacts/contacts-map.astro";
+import Messengers from "../blocks/layout/layout-messengers.astro";
 import Footer from "../blocks/layout/layout-footer.astro";
 import { demoBeauty } from "../config/demo-beauty";
 import { getUi } from "../i18n";
@@ -43,5 +44,6 @@ const ui = getUi(demoBeauty.locale);
 		<Myths {...myths} />
 		<ContactsMap {...contacts} contacts={demoBeauty.contacts} />
 	</main>
+	<Messengers config={demoBeauty} />
 	<Footer config={demoBeauty} privacyHref="/flagship-beauty/privacy/" />
 </Base>
