@@ -15,9 +15,12 @@ Inside of your Astro project, you'll see the following folders and files:
 ├── public/
 ├── src/
 │   └── pages/
-│       └── index.astro
+│       ├── index.astro
+│       └── vitrina.astro
 └── package.json
 ```
+
+Вітрина блоків: `src/pages/vitrina.astro`, адреса `/vitrina/`. Головна сторінка тимчасово переадресовує на `/flagship-beauty/`.
 
 Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 

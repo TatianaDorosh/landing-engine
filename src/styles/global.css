@@ -32,6 +32,10 @@
 }
 
 @layer base {
+	html {
+		scroll-padding-top: 85px;
+	}
+
 	body {
 		@apply bg-bg text-text font-body;
 	}

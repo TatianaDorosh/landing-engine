@@ -31,6 +31,8 @@ export interface UiStrings {
 		phone: string;
 		date: string;
 		time: string;
+		pickDate: string;
+		noSlotsToday: string;
 		consent: string;
 		send: string;
 	};
@@ -78,9 +80,11 @@ export const uk = {
 		required: 'Заповніть це поле',
 		phone: 'Вкажіть телефон у форматі +380',
 		date: 'Оберіть дату від сьогодні',
-		time: 'Оберіть час у робочі години',
+		time: 'Оберіть час',
+		pickDate: 'Спершу оберіть дату',
+		noSlotsToday: 'На сьогодні вільного часу вже немає — оберіть іншу дату',
 		consent: 'Потрібна згода з політикою приватності',
-		send: 'Не вдалося надіслати заявку. Спробуйте ще раз',
+		send: 'Не вдалося надіслати заявку. Спробуйте ще раз або зателефонуйте:',
 	},
 	success: {
 		title: 'Заявку надіслано',

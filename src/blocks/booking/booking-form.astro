@@ -20,22 +20,6 @@ interface Props {
 const { title, text, services, masters, privacyHref, config } = Astro.props;
 const ui = getUi(config.locale);
 const phoneDisplay = config.contacts.phoneDisplay ?? config.contacts.phone;
-
-function timeSlots(from: string, to: string, step: number) {
-	const minutes = (value: string) => {
-		const [hours, mins] = value.split(":").map(Number);
-		return hours * 60 + mins;
-	};
-	const slots: string[] = [];
-	for (let cursor = minutes(from); cursor <= minutes(to); cursor += step) {
-		const hours = Math.floor(cursor / 60);
-		const mins = cursor % 60;
-		slots.push(`${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`);
-	}
-	return slots;
-}
-
-const slots = timeSlots(config.booking.timeFrom, config.booking.timeTo, config.booking.stepMinutes);
 const fieldClass =
 	"w-full min-w-0 max-w-full rounded-theme border border-border bg-bg px-3 font-body text-base text-text";
 const methods = [
@@ -137,10 +121,10 @@ const methods = [
 							class:list={[fieldClass, "mt-1 min-h-11"]}
 							aria-describedby="booking-error-time"
 						>
-							<option value="">Оберіть час</option>
-							{slots.map((slot) => <option value={slot}>{slot}</option>)}
+							<option value="">{ui.errors.pickDate}</option>
 						</select>
 						<p id="booking-error-time" class="mt-1 font-body text-sm text-primary" data-error="time" hidden></p>
+						<p class="mt-1 font-body text-sm text-muted" data-time-hint hidden>{ui.errors.noSlotsToday}</p>
 					</div>
 				</div>
 
@@ -241,6 +225,8 @@ const methods = [
 		siteName: config.name,
 		phone: config.contacts.phone,
 		phoneDisplay,
+		hoursSchema: config.contacts.hoursSchema ?? [],
+		stepMinutes: config.booking.stepMinutes,
 		submitLabel: ui.buttons.submit,
 		sendingLabel: "Надсилаємо…",
 		messages: ui.errors,
@@ -286,6 +272,55 @@ const methods = [
 		const month = String(now.getMonth() + 1).padStart(2, "0");
 		const day = String(now.getDate()).padStart(2, "0");
 		return now.getFullYear() + "-" + month + "-" + day;
+	}
+
+	const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	const weekdayNames = ["неділя", "понеділок", "вівторок", "середа", "четвер", "п'ятниця", "субота"];
+
+	function clockMinutes(value) {
+		const parts = String(value).split(":");
+		return Number(parts[0]) * 60 + Number(parts[1]);
+	}
+
+	function formatSlot(total) {
+		const hours = Math.floor(total / 60);
+		const mins = total % 60;
+		return String(hours).padStart(2, "0") + ":" + String(mins).padStart(2, "0");
+	}
+
+	function parseDate(value) {
+		const parts = String(value).split("-").map(Number);
+		return new Date(parts[0], parts[1] - 1, parts[2]);
+	}
+
+	function formatBookingDate(value) {
+		const parts = String(value).split("-");
+		const date = parseDate(value);
+		return parts[2] + "." + parts[1] + "." + parts[0] + ", " + weekdayNames[date.getDay()];
+	}
+
+	function slotsForDate(value) {
+		const date = parseDate(value);
+		const dayName = weekdays[date.getDay()];
+		const hours = (hoursSchema || []).find((row) => {
+			const days = row.dayOfWeek;
+			return Array.isArray(days) ? days.indexOf(dayName) !== -1 : days === dayName;
+		});
+		if (!hours) return [];
+		const start = clockMinutes(hours.opens);
+		const end = clockMinutes(hours.closes) - 60;
+		const slots = [];
+		for (let cursor = start; cursor <= end; cursor += stepMinutes) {
+			slots.push(formatSlot(cursor));
+		}
+		return slots;
+	}
+
+	function slotTooSoon(dateValue, slot) {
+		if (dateValue !== todayValue()) return false;
+		const now = new Date();
+		const cutoff = now.getHours() * 60 + now.getMinutes() + 60;
+		return clockMinutes(slot) < cutoff;
 	}
 
 	function field(root, name) {
@@ -337,6 +372,41 @@ const methods = [
 
 		dateInput.min = todayValue();
 
+		function refillTime() {
+			const timeSelect = field(root, "time");
+			const hint = root.querySelector("[data-time-hint]");
+			const previous = timeSelect.value;
+			const date = dateInput.value;
+			timeSelect.replaceChildren();
+			if (!date) {
+				const option = document.createElement("option");
+				option.value = "";
+				option.textContent = messages.pickDate;
+				timeSelect.append(option);
+				if (hint) hint.hidden = true;
+				return;
+			}
+			const placeholder = document.createElement("option");
+			placeholder.value = "";
+			placeholder.textContent = messages.time;
+			timeSelect.append(placeholder);
+			let anyFree = false;
+			slotsForDate(date).forEach((slot) => {
+				const option = document.createElement("option");
+				option.value = slot;
+				option.textContent = slot;
+				if (slotTooSoon(date, slot)) option.disabled = true;
+				else anyFree = true;
+				timeSelect.append(option);
+			});
+			const kept = [...timeSelect.options].find((option) => option.value === previous && !option.disabled);
+			timeSelect.value = kept ? previous : "";
+			if (hint) hint.hidden = !(date === todayValue() && !anyFree);
+		}
+
+		dateInput.addEventListener("change", refillTime);
+		refillTime();
+
 		phoneInput.addEventListener("focus", () => {
 			if (!phoneInput.value) phoneInput.value = "+380";
 		});
@@ -365,7 +435,9 @@ const methods = [
 			const phone = phoneInput.value.trim();
 			const service = field(root, "service").value;
 			const date = dateInput.value;
-			const time = field(root, "time").value;
+			const timeSelect = field(root, "time");
+			const time = timeSelect.value;
+			const timeOption = timeSelect.selectedOptions[0];
 			const consent = field(root, "consent").checked;
 
 			if (name.length < 2) {
@@ -392,7 +464,7 @@ const methods = [
 				valid = false;
 				first = first || dateInput;
 			}
-			if (!time) {
+			if (!time || (timeOption && timeOption.disabled)) {
 				showError(root, "time", messages.time);
 				valid = false;
 				first = first || field(root, "time");
@@ -450,7 +522,7 @@ const methods = [
 			payload[labels.phone] = compactPhone(phoneInput.value);
 			payload[labels.service] = field(root, "service").value;
 			payload[labels.master] = field(root, "master").value;
-			payload[labels.date] = dateInput.value;
+			payload[labels.date] = formatBookingDate(dateInput.value);
 			payload[labels.time] = field(root, "time").value;
 			payload[labels.contactMethod] = method ? method.dataset.label : "";
 			payload[labels.doNotCall] = doNotCall.checked ? "Так" : "Ні";
