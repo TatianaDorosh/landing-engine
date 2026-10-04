@@ -4,8 +4,12 @@ import Header from "../blocks/layout/layout-header.astro";
 import Hero from "../blocks/hero/hero-result.astro";
 import Trust from "../blocks/trust/trust-strip.astro";
 import Services from "../blocks/services/services-cards.astro";
+import Safety from "../blocks/safety/safety-standards.astro";
+import Gallery from "../blocks/gallery/gallery-carousel.astro";
+import BeforeAfter from "../blocks/gallery/gallery-before-after.astro";
+import Prices from "../blocks/prices/prices-levels.astro";
 import { demoBeauty } from "../config/demo-beauty";
-import { header, hero, trust, services } from "../data/demo-beauty";
+import { header, hero, trust, services, safety, gallery, beforeAfter, prices } from "../data/demo-beauty";
 ---
 
 <Base config={demoBeauty}>
@@ -14,5 +18,9 @@ import { header, hero, trust, services } from "../data/demo-beauty";
 		<Hero {...hero} />
 		<Trust {...trust} />
 		<Services {...services} />
+		<Safety {...safety} />
+		<Gallery {...gallery} />
+		<BeforeAfter {...beforeAfter} />
+		<Prices {...prices} />
 	</main>
 </Base>

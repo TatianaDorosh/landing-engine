@@ -1,0 +1,306 @@
+---
+import PhotoPlaceholder from "../../components/PhotoPlaceholder.astro";
+import { typograf } from "../../lib/typograf";
+
+interface GalleryItem {
+	category: string;
+	label: string;
+	image?: { src: string; alt: string };
+}
+
+interface Props {
+	title: string;
+	categories: string[];
+	items: GalleryItem[];
+}
+
+const { title, categories, items } = Astro.props;
+const first = categories[0] ?? "";
+---
+
+<section id="gallery" data-block="gallery-carousel">
+	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		<div class="mt-6 flex flex-wrap gap-2">
+			{
+				categories.map((category) => (
+					<button
+						type="button"
+						data-category-tab={category}
+						aria-pressed={category === first ? "true" : "false"}
+						class:list={[
+							"inline-flex min-h-11 items-center rounded-theme px-4",
+							category === first
+								? "bg-primary text-primary-contrast"
+								: "border border-border text-text",
+						]}
+					>
+						{category}
+					</button>
+				))
+			}
+		</div>
+
+		<div
+			data-track
+			class="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto xl:grid xl:grid-cols-3 xl:overflow-visible"
+		>
+			{
+				items.map((item) => {
+					const visible = item.category === first;
+					return (
+						<button
+							type="button"
+							data-slide
+							data-category={item.category}
+							data-label={item.label}
+							data-src={item.image?.src ?? ""}
+							data-alt={item.image?.alt ?? item.label}
+							hidden={!visible}
+							class:list={[
+								"w-[85%] shrink-0 snap-center overflow-hidden rounded-theme border border-border text-left xl:w-auto",
+								!visible && "hidden",
+							]}
+						>
+							{item.image ? (
+								<img
+									src={item.image.src}
+									alt={item.image.alt}
+									class="aspect-square w-full object-cover"
+								/>
+							) : (
+								<PhotoPlaceholder label={item.label} class="aspect-square" />
+							)}
+						</button>
+					);
+				})
+			}
+		</div>
+		<div data-dots class="mt-2 flex justify-center xl:hidden" aria-label="Фото галереї"></div>
+	</div>
+
+	<div
+		data-lightbox
+		class="fixed inset-0 z-[80] hidden items-center justify-center bg-text/80 p-4"
+		role="dialog"
+		aria-modal="true"
+		aria-label="Перегляд фото"
+		hidden
+	>
+		<button
+			type="button"
+			data-lightbox-close
+			class="absolute right-4 top-4 inline-flex min-h-11 min-w-11 items-center justify-center rounded-theme bg-surface text-text"
+			aria-label="Закрити"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6" aria-hidden="true">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+			</svg>
+		</button>
+		<button
+			type="button"
+			data-lightbox-prev
+			class="absolute left-3 inline-flex min-h-11 min-w-11 items-center justify-center rounded-theme bg-surface text-text"
+			aria-label="Попереднє фото"
+		>
+			‹
+		</button>
+		<div class="w-full max-w-3xl">
+			<img data-lightbox-image alt="" class="hidden max-h-[80vh] w-full object-contain" />
+			<div
+				data-lightbox-placeholder
+				class="flex aspect-square w-full items-center justify-center bg-border px-6 text-center text-muted"
+			>
+			</div>
+		</div>
+		<button
+			type="button"
+			data-lightbox-next
+			class="absolute right-3 inline-flex min-h-11 min-w-11 items-center justify-center rounded-theme bg-surface text-text"
+			aria-label="Наступне фото"
+		>
+			›
+		</button>
+	</div>
+</section>
+
+<script>
+	document.querySelectorAll("[data-block='gallery-carousel']").forEach((root) => {
+		const track = root.querySelector("[data-track]");
+		const dots = root.querySelector("[data-dots]");
+		const dialog = root.querySelector("[data-lightbox]");
+		const closeBtn = root.querySelector("[data-lightbox-close]");
+		const image = root.querySelector("[data-lightbox-image]");
+		const placeholder = root.querySelector("[data-lightbox-placeholder]");
+		if (!track || !dots || !dialog || !closeBtn || !(image instanceof HTMLImageElement) || !placeholder) return;
+
+		const tabs = [...root.querySelectorAll("[data-category-tab]")];
+		let index = 0;
+		let lastTrigger = null;
+
+		const slides = () => [...root.querySelectorAll("[data-slide]")];
+		const visibleSlides = () => slides().filter((slide) => !slide.hasAttribute("hidden"));
+
+		function setPressed(category) {
+			tabs.forEach((tab) => {
+				const on = tab.getAttribute("data-category-tab") === category;
+				tab.setAttribute("aria-pressed", on ? "true" : "false");
+				tab.classList.toggle("bg-primary", on);
+				tab.classList.toggle("text-primary-contrast", on);
+				tab.classList.toggle("border", !on);
+				tab.classList.toggle("border-border", !on);
+				tab.classList.toggle("text-text", !on);
+			});
+		}
+
+		function rebuildDots() {
+			const count = visibleSlides().length;
+			dots.replaceChildren();
+			for (let i = 0; i < count; i += 1) {
+				const dot = document.createElement("button");
+				dot.type = "button";
+				dot.dataset.dot = String(i);
+				dot.className = "inline-flex min-h-11 min-w-11 items-center justify-center";
+				dot.setAttribute("aria-label", `Фото ${i + 1}`);
+				const mark = document.createElement("span");
+				mark.className = "h-2.5 w-2.5 rounded-full bg-border";
+				dot.append(mark);
+				dots.append(dot);
+			}
+			setActiveDot(0);
+		}
+
+		function setActiveDot(active) {
+			[...dots.querySelectorAll("[data-dot]")].forEach((dot, i) => {
+				const mark = dot.querySelector("span");
+				const on = i === active;
+				dot.setAttribute("aria-current", on ? "true" : "false");
+				mark?.classList.toggle("bg-primary", on);
+				mark?.classList.toggle("bg-border", !on);
+			});
+		}
+
+		function applyFilter(category) {
+			slides().forEach((slide) => {
+				const show = slide.getAttribute("data-category") === category;
+				slide.toggleAttribute("hidden", !show);
+				slide.classList.toggle("hidden", !show);
+			});
+			setPressed(category);
+			rebuildDots();
+			track.scrollTo({ left: 0 });
+		}
+
+		function renderLightbox() {
+			const list = visibleSlides();
+			if (!list.length) return;
+			index = (index + list.length) % list.length;
+			const slide = list[index];
+			const src = slide.getAttribute("data-src") || "";
+			const label = slide.getAttribute("data-label") || "";
+			const alt = slide.getAttribute("data-alt") || label;
+			if (src) {
+				image.hidden = false;
+				image.src = src;
+				image.alt = alt;
+				placeholder.hidden = true;
+			} else {
+				image.hidden = true;
+				image.removeAttribute("src");
+				placeholder.hidden = false;
+				placeholder.textContent = label;
+			}
+		}
+
+		function openLightbox(nextIndex, trigger) {
+			index = nextIndex;
+			lastTrigger = trigger;
+			renderLightbox();
+			dialog.hidden = false;
+			dialog.classList.remove("hidden");
+			dialog.classList.add("flex");
+			document.body.style.overflow = "hidden";
+			if (closeBtn instanceof HTMLElement) closeBtn.focus();
+		}
+
+		function closeLightbox() {
+			dialog.hidden = true;
+			dialog.classList.add("hidden");
+			dialog.classList.remove("flex");
+			document.body.style.overflow = "";
+			if (lastTrigger instanceof HTMLElement) lastTrigger.focus();
+		}
+
+		tabs.forEach((tab) => {
+			tab.addEventListener("click", () => {
+				const category = tab.getAttribute("data-category-tab");
+				if (category) applyFilter(category);
+			});
+		});
+
+		track.addEventListener("click", (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			const slide = target.closest("[data-slide]");
+			if (!slide || slide.hasAttribute("hidden")) return;
+			const list = visibleSlides();
+			openLightbox(list.indexOf(slide), slide);
+		});
+
+		dots.addEventListener("click", (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			const dot = target.closest("[data-dot]");
+			if (!dot) return;
+			const slide = visibleSlides()[Number(dot.getAttribute("data-dot"))];
+			slide?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+		});
+
+		if ("IntersectionObserver" in window) {
+			const observer = new IntersectionObserver(
+				(entries) => {
+					if (window.matchMedia("(min-width: 1280px)").matches) return;
+					const visible = entries
+						.filter((entry) => entry.isIntersecting && !entry.target.hasAttribute("hidden"))
+						.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+					if (!visible) return;
+					setActiveDot(visibleSlides().indexOf(visible.target));
+				},
+				{ root: track, threshold: [0.55, 0.75] },
+			);
+			slides().forEach((slide) => observer.observe(slide));
+		}
+
+		closeBtn.addEventListener("click", closeLightbox);
+		root.querySelector("[data-lightbox-prev]")?.addEventListener("click", () => {
+			index -= 1;
+			renderLightbox();
+		});
+		root.querySelector("[data-lightbox-next]")?.addEventListener("click", () => {
+			index += 1;
+			renderLightbox();
+		});
+		dialog.addEventListener("click", (event) => {
+			if (event.target === dialog) closeLightbox();
+		});
+		document.addEventListener("keydown", (event) => {
+			if (dialog.hasAttribute("hidden")) return;
+			if (event.key === "Escape") {
+				closeLightbox();
+				return;
+			}
+			if (event.key === "ArrowRight") {
+				event.preventDefault();
+				index += 1;
+				renderLightbox();
+			}
+			if (event.key === "ArrowLeft") {
+				event.preventDefault();
+				index -= 1;
+				renderLightbox();
+			}
+		});
+
+		rebuildDots();
+	});
+</script>

@@ -4,8 +4,12 @@ import Header from "../blocks/layout/layout-header.astro";
 import Hero from "../blocks/hero/hero-result.astro";
 import Trust from "../blocks/trust/trust-strip.astro";
 import Services from "../blocks/services/services-cards.astro";
+import Safety from "../blocks/safety/safety-standards.astro";
+import Gallery from "../blocks/gallery/gallery-carousel.astro";
+import BeforeAfter from "../blocks/gallery/gallery-before-after.astro";
+import Prices from "../blocks/prices/prices-levels.astro";
 import { demoBeauty } from "../config/demo-beauty";
-import { header, hero, trust, services } from "../data/demo-beauty";
+import { header, hero, trust, services, safety, gallery, beforeAfter, prices } from "../data/demo-beauty";
 
 const swatches = [
 	{ name: "--theme-bg", value: demoBeauty.theme.colors.bg },
@@ -54,4 +58,16 @@ const swatches = [
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">services-cards</p>
 	<Services {...services} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">safety-standards</p>
+	<Safety {...safety} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">gallery-carousel</p>
+	<Gallery {...gallery} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">gallery-before-after</p>
+	<BeforeAfter {...beforeAfter} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">prices-levels</p>
+	<Prices {...prices} />
 </Base>

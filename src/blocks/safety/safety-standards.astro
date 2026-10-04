@@ -1,0 +1,65 @@
+---
+import PhotoPlaceholder from "../../components/PhotoPlaceholder.astro";
+import { typograf } from "../../lib/typograf";
+
+interface Item {
+	title: string;
+	text: string;
+}
+
+interface Props {
+	title: string;
+	items: Item[];
+	image?: { src: string; alt: string };
+	imageLabel: string;
+}
+
+const { title, items, image, imageLabel } = Astro.props;
+---
+
+<section id="safety" data-block="safety-standards">
+	<div class="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 xl:grid-cols-2 xl:px-8">
+		<div>
+			<h2 class="text-3xl">{typograf(title)}</h2>
+			<ul class="mt-6 grid list-none gap-5 p-0 xl:grid-cols-2">
+				{
+					items.map((item) => (
+						<li class="flex gap-3">
+							<svg
+								class="mt-0.5 h-6 w-6 shrink-0 text-primary"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.5"
+								aria-hidden="true"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+								/>
+							</svg>
+							<div>
+								<h3 class="text-base font-semibold">{typograf(item.title)}</h3>
+								<p class="mt-1 text-sm text-muted">{item.text}</p>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+		<div class="overflow-hidden rounded-theme">
+			{
+				image ? (
+					<img
+						src={image.src}
+						alt={image.alt}
+						class="aspect-[4/3] w-full object-cover xl:max-h-[480px]"
+					/>
+				) : (
+					<PhotoPlaceholder label={imageLabel} class="aspect-[4/3] xl:max-h-[480px]" />
+				)
+			}
+		</div>
+	</div>
+</section>

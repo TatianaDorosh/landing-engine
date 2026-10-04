@@ -1,0 +1,95 @@
+---
+import PhotoPlaceholder from "../../components/PhotoPlaceholder.astro";
+import { typograf } from "../../lib/typograf";
+
+interface Photo {
+	src: string;
+	alt: string;
+}
+
+interface Props {
+	title: string;
+	caption: string;
+	before?: Photo;
+	after?: Photo;
+	beforeLabel?: string;
+	afterLabel?: string;
+}
+
+const {
+	title,
+	caption,
+	before,
+	after,
+	beforeLabel = "До",
+	afterLabel = "Після",
+} = Astro.props;
+---
+
+<section id="before-after" data-block="gallery-before-after">
+	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+		<h2 class="text-center text-3xl">{typograf(title)}</h2>
+		<p class="mx-auto mt-3 max-w-xl text-center text-sm text-muted">{caption}</p>
+		<div
+			data-compare
+			class="relative mx-auto mt-6 aspect-[4/3] w-full max-w-[720px] overflow-hidden rounded-theme"
+			style="--split: 50%"
+		>
+			<div class="absolute inset-0">
+				{
+					before ? (
+						<img src={before.src} alt={before.alt} class="h-full w-full object-cover" />
+					) : (
+						<PhotoPlaceholder label={beforeLabel} class="h-full !items-start !justify-start p-4" />
+					)
+				}
+			</div>
+			<div data-after class="absolute inset-0" style="clip-path: inset(0 0 0 var(--split))">
+				{
+					after ? (
+						<img src={after.src} alt={after.alt} class="h-full w-full object-cover" />
+					) : (
+						<PhotoPlaceholder label={afterLabel} tone="primary" class="h-full !items-start !justify-end p-4" />
+					)
+				}
+			</div>
+			<div
+				data-handle
+				class="pointer-events-none absolute inset-y-0 w-0.5 bg-surface"
+				style="left: var(--split)"
+			>
+				<span class="absolute left-1/2 top-1/2 h-11 w-11 -translate-x-1/2 -translate-y-1/2 rounded-full border border-border bg-surface"></span>
+			</div>
+			<input
+				data-range
+				type="range"
+				min="0"
+				max="100"
+				value="50"
+				aria-label="Порівняти до і після"
+				class="absolute inset-0 z-10 h-full w-full cursor-ew-resize opacity-0 touch-none"
+			/>
+		</div>
+	</div>
+</section>
+
+<script>
+	document.querySelectorAll("[data-block='gallery-before-after']").forEach((root) => {
+		const frame = root.querySelector("[data-compare]");
+		const after = root.querySelector("[data-after]");
+		const handle = root.querySelector("[data-handle]");
+		const range = root.querySelector("[data-range]");
+		if (!(frame instanceof HTMLElement) || !(after instanceof HTMLElement) || !(handle instanceof HTMLElement)) return;
+		if (!(range instanceof HTMLInputElement)) return;
+
+		const apply = (value) => {
+			const split = `${value}%`;
+			frame.style.setProperty("--split", split);
+			after.style.clipPath = `inset(0 0 0 ${split})`;
+			handle.style.left = split;
+		};
+
+		range.addEventListener("input", () => apply(range.value));
+		apply(range.value);
+	});
+</script>

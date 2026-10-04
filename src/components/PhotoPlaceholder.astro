@@ -3,18 +3,20 @@ interface Props {
 	label: string;
 	ratio?: string;
 	class?: string;
+	tone?: "border" | "primary";
 }
 
-const { label, ratio = "4/3", class: className } = Astro.props;
+const { label, ratio = "4/3", class: className, tone = "border" } = Astro.props;
 const safeRatio = /^\d+\/\d+$/.test(ratio) ? ratio : "4/3";
 ---
 
 <div
 	class:list={[
-		"flex w-full items-center justify-center bg-border px-4 text-center text-sm text-muted",
+		"flex w-full items-center justify-center px-4 text-center text-sm",
+		tone === "primary" ? "bg-primary text-primary-contrast" : "bg-border text-muted",
 		className,
 	]}
-	style={className ? undefined : `aspect-ratio: ${safeRatio}`}
+	style={className?.includes("aspect-") || className?.includes("h-full") ? undefined : `aspect-ratio: ${safeRatio}`}
 >
 	{label}
 </div>
