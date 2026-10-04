@@ -10,7 +10,7 @@ interface Item {
 interface Props {
 	title: string;
 	items: Item[];
-	image?: { src: string; alt: string };
+	image?: { src: string; alt: string; width: number; height: number };
 	imageLabel: string;
 }
 
@@ -54,7 +54,11 @@ const { title, items, image, imageLabel } = Astro.props;
 					<img
 						src={image.src}
 						alt={image.alt}
-						class="aspect-[4/3] w-full object-cover lg:aspect-auto lg:h-full"
+						width={image.width}
+						height={image.height}
+						loading="lazy"
+						decoding="async"
+						class="aspect-[4/3] w-full object-cover object-[65%_70%] lg:aspect-auto lg:h-full"
 					/>
 				) : (
 					<PhotoPlaceholder label={imageLabel} class="aspect-[4/3] lg:aspect-auto lg:h-full" />

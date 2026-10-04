@@ -97,7 +97,7 @@ export const services = {
 			imageLabel: "Фото кабінету масажу",
 			image: {
 				src: "/images/demo-beauty/service-massage.webp",
-				alt: "Кабінет масажу з великим вікном і масажним столом",
+				alt: "Кабінет масажу зі свічкою, масажний стіл з рушником",
 				width: 1067,
 				height: 1600,
 			},
@@ -108,6 +108,12 @@ export const services = {
 export const safety = {
 	title: "Безпека — не опція, а стандарт",
 	imageLabel: "Фото: автоклав, крафт-пакет або сертифікат",
+	image: {
+		src: "/images/demo-beauty/safety.webp",
+		alt: "Манікюрні інструменти в крафт-пакеті для стерилізації",
+		width: 1600,
+		height: 1199,
+	},
 	items: [
 		{
 			title: "Стерилізація в автоклаві",
@@ -140,6 +146,24 @@ const galleryPhotos: Record<string, { src: string; alt: string; width: number; h
 		alt: "Нюдовий манікюр, довга мигдалеподібна форма",
 		width: 1600,
 		height: 1067,
+	},
+	"Манікюр 3": {
+		src: "/images/demo-beauty/gallery-manicure-3.webp",
+		alt: "Нюдовий манікюр з малюнком медузи на одному нігті",
+		width: 1600,
+		height: 1071,
+	},
+	"Косметологія 1": {
+		src: "/images/demo-beauty/gallery-cosmetology-1.webp",
+		alt: "Косметолог робить масаж обличчя з кремом",
+		width: 1067,
+		height: 1600,
+	},
+	"Масаж 1": {
+		src: "/images/demo-beauty/gallery-massage-1.webp",
+		alt: "Світлий кабінет масажу з великим вікном",
+		width: 1067,
+		height: 1600,
 	},
 };
 
