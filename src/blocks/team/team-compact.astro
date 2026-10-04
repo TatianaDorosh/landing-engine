@@ -40,7 +40,7 @@ const { title, items, bookLabel } = Astro.props;
 						<li class="h-full">
 							<article class="flex h-full flex-col rounded-theme border border-border bg-surface p-6 text-left">
 								<div class="flex items-center gap-4">
-									<div class="h-[72px] w-[72px] shrink-0 overflow-hidden rounded-full" aria-hidden="true">
+									<div class="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-full" aria-hidden="true">
 										{item.image ? (
 											<img
 												src={item.image.src}
@@ -49,10 +49,10 @@ const { title, items, bookLabel } = Astro.props;
 												height={item.image.height}
 												loading="lazy"
 												decoding="async"
-												class="h-full w-full object-cover object-[center_20%]"
+												class="absolute inset-0 h-full w-full object-cover object-[center_20%]"
 											/>
 										) : (
-											<PhotoPlaceholder label="" class="h-full" />
+											<PhotoPlaceholder label="" class="absolute inset-0 h-full" />
 										)}
 									</div>
 									<h3 class="font-body text-xl font-semibold leading-[1.25]">

@@ -48,7 +48,7 @@ const { title, items, image, imageLabel } = Astro.props;
 				}
 			</ul>
 		</div>
-		<div class="overflow-hidden rounded-theme lg:h-full lg:min-h-[280px]">
+		<div class="relative aspect-[4/3] overflow-hidden rounded-theme lg:aspect-auto lg:h-full lg:min-h-[280px]">
 			{
 				image ? (
 					<img
@@ -58,10 +58,10 @@ const { title, items, image, imageLabel } = Astro.props;
 						height={image.height}
 						loading="lazy"
 						decoding="async"
-						class="aspect-[4/3] w-full object-cover object-[65%_70%] lg:aspect-auto lg:h-full"
+						class="absolute inset-0 h-full w-full object-cover object-[65%_70%]"
 					/>
 				) : (
-					<PhotoPlaceholder label={imageLabel} class="aspect-[4/3] lg:aspect-auto lg:h-full" />
+					<PhotoPlaceholder label={imageLabel} class="absolute inset-0 h-full" />
 				)
 			}
 		</div>
