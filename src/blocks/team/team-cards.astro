@@ -1,0 +1,224 @@
+---
+import PhotoPlaceholder from "../../components/PhotoPlaceholder.astro";
+import { typograf } from "../../lib/typograf";
+
+interface Certificate {
+	label: string;
+	image?: { src: string; alt: string };
+}
+
+interface Member {
+	name: string;
+	role: string;
+	details: string;
+	image?: { src: string; alt: string };
+	imageLabel?: string;
+	certificates?: Certificate[];
+}
+
+interface Props {
+	title: string;
+	items: Member[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<section id="team" data-block="team-cards">
+	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		<div
+			data-track
+			class="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto xl:grid xl:grid-cols-3 xl:overflow-visible"
+		>
+			{
+				items.map((item, index) => (
+					<article
+						data-slide
+						class="flex w-[85%] shrink-0 snap-center flex-col overflow-hidden rounded-theme border border-border bg-surface xl:w-auto"
+					>
+						<div class="aspect-[4/5] w-full overflow-hidden xl:max-h-[360px]">
+							{item.image ? (
+								<img
+									src={item.image.src}
+									alt={item.image.alt}
+									class="h-full w-full object-cover"
+								/>
+							) : (
+								<PhotoPlaceholder label={item.imageLabel ?? item.name} class="h-full" />
+							)}
+						</div>
+						<div class="flex flex-1 flex-col p-4">
+							<h3 class="font-heading text-2xl">{typograf(item.name)}</h3>
+							<p class="mt-1 text-sm text-muted">{item.role}</p>
+							<p class="mt-1 text-sm text-muted">{item.details}</p>
+							{item.certificates && item.certificates.length > 0 && (
+								<button
+									type="button"
+									data-certs-open={index}
+									class="mt-4 inline-flex min-h-11 items-center self-start text-primary"
+									aria-haspopup="dialog"
+								>
+									Сертифікати
+								</button>
+							)}
+						</div>
+					</article>
+				))
+			}
+		</div>
+		<div data-dots class="mt-2 flex justify-center xl:hidden" aria-label="Майстри"></div>
+	</div>
+
+	{
+		items.map(
+			(item, index) =>
+				item.certificates &&
+				item.certificates.length > 0 && (
+					<div
+						data-certs={index}
+						class="fixed inset-0 z-[80] hidden items-center justify-center bg-text/80 p-4"
+						role="dialog"
+						aria-modal="true"
+						aria-label={`Сертифікати: ${item.name}`}
+						hidden
+					>
+						<div class="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-theme bg-bg p-4">
+							<div class="flex items-start justify-between gap-3">
+								<h3 class="font-heading text-2xl">{typograf(item.name)}</h3>
+								<button
+									type="button"
+									data-certs-close
+									class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-theme bg-surface text-text"
+									aria-label="Закрити"
+								>
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+									</svg>
+								</button>
+							</div>
+							<ul class="mt-4 grid list-none grid-cols-2 gap-3 p-0">
+								{item.certificates.map((certificate) => (
+									<li class="overflow-hidden rounded-theme">
+										{certificate.image ? (
+											<img
+												src={certificate.image.src}
+												alt={certificate.image.alt}
+												class="aspect-[4/3] w-full object-cover"
+											/>
+										) : (
+											<PhotoPlaceholder label={certificate.label} class="aspect-[4/3]" />
+										)}
+									</li>
+								))}
+							</ul>
+						</div>
+					</div>
+				),
+		)
+	}
+</section>
+
+<script>
+	document.querySelectorAll("[data-block='team-cards']").forEach((root) => {
+		const track = root.querySelector("[data-track]");
+		const dots = root.querySelector("[data-dots]");
+		if (!track || !dots) return;
+
+		const slides = () => [...root.querySelectorAll("[data-slide]")];
+
+		function setActiveDot(active) {
+			[...dots.querySelectorAll("[data-dot]")].forEach((dot, i) => {
+				const mark = dot.querySelector("span");
+				const on = i === active;
+				dot.setAttribute("aria-current", on ? "true" : "false");
+				mark?.classList.toggle("bg-primary", on);
+				mark?.classList.toggle("bg-border", !on);
+			});
+		}
+
+		slides().forEach((_, i) => {
+			const dot = document.createElement("button");
+			dot.type = "button";
+			dot.dataset.dot = String(i);
+			dot.className = "inline-flex min-h-11 min-w-11 items-center justify-center";
+			dot.setAttribute("aria-label", `Майстер ${i + 1}`);
+			const mark = document.createElement("span");
+			mark.className = "h-2.5 w-2.5 rounded-full bg-border";
+			dot.append(mark);
+			dots.append(dot);
+		});
+		setActiveDot(0);
+
+		if ("IntersectionObserver" in window) {
+			const observer = new IntersectionObserver(
+				(entries) => {
+					if (window.matchMedia("(min-width: 1280px)").matches) return;
+					const visible = entries
+						.filter((entry) => entry.isIntersecting)
+						.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+					if (!visible) return;
+					setActiveDot(slides().indexOf(visible.target));
+				},
+				{ root: track, threshold: [0.55, 0.75] },
+			);
+			slides().forEach((slide) => observer.observe(slide));
+		}
+
+		dots.addEventListener("click", (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			const dot = target.closest("[data-dot]");
+			if (!dot) return;
+			slides()[Number(dot.getAttribute("data-dot"))]?.scrollIntoView({
+				behavior: "smooth",
+				inline: "center",
+				block: "nearest",
+			});
+		});
+
+		let lastTrigger = null;
+
+		function openDialog(index, trigger) {
+			const dialog = root.querySelector(`[data-certs="${index}"]`);
+			if (!(dialog instanceof HTMLElement)) return;
+			lastTrigger = trigger;
+			dialog.hidden = false;
+			dialog.classList.remove("hidden");
+			dialog.classList.add("flex");
+			document.body.style.overflow = "hidden";
+			const close = dialog.querySelector("[data-certs-close]");
+			if (close instanceof HTMLElement) close.focus();
+		}
+
+		function closeDialog(dialog) {
+			dialog.hidden = true;
+			dialog.classList.add("hidden");
+			dialog.classList.remove("flex");
+			document.body.style.overflow = "";
+			if (lastTrigger instanceof HTMLElement) lastTrigger.focus();
+		}
+
+		root.addEventListener("click", (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			const open = target.closest("[data-certs-open]");
+			if (open) {
+				openDialog(open.getAttribute("data-certs-open"), open);
+				return;
+			}
+			const close = target.closest("[data-certs-close]");
+			const dialog = target.closest("[data-certs]");
+			if (close && dialog instanceof HTMLElement) closeDialog(dialog);
+			if (target instanceof HTMLElement && target.hasAttribute("data-certs")) closeDialog(target);
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (event.key !== "Escape") return;
+			const dialog = [...root.querySelectorAll("[data-certs]")].find(
+				(item) => item instanceof HTMLElement && !item.hidden,
+			);
+			if (dialog instanceof HTMLElement) closeDialog(dialog);
+		});
+	});
+</script>

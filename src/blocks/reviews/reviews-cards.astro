@@ -1,0 +1,130 @@
+---
+import { typograf } from "../../lib/typograf";
+
+interface Review {
+	text: string;
+	name: string;
+	service: string;
+	rating: number;
+}
+
+interface Props {
+	title: string;
+	items: Review[];
+	allLink?: { label: string; href: string };
+}
+
+const { title, items, allLink } = Astro.props;
+---
+
+<section id="reviews" data-block="reviews-cards">
+	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+		<div class="flex flex-wrap items-end justify-between gap-3">
+			<h2 class="text-3xl">{typograf(title)}</h2>
+			{
+				allLink && (
+					<a href={allLink.href} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center text-primary">
+						{allLink.label}
+					</a>
+				)
+			}
+		</div>
+		<div
+			data-track
+			class="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto xl:grid xl:grid-cols-3 xl:overflow-visible"
+		>
+			{
+				items.map((item) => (
+					<article
+						data-slide
+						class="flex w-[85%] shrink-0 snap-center flex-col rounded-theme border border-border bg-surface p-4 xl:w-auto"
+					>
+						<p class="flex gap-1 text-primary" aria-label={`Оцінка ${item.rating} з 5`}>
+							{[1, 2, 3, 4, 5].map((star) => (
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 24 24"
+									class="h-5 w-5"
+									fill={star <= item.rating ? "currentColor" : "none"}
+									stroke="currentColor"
+									stroke-width="1.5"
+									aria-hidden="true"
+								>
+									<path
+										stroke-linejoin="round"
+										d="M11.48 3.5a.56.56 0 0 1 1.04 0l2.06 4.98 5.38.47a.56.56 0 0 1 .32.99l-4.1 3.48 1.26 5.26a.56.56 0 0 1-.84.61L12 16.9l-4.6 2.39a.56.56 0 0 1-.84-.61l1.26-5.26-4.1-3.48a.56.56 0 0 1 .32-.99l5.38-.47 2.06-4.98Z"
+									/>
+								</svg>
+							))}
+						</p>
+						<p class="mt-3 leading-relaxed">{item.text}</p>
+						<p class="mt-auto pt-4 text-sm text-muted">
+							{item.name} · {item.service}
+						</p>
+					</article>
+				))
+			}
+		</div>
+		<div data-dots class="mt-2 flex justify-center xl:hidden" aria-label="Відгуки"></div>
+	</div>
+</section>
+
+<script>
+	document.querySelectorAll("[data-block='reviews-cards']").forEach((root) => {
+		const track = root.querySelector("[data-track]");
+		const dots = root.querySelector("[data-dots]");
+		if (!track || !dots) return;
+
+		const slides = () => [...root.querySelectorAll("[data-slide]")];
+
+		function setActiveDot(active) {
+			[...dots.querySelectorAll("[data-dot]")].forEach((dot, i) => {
+				const mark = dot.querySelector("span");
+				const on = i === active;
+				dot.setAttribute("aria-current", on ? "true" : "false");
+				mark?.classList.toggle("bg-primary", on);
+				mark?.classList.toggle("bg-border", !on);
+			});
+		}
+
+		slides().forEach((_, i) => {
+			const dot = document.createElement("button");
+			dot.type = "button";
+			dot.dataset.dot = String(i);
+			dot.className = "inline-flex min-h-11 min-w-11 items-center justify-center";
+			dot.setAttribute("aria-label", `Відгук ${i + 1}`);
+			const mark = document.createElement("span");
+			mark.className = "h-2.5 w-2.5 rounded-full bg-border";
+			dot.append(mark);
+			dots.append(dot);
+		});
+		setActiveDot(0);
+
+		if ("IntersectionObserver" in window) {
+			const observer = new IntersectionObserver(
+				(entries) => {
+					if (window.matchMedia("(min-width: 1280px)").matches) return;
+					const visible = entries
+						.filter((entry) => entry.isIntersecting)
+						.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+					if (!visible) return;
+					setActiveDot(slides().indexOf(visible.target));
+				},
+				{ root: track, threshold: [0.55, 0.75] },
+			);
+			slides().forEach((slide) => observer.observe(slide));
+		}
+
+		dots.addEventListener("click", (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			const dot = target.closest("[data-dot]");
+			if (!dot) return;
+			slides()[Number(dot.getAttribute("data-dot"))]?.scrollIntoView({
+				behavior: "smooth",
+				inline: "center",
+				block: "nearest",
+			});
+		});
+	});
+</script>

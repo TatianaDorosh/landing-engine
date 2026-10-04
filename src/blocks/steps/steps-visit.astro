@@ -1,0 +1,32 @@
+---
+import { typograf } from "../../lib/typograf";
+
+interface Step {
+	title: string;
+	text: string;
+}
+
+interface Props {
+	title: string;
+	items: Step[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<section id="steps" data-block="steps-visit">
+	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		<ol class="mt-8 grid list-none gap-0 p-0 xl:grid-cols-4 xl:gap-6">
+			{
+				items.map((item, index) => (
+					<li class="relative border-l border-border py-4 pl-6 xl:border-l-0 xl:py-0 xl:pl-0">
+						<span class="font-heading text-5xl text-primary">{index + 1}</span>
+						<h3 class="mt-2 text-lg">{typograf(item.title)}</h3>
+						<p class="mt-1 text-sm text-muted">{item.text}</p>
+					</li>
+				))
+			}
+		</ol>
+	</div>
+</section>
