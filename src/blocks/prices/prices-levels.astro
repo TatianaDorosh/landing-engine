@@ -74,7 +74,7 @@ function money(value: number) {
 						inert={index !== 0}
 						class:list={["col-start-1 row-start-1", index !== 0 && "pointer-events-none invisible"]}
 					>
-						<table class="hidden w-full border-collapse text-left xl:table">
+						<table class="hidden w-full border-collapse text-left md:table">
 							<thead>
 								<tr class="border-b border-border text-[15px] text-muted">
 									<th class="py-3 pr-4 font-medium" scope="col">Послуга</th>
@@ -107,7 +107,7 @@ function money(value: number) {
 							</tbody>
 						</table>
 
-						<ul class="grid list-none gap-3 p-0 xl:hidden">
+						<ul class="grid list-none gap-3 p-0 md:hidden">
 							{tab.rows.map((row, rowIndex) => (
 								<li
 									class:list={[
