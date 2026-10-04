@@ -18,10 +18,10 @@ const { title, items, image, imageLabel } = Astro.props;
 ---
 
 <section id="safety" data-block="safety-standards">
-	<div class="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 xl:grid-cols-2 xl:px-8">
-		<div>
+	<div class="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-stretch lg:gap-x-10 lg:px-8">
+		<div class="lg:flex lg:h-full lg:flex-col">
 			<h2 class="text-3xl">{typograf(title)}</h2>
-			<ul class="mt-6 grid list-none gap-5 p-0 xl:grid-cols-2">
+			<ul class="mt-6 grid list-none gap-5 p-0 lg:flex-1 lg:content-between xl:grid-cols-2">
 				{
 					items.map((item) => (
 						<li class="flex gap-3">
@@ -48,16 +48,16 @@ const { title, items, image, imageLabel } = Astro.props;
 				}
 			</ul>
 		</div>
-		<div class="overflow-hidden rounded-theme">
+		<div class="overflow-hidden rounded-theme lg:h-full lg:min-h-[280px]">
 			{
 				image ? (
 					<img
 						src={image.src}
 						alt={image.alt}
-						class="aspect-[4/3] w-full object-cover xl:max-h-[480px]"
+						class="aspect-[4/3] w-full object-cover lg:aspect-auto lg:h-full"
 					/>
 				) : (
-					<PhotoPlaceholder label={imageLabel} class="aspect-[4/3] xl:max-h-[480px]" />
+					<PhotoPlaceholder label={imageLabel} class="aspect-[4/3] lg:aspect-auto lg:h-full" />
 				)
 			}
 		</div>

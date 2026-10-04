@@ -28,39 +28,47 @@ const { title, items } = Astro.props;
 <section id="team" data-block="team-compact">
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
 		<h2 class="text-3xl">{typograf(title)}</h2>
-		<ul class="mt-6 grid list-none gap-3 p-0 lg:grid-cols-3">
+		<ul class="mt-6 grid list-none gap-3 p-0 lg:grid-cols-3 lg:gap-6">
 			{
-				items.map((item, index) => (
-					<li class="h-full">
-						<article class="flex h-full items-start gap-4 rounded-theme border border-border bg-surface p-5">
-							<div
-								class="h-[72px] w-[72px] shrink-0 overflow-hidden rounded-full lg:h-[88px] lg:w-[88px]"
-								aria-hidden="true"
-							>
-								{item.image ? (
-									<img src={item.image.src} alt="" class="h-full w-full object-cover" />
-								) : (
-									<PhotoPlaceholder label="" class="h-full" />
-								)}
-							</div>
-							<div>
-								<h3 class="font-body text-lg font-semibold">{typograf(item.name)}</h3>
-								<p class="mt-1 font-body text-[15px] leading-[1.5] text-text">{item.role}</p>
-								<p class="font-body text-[15px] leading-[1.5] text-muted">{item.details}</p>
-								{item.certificates && item.certificates.length > 0 && (
-									<button
-										type="button"
-										data-certs-open={index}
-										class="mt-1 inline-flex min-h-11 items-center text-[15px] text-primary underline-offset-2 hover:underline"
-										aria-haspopup="dialog"
-									>
-										Сертифікати
-									</button>
-								)}
-							</div>
-						</article>
-					</li>
-				))
+				items.map((item, index) => {
+					const space = item.name.indexOf(" ");
+					const firstName = space === -1 ? item.name : item.name.slice(0, space);
+					const restName = space === -1 ? "\u00A0" : item.name.slice(space + 1);
+					return (
+						<li class="h-full">
+							<article class="flex h-full items-start gap-4 rounded-theme border border-border bg-surface p-5 lg:flex-col lg:items-center lg:p-7 lg:text-center">
+								<div
+									class="h-[88px] w-[88px] shrink-0 overflow-hidden rounded-full lg:h-[120px] lg:w-[120px]"
+									aria-hidden="true"
+								>
+									{item.image ? (
+										<img src={item.image.src} alt="" class="h-full w-full object-cover" />
+									) : (
+										<PhotoPlaceholder label="" class="h-full" />
+									)}
+								</div>
+								<div class="flex min-h-0 flex-1 flex-col lg:w-full lg:items-center">
+									<h3 class="font-body text-lg font-semibold leading-snug lg:text-xl">
+										<span class="block">{typograf(firstName)}</span>
+										<span class="block">{typograf(restName)}</span>
+									</h3>
+									<p class="mt-1 font-body text-[15px] leading-[1.5] text-text">{item.role}</p>
+									<p class="font-body text-[15px] leading-[1.5] text-muted">{item.details}</p>
+									{item.certificates && item.certificates.length > 0 && (
+										<button
+											type="button"
+											data-certs-open={index}
+											class="mt-1 inline-flex min-h-11 items-center text-[15px] text-primary underline-offset-2 hover:underline lg:mt-auto"
+											aria-haspopup="dialog"
+										>
+											Сертифікати
+										</button>
+									)}
+								</div>
+							</article>
+						</li>
+					);
+				})
 			}
 		</ul>
 	</div>
