@@ -9,29 +9,53 @@ interface Item {
 interface Props {
 	title: string;
 	items: Item[];
+	helpText: string;
+	telegram: string;
 }
 
-const { title, items } = Astro.props;
+const { title, items, helpText, telegram } = Astro.props;
+const telegramHref = telegram ? `https://t.me/${telegram.replace(/^@/, "")}` : "";
 ---
 
 <section id="faq" data-block="faq-accordion" class="scroll-mt-24">
-	<div class="mx-auto max-w-[760px] px-4 py-12 xl:px-8">
+	<div class="mx-auto max-w-6xl px-4 py-12 text-left xl:px-8">
 		<h2 class="text-3xl">{typograf(title)}</h2>
-		<div class="mt-6 divide-y divide-border border-y border-border">
-			{
-				items.map((item) => (
-					<details>
-						<summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 py-4 [&::-webkit-details-marker]:hidden">
-							<h3 class="font-body text-[17px] font-semibold">{typograf(item.question)}</h3>
-							<span class="faq-plus relative h-3.5 w-3.5 shrink-0" aria-hidden="true">
-								<span class="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current" />
-								<span class="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-current" />
-							</span>
-						</summary>
-						<p class="pb-4 font-body text-[15px] leading-[1.5] text-muted">{item.answer}</p>
-					</details>
-				))
-			}
+		<div class="max-w-[760px]">
+			<div class="mt-6 divide-y divide-border border-y border-border">
+				{
+					items.map((item) => (
+						<details>
+							<summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 py-4 [&::-webkit-details-marker]:hidden">
+								<h3 class="font-body text-[17px] font-semibold">{typograf(item.question)}</h3>
+								<span class="faq-plus relative h-3.5 w-3.5 shrink-0" aria-hidden="true">
+									<span class="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current" />
+									<span class="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-current" />
+								</span>
+							</summary>
+							<p class="pt-2 pb-4 font-body text-[15px] leading-[1.6] text-muted xl:text-base">{item.answer}</p>
+						</details>
+					))
+				}
+			</div>
+			<div class="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+				<p class="font-body text-base text-muted">{helpText}</p>
+				{
+					telegramHref && (
+						<a
+							href={telegramHref}
+							target="_blank"
+							rel="noopener"
+							data-messenger="telegram"
+							class="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-theme border border-primary px-5 font-body text-[15px] text-primary"
+						>
+							<svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true">
+								<path d="M21.2 4.4 2.9 11.2c-.9.3-.9.9-.2 1.1l4.7 1.5 10.8-6.8c.5-.3 1-.1.6.2l-8.7 7.9-.3 4.6c.5 0 .7-.2 1-.5l2.4-2.3 5 3.7c.9.5 1.6.2 1.8-.9l3.3-15.4c.3-1.3-.5-1.9-1.5-1.5Z" />
+							</svg>
+							Написати в Telegram
+						</a>
+					)
+				}
+			</div>
 		</div>
 	</div>
 </section>
