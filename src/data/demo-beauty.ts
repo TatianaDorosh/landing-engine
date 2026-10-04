@@ -160,11 +160,35 @@ const galleryPhotos: Record<string, { src: string; alt: string; width: number; h
 		width: 1067,
 		height: 1600,
 	},
+	"Косметологія 2": {
+		src: "/images/demo-beauty/gallery-cosmetology-2.webp",
+		alt: "Косметолог наносить засіб на обличчя пензликом",
+		width: 1067,
+		height: 1600,
+	},
+	"Косметологія 3": {
+		src: "/images/demo-beauty/gallery-cosmetology-3.webp",
+		alt: "Доглянута сяйна шкіра обличчя крупним планом",
+		width: 1067,
+		height: 1600,
+	},
 	"Масаж 1": {
 		src: "/images/demo-beauty/gallery-massage-1.webp",
 		alt: "Світлий кабінет масажу з великим вікном",
 		width: 1067,
 		height: 1600,
+	},
+	"Масаж 2": {
+		src: "/images/demo-beauty/gallery-massage-2.webp",
+		alt: "Масажист наносить олію на спину",
+		width: 1067,
+		height: 1600,
+	},
+	"Масаж 3": {
+		src: "/images/demo-beauty/gallery-massage-3.webp",
+		alt: "Масаж гарячими каменями",
+		width: 1600,
+		height: 1067,
 	},
 };
 
