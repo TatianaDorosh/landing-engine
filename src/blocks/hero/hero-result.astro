@@ -8,7 +8,7 @@ interface Props {
 	text: string;
 	primaryCta: { label: string; href: string };
 	secondaryCta: { label: string; href: string };
-	image?: { src: string; alt: string };
+	image?: { src: string; alt: string; width: number; height: number };
 	imageLabel: string;
 }
 
@@ -42,6 +42,10 @@ const { eyebrow, title, text, primaryCta, secondaryCta, image, imageLabel } = As
 					<img
 						src={image.src}
 						alt={image.alt}
+						width={image.width}
+						height={image.height}
+						loading="eager"
+						fetchpriority="high"
 						class="aspect-[4/3] w-full object-cover lg:aspect-auto lg:h-full lg:min-h-80"
 					/>
 				) : (

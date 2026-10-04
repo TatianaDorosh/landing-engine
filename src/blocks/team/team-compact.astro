@@ -12,7 +12,7 @@ interface Member {
 	name: string;
 	role: string;
 	details: string;
-	image?: { src: string; alt: string };
+	image?: { src: string; alt: string; width: number; height: number };
 	imageLabel?: string;
 	certificates?: Certificate[];
 	bookingHref?: string;
@@ -42,7 +42,15 @@ const { title, items, bookLabel } = Astro.props;
 								<div class="flex items-center gap-4">
 									<div class="h-[72px] w-[72px] shrink-0 overflow-hidden rounded-full" aria-hidden="true">
 										{item.image ? (
-											<img src={item.image.src} alt="" class="h-full w-full object-cover" />
+											<img
+												src={item.image.src}
+												alt={item.image.alt}
+												width={item.image.width}
+												height={item.image.height}
+												loading="lazy"
+												decoding="async"
+												class="h-full w-full object-cover object-[center_20%]"
+											/>
 										) : (
 											<PhotoPlaceholder label="" class="h-full" />
 										)}

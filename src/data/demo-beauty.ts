@@ -27,6 +27,12 @@ export const hero = {
 	primaryCta: { label: ui.buttons.book, href: "#booking" },
 	secondaryCta: { label: "Дивитися ціни", href: "#prices" },
 	imageLabel: "Фото: найкраща робота або інтер'єр студії",
+	image: {
+		src: "/images/demo-beauty/hero.webp",
+		alt: "Косметологиня в білому халаті проводить процедуру догляду за обличчям",
+		width: 1067,
+		height: 1600,
+	},
 };
 
 const ratingItems = demoBeauty.rating
@@ -61,6 +67,12 @@ export const services = {
 			linkLabel: "Ціни на манікюр",
 			href: "#prices",
 			imageLabel: "Фото манікюру",
+			image: {
+				src: "/images/demo-beauty/service-manicure.webp",
+				alt: "Майстриня наносить темний лак на нігті клієнтки",
+				width: 1068,
+				height: 1600,
+			},
 		},
 		{
 			title: "Косметологія",
@@ -69,6 +81,12 @@ export const services = {
 			linkLabel: "Ціни на косметологію",
 			href: "#prices",
 			imageLabel: "Фото процедури",
+			image: {
+				src: "/images/demo-beauty/service-cosmetology.webp",
+				alt: "Клієнтка з доглядовою маскою на обличчі під час процедури",
+				width: 1067,
+				height: 1600,
+			},
 		},
 		{
 			title: "Масаж",
@@ -77,6 +95,12 @@ export const services = {
 			linkLabel: "Ціни на масаж",
 			href: "#prices",
 			imageLabel: "Фото кабінету масажу",
+			image: {
+				src: "/images/demo-beauty/service-massage.webp",
+				alt: "Кабінет масажу з великим вікном і масажним столом",
+				width: 1067,
+				height: 1600,
+			},
 		},
 	],
 };
@@ -104,14 +128,30 @@ export const safety = {
 	],
 };
 
+const galleryPhotos: Record<string, { src: string; alt: string; width: number; height: number }> = {
+	"Манікюр 1": {
+		src: "/images/demo-beauty/gallery-manicure-1.webp",
+		alt: "Манікюр з червоним глянцевим покриттям, форма мигдаль",
+		width: 1067,
+		height: 1600,
+	},
+	"Манікюр 2": {
+		src: "/images/demo-beauty/gallery-manicure-2.webp",
+		alt: "Нюдовий манікюр, довга мигдалеподібна форма",
+		width: 1600,
+		height: 1067,
+	},
+};
+
 export const gallery = {
 	title: "Наші роботи",
 	categories: ["Манікюр", "Косметологія", "Масаж"],
 	items: ["Манікюр", "Косметологія", "Масаж"].flatMap((category) =>
-		[1, 2, 3].map((number) => ({
-			category,
-			label: `${category} ${number}`,
-		})	),
+		[1, 2, 3].map((number) => {
+			const label = `${category} ${number}`;
+			const image = galleryPhotos[label];
+			return image ? { category, label, image } : { category, label };
+		}),
 	),
 };
 
@@ -171,6 +211,12 @@ export const team = {
 			role: "Майстер манікюру",
 			details: "8 років досвіду",
 			imageLabel: "Фото майстрині",
+			image: {
+				src: "/images/demo-beauty/team-olena.webp",
+				alt: "Олена Коваль, майстер манікюру",
+				width: 1067,
+				height: 1600,
+			},
 			certificates: [{ label: "Сертифікат 1" }, { label: "Сертифікат 2" }],
 		},
 		{
@@ -178,6 +224,12 @@ export const team = {
 			role: "Лікар-косметолог",
 			details: "Вища медична освіта, 10 років практики",
 			imageLabel: "Фото косметолога",
+			image: {
+				src: "/images/demo-beauty/team-iryna.webp",
+				alt: "Ірина Мельник, лікар-косметолог",
+				width: 1067,
+				height: 1600,
+			},
 			certificates: [{ label: "Диплом" }, { label: "Сертифікат 1" }, { label: "Сертифікат 2" }],
 		},
 		{
@@ -185,6 +237,12 @@ export const team = {
 			role: "Масажист",
 			details: "Медичний коледж, 6 років досвіду",
 			imageLabel: "Фото масажиста",
+			image: {
+				src: "/images/demo-beauty/team-andrii.webp",
+				alt: "Андрій Бондар, масажист",
+				width: 1067,
+				height: 1600,
+			},
 			certificates: [{ label: "Сертифікат 1" }, { label: "Сертифікат 2" }],
 		},
 	],

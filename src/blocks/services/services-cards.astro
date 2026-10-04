@@ -9,7 +9,7 @@ interface ServiceItem {
 	linkLabel: string;
 	href: string;
 	imageLabel: string;
-	image?: { src: string; alt: string };
+	image?: { src: string; alt: string; width: number; height: number };
 }
 
 interface Props {
@@ -30,7 +30,15 @@ const { title, currency, items } = Astro.props;
 					<li class="h-full">
 						<article class="flex h-full flex-col overflow-hidden rounded-theme border border-border bg-surface">
 							{item.image ? (
-								<img src={item.image.src} alt={item.image.alt} class="aspect-[4/3] w-full object-cover" />
+								<img
+									src={item.image.src}
+									alt={item.image.alt}
+									width={item.image.width}
+									height={item.image.height}
+									loading="lazy"
+									decoding="async"
+									class="aspect-[4/3] w-full object-cover"
+								/>
 							) : (
 								<PhotoPlaceholder label={item.imageLabel} ratio="4/3" />
 							)}
