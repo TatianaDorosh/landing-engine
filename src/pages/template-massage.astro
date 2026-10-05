@@ -2,16 +2,20 @@
 import Base from "../layouts/Base.astro";
 import Header from "../blocks/layout/layout-header.astro";
 import HeroCover from "../blocks/hero/hero-cover.astro";
+import About from "../blocks/about/about-me.astro";
+import PricesSimple from "../blocks/prices/prices-simple.astro";
 import ContactsMap from "../blocks/contacts/contacts-map.astro";
 import Footer from "../blocks/layout/layout-footer.astro";
 import { demoMokka } from "../config/demo-mokka";
-import { header, hero, contacts } from "../data/demo-mokka";
+import { header, hero, about, prices, contacts } from "../data/demo-mokka";
 ---
 
 <Base config={demoMokka}>
 	<Header {...header} nameHref="/template-massage/" />
 	<main>
 		<HeroCover {...hero} />
+		<About {...about} />
+		<PricesSimple {...prices} />
 		<ContactsMap {...contacts} contacts={demoMokka.contacts} />
 	</main>
 	<Footer config={demoMokka} privacyHref="/template-massage/privacy/" />

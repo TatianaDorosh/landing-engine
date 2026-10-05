@@ -1,0 +1,68 @@
+---
+import { typograf } from "../../lib/typograf";
+
+interface PriceItem {
+	name: string;
+	forWhom: string;
+	duration: string;
+	price: number;
+}
+
+interface Props {
+	title: string;
+	intro: string;
+	items: PriceItem[];
+	subscription?: string;
+	cta: { label: string; href: string };
+	/** Символ валюти з мовного каталогу, наприклад ₴. */
+	currency: string;
+}
+
+const { title, intro, items, subscription, cta, currency } = Astro.props;
+
+function money(price: number) {
+	return `${price} ${currency}`;
+}
+---
+
+<section id="prices" data-block="prices-simple">
+	<div class="mx-auto grid max-w-6xl min-w-0 gap-8 px-4 py-12 lg:grid-cols-12 lg:items-stretch lg:gap-x-10 xl:px-8">
+		<div class="contents lg:col-span-4 lg:flex lg:h-full lg:flex-col">
+			<h2 class="order-1 text-3xl lg:order-none">{typograf(title)}</h2>
+			<p class="order-2 font-body text-base leading-relaxed lg:order-none lg:mt-4">{typograf(intro)}</p>
+			<a
+				href={cta.href}
+				class="order-4 inline-flex min-h-11 w-full items-center justify-center self-start rounded-theme bg-primary px-5 text-primary-contrast lg:order-none lg:mt-auto lg:w-auto"
+			>
+				{cta.label}
+			</a>
+		</div>
+		<div class="order-3 min-w-0 lg:order-none lg:col-span-8">
+			<ul class="m-0 list-none p-0">
+				{
+					items.map((item) => (
+						<li class="border-b border-border py-4 first:pt-0">
+							<div class="lg:grid lg:grid-cols-[minmax(0,1fr)_max-content_max-content] lg:items-center lg:gap-x-8">
+								<div class="min-w-0">
+									<p class="font-heading text-xl leading-snug break-words">{typograf(item.name)}</p>
+									<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{typograf(item.forWhom)}</p>
+								</div>
+								<div class="mt-3 flex items-baseline justify-between gap-4 lg:contents">
+									<p class="shrink-0 font-body text-[15px]">{item.duration}</p>
+									<p class="shrink-0 text-right font-heading text-[28px] leading-none tabular-nums">
+										{money(item.price)}
+									</p>
+								</div>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+			{
+				subscription && (
+					<p class="py-4 font-body text-[15px] leading-[1.5]">{typograf(subscription)}</p>
+				)
+			}
+		</div>
+	</div>
+</section>
