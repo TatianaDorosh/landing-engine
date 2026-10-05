@@ -27,11 +27,11 @@ export const hero = {
 	secondaryCta: { label: "Ціни за зони", href: "#prices" },
 	imageLabel: "Фото: найкраща робота або інтер'єр студії",
 	image: {
-		src: "/images/demo-beauty/hero.webp",
-		alt: "Косметологиня в білому халаті проводить процедуру догляду за обличчям",
-		width: 1067,
+		src: "/images/demo-verde/hero.webp",
+		alt: "Процедура лазерної епіляції ніг діодним лазером",
+		width: 1280,
 		height: 1600,
-		position: "50% 80%",
+		position: "50% 60%",
 	},
 };
 
@@ -67,6 +67,12 @@ export const services = {
 			linkLabel: "Ціни за зони",
 			href: "#prices",
 			imageLabel: "Фото процедури лазерної епіляції",
+			image: {
+				src: "/images/demo-verde/service-laser.webp",
+				alt: "Насадка діодного лазера на шкірі під час епіляції",
+				width: 900,
+				height: 1600,
+			},
 		},
 		{
 			title: "Ін'єкційна косметологія",
@@ -76,8 +82,8 @@ export const services = {
 			href: "#prices",
 			imageLabel: "Фото процедури",
 			image: {
-				src: "/images/demo-beauty/service-cosmetology.webp",
-				alt: "Клієнтка з доглядовою маскою на обличчі під час процедури",
+				src: "/images/demo-verde/service-injections.webp",
+				alt: "Лікар робить ін'єкцію в зону лоба",
 				width: 1067,
 				height: 1600,
 			},
@@ -89,6 +95,12 @@ export const services = {
 			linkLabel: "Ціни на апаратні процедури",
 			href: "#prices",
 			imageLabel: "Фото апаратної процедури",
+			image: {
+				src: "/images/demo-verde/service-apparatus.webp",
+				alt: "Апаратна процедура для обличчя в косметологічному кабінеті",
+				width: 1600,
+				height: 1067,
+			},
 		},
 	],
 };
@@ -145,6 +157,12 @@ export const prices = {
 export const safety = {
 	title: 'Безпечно, бо робить лікар, а не "майстер після курсів"',
 	imageLabel: "Фото: лазерний апарат або лікар у кабінеті",
+	image: {
+		src: "/images/demo-verde/safety.webp",
+		alt: "Косметологиня в рукавичках і масці на тлі сертифікатів",
+		width: 1067,
+		height: 1600,
+	},
 	items: [
 		{
 			title: "Сертифікований діодний лазер",
@@ -216,6 +234,12 @@ export const team = {
 			role: "Лікар-дерматокосметолог",
 			details: "12 років практики, ін'єкційна косметологія",
 			imageLabel: "Фото лікаря",
+			image: {
+				src: "/images/demo-verde/team-viktoria.webp",
+				alt: "Вікторія Левченко, лікар-дерматокосметолог",
+				width: 1067,
+				height: 1600,
+			},
 			certificates: [{ label: "Сертифікат 1" }, { label: "Сертифікат 2" }, { label: "Сертифікат 3" }],
 		},
 		{
