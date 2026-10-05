@@ -20,6 +20,7 @@ export const hero = {
 		src: "/images/demo-mokka/hero.webp",
 		alt: "Жінка в білій медичній сорочці й чорних окулярах стоїть зі схрещеними руками в світлому кабінеті",
 		position: "center 20%",
+		positionDesktop: "50% 20%",
 	},
 };
 
