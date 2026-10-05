@@ -49,14 +49,14 @@ export const demoMokka = {
 	rating: null,
 	theme: {
 		colors: {
-			bg: '#1C1714',
-			surface: '#2A221E',
-			text: '#F3EBE3',
-			muted: '#B8A99C',
+			bg: '#211A16',
+			surface: '#2C2420',
+			text: '#E6DBD1',
+			muted: '#ADA095',
 			primary: '#D4A373',
 			primaryContrast: '#1C1714',
 			accent: '#8A5A3C',
-			border: '#3A302A',
+			border: '#3D332D',
 		},
 		fonts: {
 			heading: 'Jost Variable',
