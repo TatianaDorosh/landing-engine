@@ -24,7 +24,7 @@ export const demoMokka = {
 			},
 		],
 		telegram: 'soma_mokka',
-		viber: 'soma_mokka',
+		viber: '+380931112244',
 		instagram: 'soma_mokka',
 	},
 	/** Прайс для наступного етапу. Суми в гривнях. */
