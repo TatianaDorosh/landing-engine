@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "@fontsource-variable/manrope";
 @import "@fontsource-variable/cormorant-garamond";
+@import "@fontsource-variable/playfair-display";
+@import "@fontsource-variable/inter";
 
 /* Запасні значення. :where має нульову вагу, тож тема з Base.astro завжди перемагає. */
 :where(:root) {

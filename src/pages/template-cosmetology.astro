@@ -1,0 +1,22 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import Hero from "../blocks/hero/hero-result.astro";
+import Trust from "../blocks/trust/trust-strip.astro";
+import Services from "../blocks/services/services-cards.astro";
+import Prices from "../blocks/prices/prices-levels.astro";
+import Safety from "../blocks/safety/safety-standards.astro";
+import { demoVerde } from "../config/demo-verde";
+import { header, hero, trust, services, prices, safety } from "../data/demo-verde";
+---
+
+<Base config={demoVerde}>
+	<Header {...header} />
+	<main>
+		<Hero {...hero} />
+		<Trust {...trust} />
+		<Services {...services} />
+		<Prices {...prices} />
+		<Safety {...safety} />
+	</main>
+</Base>

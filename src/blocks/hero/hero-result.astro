@@ -6,7 +6,7 @@ interface Props {
 	eyebrow: string;
 	title: string;
 	text: string;
-	primaryCta: { label: string; href: string };
+	primaryCta: { label: string; href: string; service?: string };
 	secondaryCta: { label: string; href: string };
 	image?: { src: string; alt: string; width: number; height: number; position?: string };
 	imageLabel: string;
@@ -25,6 +25,7 @@ const { eyebrow, title, text, primaryCta, secondaryCta, image, imageLabel } = As
 		<div class="order-3 flex w-full flex-col items-start gap-3 lg:col-start-1 lg:row-start-2 lg:w-auto lg:flex-row lg:self-start">
 			<a
 				href={primaryCta.href}
+				data-service={primaryCta.service}
 				class="inline-flex min-h-11 w-full items-center justify-center rounded-theme bg-primary px-5 text-primary-contrast lg:w-auto"
 			>
 				{primaryCta.label}
