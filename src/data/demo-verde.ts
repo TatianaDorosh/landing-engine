@@ -95,7 +95,7 @@ export const services = {
 
 export const prices = {
 	title: 'Ціни за кожну зону — без "від" і без сюрпризів',
-	note: "Перша консультація і тест-спалах — безкоштовно. Курсова ціна діє при оплаті всього курсу.",
+	note: "Перша консультація і тест-спалах — безкоштовно. До RF-ліфтингу і мікроструму — маска в подарунок.",
 	ctaLabel: "Записатися на консультацію",
 	bookLabel: ui.buttons.book,
 	currency: ui.currency,
@@ -117,8 +117,12 @@ export const prices = {
 			name: "Ін'єкції",
 			levels: ["1 процедура", "Курс 3 процедур"],
 			rows: [
-				{ service: "Біоревіталізація", duration: "40 хв", prices: [2800, 7500] },
-				{ service: "Мезотерапія обличчя", duration: "40 хв", prices: [2200, 5900] },
+				{ service: "Біоревіталізація Hyalual 1.1%, 2 мл", duration: "40 хв", prices: [4300, 11900] },
+				{ service: "Біоревіталізація Hyalual 2.2%, 2 мл", duration: "40 хв", prices: [5100, 14100] },
+				{ service: "Біоревіталізація Neotiva Collagen, 2,5 мл", duration: "40 хв", prices: [3900, 10800] },
+				{ service: "Колагеностимуляція Hydro PLLA, 3 мл", duration: "45 хв", prices: [5300, 14600] },
+				{ service: "Мезотерапія Mixyal, 2,5 мл", duration: "40 хв", prices: [2700, 7400] },
+				{ service: "Мезотерапія проти акне Acneout, 2,5 мл", duration: "40 хв", prices: [1700, 4600] },
 				{ service: "Ботулінотерапія, 1 зона", duration: "30 хв", prices: [2500, "—"] },
 			],
 		},
@@ -126,7 +130,11 @@ export const prices = {
 			name: "Апаратна косметологія",
 			levels: ["1 сеанс", "Курс 6 сеансів"],
 			rows: [
-				{ service: "RF-ліфтинг обличчя", duration: "40 хв", prices: [900, 4800] },
+				{ service: "RF-ліфтинг: обличчя", duration: "40 хв", prices: [870, 4600] },
+				{ service: "RF-ліфтинг: обличчя + шия", duration: "50 хв", prices: [1050, 5500] },
+				{ service: "RF-ліфтинг: обличчя + шия + декольте", duration: "60 хв", prices: [1350, 7100] },
+				{ service: "Мікрострум: обличчя", duration: "40 хв", prices: [820, 4300] },
+				{ service: "Мікрострум: обличчя + шия", duration: "50 хв", prices: [980, 5200] },
 				{ service: "Кавітація, 1 зона", duration: "40 хв", prices: [800, 4200] },
 				{ service: "Вакуумний масаж тіла", duration: "45 хв", prices: [600, 3200] },
 			],
