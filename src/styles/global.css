@@ -3,6 +3,8 @@
 @import "@fontsource-variable/cormorant-garamond";
 @import "@fontsource-variable/playfair-display";
 @import "@fontsource-variable/inter";
+@import "@fontsource-variable/jost";
+@import "@fontsource-variable/lora";
 
 /* Запасні значення. :where має нульову вагу, тож тема з Base.astro завжди перемагає. */
 :where(:root) {

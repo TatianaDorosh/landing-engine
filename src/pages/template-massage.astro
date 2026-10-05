@@ -1,0 +1,16 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import ContactsMap from "../blocks/contacts/contacts-map.astro";
+import Footer from "../blocks/layout/layout-footer.astro";
+import { demoMokka } from "../config/demo-mokka";
+import { header, contacts } from "../data/demo-mokka";
+---
+
+<Base config={demoMokka}>
+	<Header {...header} nameHref="/template-massage/" />
+	<main>
+		<ContactsMap {...contacts} contacts={demoMokka.contacts} />
+	</main>
+	<Footer config={demoMokka} privacyHref="/template-massage/privacy/" />
+</Base>

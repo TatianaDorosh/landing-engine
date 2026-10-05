@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import Header from "../../blocks/layout/layout-header.astro";
+import Footer from "../../blocks/layout/layout-footer.astro";
+import PrivacyPolicy from "../../components/PrivacyPolicy.astro";
+import { demoMokka } from "../../config/demo-mokka";
+import { header } from "../../data/demo-mokka";
+---
+
+<Base config={demoMokka} noindex={true} title="Політика приватності — Soma Studio">
+	<Header {...header} nameHref="/template-massage/" />
+	<main>
+		<PrivacyPolicy config={demoMokka} />
+	</main>
+	<Footer config={demoMokka} privacyHref="/template-massage/privacy/" />
+</Base>
