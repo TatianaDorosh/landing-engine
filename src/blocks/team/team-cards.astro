@@ -1,6 +1,7 @@
 ---
 import CertificatesDialog from "../../components/CertificatesDialog.astro";
 import PhotoPlaceholder from "../../components/PhotoPlaceholder.astro";
+import { getUi } from "../../i18n";
 import { typograf } from "../../lib/typograf";
 
 interface Certificate {
@@ -15,14 +16,16 @@ interface Member {
 	image?: { src: string; alt: string; width: number; height: number };
 	imageLabel?: string;
 	certificates?: Certificate[];
+	bookingHref?: string;
 }
 
 interface Props {
 	title: string;
 	items: Member[];
+	bookLabel?: string;
 }
 
-const { title, items } = Astro.props;
+const { title, items, bookLabel = getUi("uk").buttons.book } = Astro.props;
 ---
 
 <section id="team" data-block="team-cards">
@@ -57,16 +60,25 @@ const { title, items } = Astro.props;
 							<h3 class="font-body text-2xl font-semibold">{typograf(item.name)}</h3>
 							<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{item.role}</p>
 							<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{item.details}</p>
-							{item.certificates && item.certificates.length > 0 && (
-								<button
-									type="button"
-									data-certs-open={index}
-									class="mt-4 inline-flex min-h-11 items-center self-start text-primary"
-									aria-haspopup="dialog"
+							<div class="mt-auto flex items-center justify-between gap-3 pt-4">
+								{item.certificates && item.certificates.length > 0 && (
+									<button
+										type="button"
+										data-certs-open={index}
+										class="inline-flex min-h-11 items-center text-primary"
+										aria-haspopup="dialog"
+									>
+										Сертифікати
+									</button>
+								)}
+								<a
+									href={item.bookingHref ?? "#booking"}
+									data-master={item.name}
+									class="ml-auto inline-flex min-h-11 items-center text-[15px] font-semibold text-primary"
 								>
-									Сертифікати
-								</button>
-							)}
+									{bookLabel} →
+								</a>
+							</div>
 						</div>
 					</article>
 				))

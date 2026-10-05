@@ -6,8 +6,21 @@ import Trust from "../blocks/trust/trust-strip.astro";
 import Services from "../blocks/services/services-cards.astro";
 import Prices from "../blocks/prices/prices-levels.astro";
 import Safety from "../blocks/safety/safety-standards.astro";
+import Myths from "../blocks/faq/faq-myths.astro";
+import Steps from "../blocks/steps/steps-visit.astro";
+import Team from "../blocks/team/team-cards.astro";
+import Reviews from "../blocks/reviews/reviews-cards.astro";
+import Faq from "../blocks/faq/faq-accordion.astro";
+import BookingCta from "../blocks/booking/booking-cta.astro";
+import BookingDrawer from "../blocks/booking/booking-drawer.astro";
+import ContactsMap from "../blocks/contacts/contacts-map.astro";
+import Messengers from "../blocks/layout/layout-messengers.astro";
+import Footer from "../blocks/layout/layout-footer.astro";
 import { demoVerde } from "../config/demo-verde";
-import { header, hero, trust, services, prices, safety } from "../data/demo-verde";
+import { getUi } from "../i18n";
+import { header, hero, trust, services, prices, safety, myths, steps, team, reviews, faq, booking, contacts } from "../data/demo-verde";
+
+const ui = getUi(demoVerde.locale);
 ---
 
 <Base config={demoVerde}>
@@ -18,5 +31,28 @@ import { header, hero, trust, services, prices, safety } from "../data/demo-verd
 		<Services {...services} />
 		<Prices {...prices} />
 		<Safety {...safety} />
+		<Myths {...myths} />
+		<Steps {...steps} />
+		<Team {...team} bookLabel={ui.buttons.book} />
+		<Reviews {...reviews} />
+		<Faq {...faq} telegram={demoVerde.contacts.telegram} />
+		<BookingCta
+			title={booking.ctaTitle}
+			text={booking.ctaText}
+			writeLabel={booking.writeLabel}
+			ctaLabel={booking.ctaLabel}
+			config={demoVerde}
+		/>
+		<BookingDrawer
+			title={booking.title}
+			note="Підтвердимо запис у месенджері протягом 15 хвилин у робочий час"
+			services={booking.services}
+			masters={booking.masters}
+			privacyHref={booking.privacyHref}
+			config={demoVerde}
+		/>
+		<ContactsMap {...contacts} contacts={demoVerde.contacts} />
 	</main>
+	<Messengers config={demoVerde} />
+	<Footer config={demoVerde} privacyHref="/template-cosmetology/privacy/" />
 </Base>

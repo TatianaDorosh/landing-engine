@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import Header from "../../blocks/layout/layout-header.astro";
+import Footer from "../../blocks/layout/layout-footer.astro";
+import PrivacyPolicy from "../../components/PrivacyPolicy.astro";
+import { demoVerde } from "../../config/demo-verde";
+import { header } from "../../data/demo-verde";
+---
+
+<Base config={demoVerde} noindex={true} title="Політика приватності — VERDE">
+	<Header {...header} nameHref="/template-cosmetology/" />
+	<main>
+		<PrivacyPolicy config={demoVerde} />
+	</main>
+	<Footer config={demoVerde} privacyHref="/template-cosmetology/privacy/" />
+</Base>
