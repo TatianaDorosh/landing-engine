@@ -40,11 +40,12 @@ const ui = getUi(demoBeauty.locale);
 		<Steps {...steps} />
 		<Reviews {...reviews} />
 		<Gifts {...gifts} />
+		<Faq {...faq} telegram={demoBeauty.contacts.telegram} />
+		<Myths {...myths} />
 		<BookingCta
 			title={booking.ctaTitle}
-			text={booking.text}
-			steps={booking.steps}
-			messengersTitle={booking.messengersTitle}
+			text={booking.ctaText}
+			writeLabel={booking.writeLabel}
 			ctaLabel={booking.ctaLabel}
 			config={demoBeauty}
 		/>
@@ -56,8 +57,6 @@ const ui = getUi(demoBeauty.locale);
 			privacyHref={booking.privacyHref}
 			config={demoBeauty}
 		/>
-		<Faq {...faq} telegram={demoBeauty.contacts.telegram} />
-		<Myths {...myths} />
 		<ContactsMap {...contacts} contacts={demoBeauty.contacts} />
 	</main>
 	<Messengers config={demoBeauty} />
