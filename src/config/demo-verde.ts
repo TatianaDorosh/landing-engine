@@ -60,6 +60,6 @@ export const demoVerde = {
 	portfolio: {
 		enabled: true,
 		author: 'Тетяна Дорош',
-		contactUrl: 'ЗАПОВНИТИ',
+		contactUrl: 'https://t.me/DOROSH_TATIANA',
 	},
 } satisfies SiteConfig;
