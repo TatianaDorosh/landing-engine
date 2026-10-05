@@ -182,7 +182,23 @@ const titleId = "booking-drawer-title";
 			drawerField(formRoot, "name")?.focus();
 		}
 
+		function closeBurgerMenus() {
+			document.querySelectorAll("[data-block='layout-header']").forEach((header) => {
+				const toggle = header.querySelector("[data-menu-toggle]");
+				const menu = header.querySelector("[data-mobile-nav]");
+				if (!(toggle instanceof HTMLElement) || !(menu instanceof HTMLElement)) return;
+				if (toggle.getAttribute("aria-expanded") !== "true") return;
+				toggle.setAttribute("aria-expanded", "false");
+				toggle.setAttribute("aria-label", "Відкрити меню");
+				menu.classList.add("hidden");
+				menu.setAttribute("hidden", "");
+				header.querySelector("[data-icon-open]")?.classList.remove("hidden");
+				header.querySelector("[data-icon-close]")?.classList.add("hidden");
+			});
+		}
+
 		function openDrawer(trigger) {
+			closeBurgerMenus();
 			opener = trigger instanceof HTMLElement ? trigger : null;
 			window.clearTimeout(closeTimer);
 			drawer.classList.remove("invisible");
@@ -199,6 +215,8 @@ const titleId = "booking-drawer-title";
 
 		function closeDrawer() {
 			if (drawer.getAttribute("data-open") !== "true") return;
+			const success = formRoot?.querySelector("[data-success]");
+			if (success && !success.hidden) formRoot?.dispatchEvent(new Event("booking-reset"));
 			drawer.setAttribute("data-open", "false");
 			unlockScroll();
 			const finish = () => {

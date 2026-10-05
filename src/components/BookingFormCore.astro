@@ -439,6 +439,36 @@ const id = (name: string) => `${idPrefix}-${name}`;
 		dateInput.addEventListener("change", refillTime);
 		refillTime();
 
+		function resetForm() {
+			sending = false;
+			form.hidden = false;
+			success.hidden = true;
+			demoNote.hidden = true;
+			errorBox.hidden = true;
+			errorBox.replaceChildren();
+			["name", "phone", "service", "date", "time", "consent"].forEach((name) => showError(root, name, ""));
+			field(root, "name").value = "";
+			phoneInput.value = "";
+			field(root, "service").value = "";
+			field(root, "master").value = "Будь-який";
+			dateInput.value = "";
+			refillTime();
+			field(root, "consent").checked = false;
+			doNotCall.checked = false;
+			callInput.disabled = false;
+			telegramInput.checked = true;
+			field(root, "comment").value = "";
+			field(root, "botcheck").value = "";
+			const commentToggle = root.querySelector("[data-comment-toggle]");
+			const commentPanel = root.querySelector("[data-comment-panel]");
+			commentToggle?.setAttribute("aria-expanded", "false");
+			if (commentPanel) commentPanel.hidden = true;
+			submit.disabled = false;
+			submit.textContent = submitLabel;
+		}
+
+		root.addEventListener("booking-reset", resetForm);
+
 		const commentToggle = root.querySelector("[data-comment-toggle]");
 		const commentPanel = root.querySelector("[data-comment-panel]");
 		const commentField = field(root, "comment");
