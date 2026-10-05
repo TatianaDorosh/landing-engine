@@ -247,6 +247,12 @@ export const team = {
 			role: "Спеціалістка з лазерної епіляції",
 			details: "6 років досвіду",
 			imageLabel: "Фото спеціалістки",
+			image: {
+				src: "/images/demo-verde/team-iryna.webp",
+				alt: "Ірина Шевчук, спеціалістка з лазерної епіляції",
+				width: 1280,
+				height: 1600,
+			},
 			certificates: [{ label: "Сертифікат 1" }, { label: "Сертифікат 2" }],
 		},
 		{
@@ -254,6 +260,12 @@ export const team = {
 			role: "Апаратна косметологія",
 			details: "5 років досвіду",
 			imageLabel: "Фото косметологині",
+			image: {
+				src: "/images/demo-verde/team-daryna.webp",
+				alt: "Дарина Мороз, косметологиня апаратних процедур",
+				width: 1067,
+				height: 1600,
+			},
 			certificates: [{ label: "Сертифікат 1" }, { label: "Сертифікат 2" }],
 		},
 	],

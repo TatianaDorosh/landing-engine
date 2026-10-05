@@ -50,7 +50,7 @@ const { title, items, bookLabel = getUi("uk").buttons.book } = Astro.props;
 									height={item.image.height}
 									loading="lazy"
 									decoding="async"
-									class="h-full w-full object-cover"
+									class="h-full w-full object-cover object-[center_20%]"
 								/>
 							) : (
 								<PhotoPlaceholder label={item.imageLabel ?? item.name} class="h-full" />
