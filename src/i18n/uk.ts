@@ -53,6 +53,15 @@ export interface UiStrings {
 		showAll: string;
 		collapse: string;
 	};
+	messengers: {
+		telegram: string;
+		viber: string;
+		instagram: string;
+		/** Рядок під кнопками запису: «Графік:». */
+		hours: string;
+		/** Рядок під кнопками запису: «Або зателефонуйте:». */
+		orCall: string;
+	};
 }
 
 export const uk = {
@@ -106,5 +115,12 @@ export const uk = {
 	prices: {
 		showAll: 'Показати всі ціни ({count})',
 		collapse: 'Згорнути',
+	},
+	messengers: {
+		telegram: 'Telegram',
+		viber: 'Viber',
+		instagram: 'Instagram',
+		hours: 'Графік:',
+		orCall: 'Або зателефонуйте:',
 	},
 } satisfies UiStrings;

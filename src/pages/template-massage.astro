@@ -4,10 +4,11 @@ import Header from "../blocks/layout/layout-header.astro";
 import HeroCover from "../blocks/hero/hero-cover.astro";
 import About from "../blocks/about/about-me.astro";
 import PricesSimple from "../blocks/prices/prices-simple.astro";
+import BookingMessengers from "../blocks/booking/booking-messengers.astro";
 import ContactsMap from "../blocks/contacts/contacts-map.astro";
 import Footer from "../blocks/layout/layout-footer.astro";
 import { demoMokka } from "../config/demo-mokka";
-import { header, hero, about, prices, contacts } from "../data/demo-mokka";
+import { header, hero, about, prices, booking, contacts } from "../data/demo-mokka";
 ---
 
 <Base config={demoMokka}>
@@ -16,6 +17,7 @@ import { header, hero, about, prices, contacts } from "../data/demo-mokka";
 		<HeroCover {...hero} />
 		<About {...about} />
 		<PricesSimple {...prices} />
+		<BookingMessengers {...booking} contacts={demoMokka.contacts} locale={demoMokka.locale} />
 		<ContactsMap {...contacts} contacts={demoMokka.contacts} />
 	</main>
 	<Footer config={demoMokka} privacyHref="/template-massage/privacy/" />

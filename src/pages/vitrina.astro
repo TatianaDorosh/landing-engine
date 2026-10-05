@@ -5,6 +5,7 @@ import Hero from "../blocks/hero/hero-result.astro";
 import HeroCover from "../blocks/hero/hero-cover.astro";
 import AboutMe from "../blocks/about/about-me.astro";
 import PricesSimple from "../blocks/prices/prices-simple.astro";
+import BookingMessengers from "../blocks/booking/booking-messengers.astro";
 import Trust from "../blocks/trust/trust-strip.astro";
 import Services from "../blocks/services/services-cards.astro";
 import Safety from "../blocks/safety/safety-standards.astro";
@@ -26,9 +27,10 @@ import ContactsMap from "../blocks/contacts/contacts-map.astro";
 import Messengers from "../blocks/layout/layout-messengers.astro";
 import Footer from "../blocks/layout/layout-footer.astro";
 import { demoBeauty } from "../config/demo-beauty";
+import { demoMokka } from "../config/demo-mokka";
 import { getUi } from "../i18n";
 import { header, hero, trust, services, safety, gallery, beforeAfter, prices, team, steps, reviews, gifts, booking, bookingOnline, faq, myths, contacts } from "../data/demo-beauty";
-import { hero as mokkaHero, about as mokkaAbout, prices as mokkaPrices } from "../data/demo-mokka";
+import { hero as mokkaHero, about as mokkaAbout, prices as mokkaPrices, booking as mokkaBooking } from "../data/demo-mokka";
 
 const ui = getUi(demoBeauty.locale);
 ---
@@ -52,6 +54,9 @@ const ui = getUi(demoBeauty.locale);
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">prices-simple</p>
 	<PricesSimple {...mokkaPrices} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">booking-messengers</p>
+	<BookingMessengers {...mokkaBooking} contacts={demoMokka.contacts} locale={demoMokka.locale} />
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">trust-strip</p>
 	<Trust {...trust} />

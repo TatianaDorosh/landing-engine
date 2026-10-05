@@ -81,6 +81,16 @@ export const prices = {
 	cta: { label: ui.buttons.book, href: "#booking" },
 };
 
+export const booking = {
+	title: "Запис на сеанс",
+	text: "Напишіть у зручний месенджер: вкажіть бажаний день і час, я відповім і підтверджу запис.",
+	captions: {
+		telegram: "Найшвидше, відповідаю протягом години",
+		viber: "Повідомлення або дзвінок",
+		instagram: "Напишіть у директ",
+	},
+};
+
 export const contacts = {
 	title: "Як нас знайти",
 	directions: '3 хвилини пішки від метро "Золоті ворота", вхід з вулиці',
