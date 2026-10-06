@@ -21,7 +21,12 @@ export const hero = {
 	title: "Манікюр і педикюр за 2 години — один візит",
 	text: "Не витрачайте пів дня: руки й ноги робимо разом і відпускаємо вас уже з готовим покриттям.",
 	cta: { label: ui.buttons.book, href: "#booking" },
-	imageAlt: "Манікюр і педикюр за 2 години — один візит",
+	image: {
+		src: "/images/demo-lavender/hero.webp",
+		alt: "Манікюр, робота студії Lavo Nails",
+		position: "50% 40%",
+		positionDesktop: "50% 35%",
+	},
 };
 
 const manicureAlts = [
@@ -42,12 +47,30 @@ const pedicureAlts = [
 	"Темно-сливовий матовий педикюр",
 ];
 
+function galleryImage(folder: "manicure" | "pedicure", index: number, alt: string) {
+	return {
+		src: `/images/demo-lavender/gallery-${folder}-${index}.webp`,
+		alt,
+		position: "center",
+		width: 800,
+		height: 1000,
+	};
+}
+
 export const gallery = {
 	title: "Роботи",
 	categories: ["Манікюр", "Педикюр"],
 	items: [
-		...manicureAlts.map((alt) => ({ category: "Манікюр", label: alt })),
-		...pedicureAlts.map((alt) => ({ category: "Педикюр", label: alt })),
+		...manicureAlts.map((label, index) => ({
+			category: "Манікюр",
+			label,
+			image: galleryImage("manicure", index + 1, `Манікюр, робота студії Lavo Nails, фото ${index + 1}`),
+		})),
+		...pedicureAlts.map((label, index) => ({
+			category: "Педикюр",
+			label,
+			image: galleryImage("pedicure", index + 1, `Педикюр, фото ${index + 1}`),
+		})),
 	],
 };
 
