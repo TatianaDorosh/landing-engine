@@ -16,33 +16,69 @@ interface Props {
 	sectionId?: string;
 	/** Менший верхній відступ, щоб блок починався вище на першому екрані. */
 	spacing?: "regular" | "tight";
+	/** pill — кнопки-таблетки, underline — текстові вкладки з лінією. */
+	tabsStyle?: "pill" | "underline";
 }
 
-const { title, categories, items, sectionId = "gallery", spacing = "regular" } = Astro.props;
+const { title, categories, items, sectionId = "gallery", spacing = "regular", tabsStyle = "pill" } = Astro.props;
 const first = categories[0] ?? "";
 const tight = spacing === "tight";
+const underline = tabsStyle === "underline";
 ---
 
 <section id={sectionId} data-block="gallery-carousel">
 	<div class:list={["mx-auto max-w-6xl px-4 xl:px-8", tight ? "pt-4 pb-12" : "py-12"]}>
 		<h2 class="text-3xl">{typograf(title)}</h2>
-		<div class:list={["flex flex-wrap gap-2", tight ? "mt-3" : "mt-6"]}>
+		<div
+			data-tabs-style={tabsStyle}
+			role={underline ? "tablist" : undefined}
+			aria-label={underline ? "Категорії" : undefined}
+			class:list={[
+				tight ? "mt-3" : "mt-6",
+				underline
+					? "flex flex-nowrap items-stretch gap-8 border-b border-border"
+					: "flex flex-wrap gap-2",
+			]}
+		>
 			{
-				categories.map((category) => (
-					<button
-						type="button"
-						data-category-tab={category}
-						aria-pressed={category === first ? "true" : "false"}
-						class:list={[
-							"inline-flex min-h-11 items-center rounded-theme px-4",
-							category === first
-								? "bg-primary text-primary-contrast"
-								: "border border-border text-text",
-						]}
-					>
-						{category}
-					</button>
-				))
+				categories.map((category) => {
+					const active = category === first;
+					return underline ? (
+						<button
+							type="button"
+							role="tab"
+							data-category-tab={category}
+							aria-selected={active ? "true" : "false"}
+							tabindex={active ? 0 : -1}
+							class:list={[
+								"relative inline-flex min-h-11 items-center rounded-none border-0 bg-transparent px-0 font-body text-base",
+								active ? "font-semibold text-primary" : "font-normal text-muted hover:text-text",
+							]}
+						>
+							{category}
+							<span
+								data-tab-line
+								class:list={[
+									"pointer-events-none absolute inset-x-0 -bottom-px z-10 h-[3px]",
+									active ? "bg-primary" : "bg-transparent",
+								]}
+								aria-hidden="true"
+							/>
+						</button>
+					) : (
+						<button
+							type="button"
+							data-category-tab={category}
+							aria-pressed={active ? "true" : "false"}
+							class:list={[
+								"inline-flex min-h-11 items-center rounded-theme px-4",
+								active ? "bg-primary text-primary-contrast" : "border border-border text-text",
+							]}
+						>
+							{category}
+						</button>
+					);
+				})
 			}
 		</div>
 
@@ -147,6 +183,7 @@ const tight = spacing === "tight";
 		if (!track || !dots || !dialog || !closeBtn || !(image instanceof HTMLImageElement) || !placeholder) return;
 
 		const tabs = [...root.querySelectorAll("[data-category-tab]")];
+		const underline = root.querySelector("[data-tabs-style]")?.getAttribute("data-tabs-style") === "underline";
 		let index = 0;
 		let lastTrigger = null;
 
@@ -156,6 +193,19 @@ const tight = spacing === "tight";
 		function setPressed(category) {
 			tabs.forEach((tab) => {
 				const on = tab.getAttribute("data-category-tab") === category;
+				if (underline) {
+					tab.setAttribute("aria-selected", on ? "true" : "false");
+					tab.tabIndex = on ? 0 : -1;
+					tab.classList.toggle("font-semibold", on);
+					tab.classList.toggle("text-primary", on);
+					tab.classList.toggle("font-normal", !on);
+					tab.classList.toggle("text-muted", !on);
+					tab.classList.toggle("hover:text-text", !on);
+					const line = tab.querySelector("[data-tab-line]");
+					line?.classList.toggle("bg-primary", on);
+					line?.classList.toggle("bg-transparent", !on);
+					return;
+				}
 				tab.setAttribute("aria-pressed", on ? "true" : "false");
 				tab.classList.toggle("bg-primary", on);
 				tab.classList.toggle("text-primary-contrast", on);
@@ -249,6 +299,24 @@ const tight = spacing === "tight";
 				if (category) applyFilter(category);
 			});
 		});
+
+		if (underline) {
+			const tabList = root.querySelector("[role='tablist']");
+			tabList?.addEventListener("keydown", (event) => {
+				if (!(event instanceof KeyboardEvent)) return;
+				if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+				const current = tabs.indexOf(document.activeElement);
+				if (current < 0) return;
+				event.preventDefault();
+				const next =
+					event.key === "ArrowRight"
+						? (current + 1) % tabs.length
+						: (current - 1 + tabs.length) % tabs.length;
+				const category = tabs[next].getAttribute("data-category-tab");
+				if (category) applyFilter(category);
+				tabs[next].focus();
+			});
+		}
 
 		track.addEventListener("click", (event) => {
 			const target = event.target;
