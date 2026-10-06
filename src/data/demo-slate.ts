@@ -85,6 +85,7 @@ export const prices = {
 	ctaLabel: ui.buttons.book,
 	bookLabel: ui.buttons.book,
 	currency: ui.currency,
+	tabsStyle: "underline",
 	tabs: [
 		{
 			name: "Вії",

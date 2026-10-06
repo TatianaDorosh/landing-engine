@@ -24,9 +24,12 @@ interface Props {
 	currency: string;
 	maxVisible?: number;
 	locale?: Locale;
+	/** pill — кнопки-таблетки, underline — текстові вкладки з лінією. */
+	tabsStyle?: "pill" | "underline";
 }
 
-const { title, note, tabs, ctaLabel, bookLabel, currency, maxVisible = 8, locale = "uk" } = Astro.props;
+const { title, note, tabs, ctaLabel, bookLabel, currency, maxVisible = 8, locale = "uk", tabsStyle = "pill" } = Astro.props;
+const underline = tabsStyle === "underline";
 const ui = getUi(locale);
 
 function showAllLabel(count: number) {
@@ -42,7 +45,17 @@ function money(value: number | "—") {
 <section id="prices" data-block="prices-levels">
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
 		<h2 class="text-3xl">{typograf(title)}</h2>
-		<div class="mt-6 flex flex-wrap gap-2" role="tablist" aria-label="Розділи прайсу">
+		<div
+			data-tabs-style={tabsStyle}
+			class:list={[
+				"mt-6",
+				underline
+					? "flex w-full min-w-0 flex-nowrap items-stretch gap-8 border-b border-border"
+					: "flex flex-wrap gap-2",
+			]}
+			role="tablist"
+			aria-label="Розділи прайсу"
+		>
 			{
 				tabs.map((tab, index) => (
 					<button
@@ -52,12 +65,31 @@ function money(value: number | "—") {
 						data-price-tab={index}
 						aria-selected={index === 0 ? "true" : "false"}
 						aria-controls={`prices-panel-${index}`}
-						class:list={[
-							"inline-flex min-h-11 items-center rounded-theme px-4",
-							index === 0 ? "bg-primary text-primary-contrast" : "border border-border text-text",
-						]}
+						class:list={
+							underline
+								? [
+										"relative inline-flex min-h-11 shrink-0 items-center border-0 bg-transparent px-0 font-body text-lg",
+										index === 0 ? "text-text" : "text-muted hover:text-text",
+									]
+								: [
+										"inline-flex min-h-11 items-center rounded-theme px-4",
+										index === 0 ? "bg-primary text-primary-contrast" : "border border-border text-text",
+									]
+						}
 					>
 						{tab.name}
+						{
+							underline && (
+								<span
+									data-tab-line
+									class:list={[
+										"pointer-events-none absolute inset-x-0 -bottom-px z-10 h-0.5",
+										index === 0 ? "bg-primary" : "bg-transparent",
+									]}
+									aria-hidden="true"
+								/>
+							)
+						}
 					</button>
 				))
 			}
@@ -166,11 +198,21 @@ function money(value: number | "—") {
 	document.querySelectorAll("[data-block='prices-levels']").forEach((root) => {
 		const tabs = [...root.querySelectorAll("[data-price-tab]")];
 		const panels = [...root.querySelectorAll("[data-price-panel]")];
+		const underline = root.querySelector("[data-tabs-style]")?.getAttribute("data-tabs-style") === "underline";
 
 		function show(index) {
 			tabs.forEach((tab) => {
 				const on = tab.getAttribute("data-price-tab") === String(index);
 				tab.setAttribute("aria-selected", on ? "true" : "false");
+				if (underline) {
+					tab.classList.toggle("text-text", on);
+					tab.classList.toggle("text-muted", !on);
+					tab.classList.toggle("hover:text-text", !on);
+					const line = tab.querySelector("[data-tab-line]");
+					line?.classList.toggle("bg-primary", on);
+					line?.classList.toggle("bg-transparent", !on);
+					return;
+				}
 				tab.classList.toggle("bg-primary", on);
 				tab.classList.toggle("text-primary-contrast", on);
 				tab.classList.toggle("border", !on);
