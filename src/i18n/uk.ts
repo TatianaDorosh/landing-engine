@@ -4,6 +4,8 @@ export interface UiStrings {
 	dateFormat: string;
 	buttons: {
 		book: string;
+		/** Підпис унизу картки ефекту. */
+		bookEffect: string;
 		submit: string;
 		more: string;
 		close: string;
@@ -69,6 +71,7 @@ export const uk = {
 	dateFormat: 'dd.MM.yyyy',
 	buttons: {
 		book: 'Записатися',
+		bookEffect: 'Записатися на цей ефект →',
 		submit: 'Надіслати заявку',
 		more: 'Детальніше',
 		close: 'Закрити',

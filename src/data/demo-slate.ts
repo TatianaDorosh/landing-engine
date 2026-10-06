@@ -26,6 +26,45 @@ export const hero = {
 	imageLabel: "Фото: вії або брови",
 };
 
+export const effects = {
+	title: "Оберіть свій ефект",
+	lead: "Не знаєте, що вам підійде? Підберемо на консультації за формою очей і вашим ритмом життя",
+	items: [
+		{
+			title: "Класика 1:1",
+			forWhom: "для щоденного вигляду, коли хочеться своїх вій, але густіших",
+			duration: "Тримається 3–4 тижні",
+			priceFrom: 1400,
+			imageLabel: "Фото: класика",
+			href: "#booking",
+		},
+		{
+			title: "2D",
+			forWhom: "для легкого об'єму й виразнішого погляду",
+			duration: "Тримається 3–4 тижні",
+			priceFrom: 1700,
+			imageLabel: "Фото: 2D",
+			href: "#booking",
+		},
+		{
+			title: "3D",
+			forWhom: "для густого, вечірнього вигляду",
+			duration: "Тримається 3–4 тижні",
+			priceFrom: 2000,
+			imageLabel: "Фото: 3D",
+			href: "#booking",
+		},
+		{
+			title: "Ламінування своїх вій",
+			forWhom: "без нарощення: свої вії підкручені й темніші",
+			duration: "Тримається 4–6 тижнів",
+			priceFrom: 1100,
+			imageLabel: "Фото: ламінування",
+			href: "#booking",
+		},
+	],
+};
+
 export const about = {
 	title: "Про мене",
 	paragraphs: [

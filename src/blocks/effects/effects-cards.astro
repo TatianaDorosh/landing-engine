@@ -1,0 +1,73 @@
+---
+import type { Locale } from "../../config/types";
+import PhotoPlaceholder from "../../components/PhotoPlaceholder.astro";
+import { getUi } from "../../i18n";
+import { typograf } from "../../lib/typograf";
+
+interface EffectItem {
+	title: string;
+	forWhom: string;
+	duration: string;
+	priceFrom: number;
+	image?: { src: string; alt: string; position?: string };
+	imageLabel: string;
+	href: string;
+}
+
+interface Props {
+	title: string;
+	lead?: string;
+	items: EffectItem[];
+	locale?: Locale;
+}
+
+const { title, lead, items, locale = "uk" } = Astro.props;
+const ui = getUi(locale);
+const columns =
+	items.length === 4 ? "lg:grid-cols-4" : items.length === 3 ? "lg:grid-cols-3" : "";
+---
+
+<section id="effects" data-block="effects-cards">
+	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		{lead && <p class="mt-3 max-w-[760px] font-body text-base leading-relaxed">{typograf(lead)}</p>}
+		<ul class:list={["mt-6 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2", columns]}>
+			{
+				items.map((item) => (
+					<li class="h-full min-w-0">
+						<a
+							href={item.href}
+							class="flex h-full flex-col overflow-hidden rounded-theme border border-border bg-surface"
+						>
+							{item.image ? (
+								<div class="relative aspect-[4/3] w-full overflow-hidden">
+									<img
+										src={item.image.src}
+										alt={item.image.alt}
+										loading="lazy"
+										decoding="async"
+										class="absolute inset-0 h-full w-full object-cover"
+										style={item.image.position ? `object-position: ${item.image.position}` : undefined}
+									/>
+								</div>
+							) : (
+								<PhotoPlaceholder label={item.imageLabel} ratio="4/3" />
+							)}
+							<div class="flex flex-1 flex-col p-4">
+								<h3 class="font-body text-[17px] font-semibold leading-snug">{typograf(item.title)}</h3>
+								<p class="mt-2 font-body text-[15px] leading-[1.5]">{typograf(item.forWhom)}</p>
+								<p class="mt-2 font-body text-[15px] leading-[1.5] text-muted">{typograf(item.duration)}</p>
+								<div class="mt-auto pt-4">
+									<p class="font-heading text-[28px] leading-none text-primary">
+										від {item.priceFrom} {ui.currency}
+									</p>
+									<span class="inline-flex min-h-11 items-center pt-4 text-primary">{ui.buttons.bookEffect}</span>
+								</div>
+							</div>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

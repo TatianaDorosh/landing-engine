@@ -8,6 +8,7 @@ import PricesSimple from "../blocks/prices/prices-simple.astro";
 import BookingMessengers from "../blocks/booking/booking-messengers.astro";
 import Trust from "../blocks/trust/trust-strip.astro";
 import Services from "../blocks/services/services-cards.astro";
+import Effects from "../blocks/effects/effects-cards.astro";
 import Safety from "../blocks/safety/safety-standards.astro";
 import Gallery from "../blocks/gallery/gallery-carousel.astro";
 import BeforeAfter from "../blocks/gallery/gallery-before-after.astro";
@@ -32,6 +33,7 @@ import { demoMokka } from "../config/demo-mokka";
 import { getUi } from "../i18n";
 import { header, hero, trust, services, safety, gallery, beforeAfter, prices, team, steps, reviews, gifts, booking, bookingOnline, faq, myths, contacts } from "../data/demo-beauty";
 import { hero as mokkaHero, about as mokkaAbout, prices as mokkaPrices, booking as mokkaBooking } from "../data/demo-mokka";
+import { effects } from "../data/demo-slate";
 
 const ui = getUi(demoBeauty.locale);
 
@@ -60,6 +62,7 @@ const rules = {
 ---
 
 <Base config={demoBeauty} noindex={true} title="Вітрина блоків landing-engine">
+	<div data-vitrina>
 	<div class="mx-auto max-w-6xl px-4 pb-4 pt-8 xl:px-8">
 		<h1 class="text-3xl">Вітрина блоків</h1>
 	</div>
@@ -87,6 +90,9 @@ const rules = {
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">services-cards</p>
 	<Services {...services} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">effects-cards</p>
+	<Effects {...effects} locale={demoBeauty.locale} />
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">safety-standards</p>
 	<Safety {...safety} />
@@ -162,4 +168,33 @@ const rules = {
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">layout-footer</p>
 	<Footer config={demoBeauty} privacyHref="/flagship-beauty/privacy/" />
+	</div>
 </Base>
+
+<style is:global>
+	/* Лише вітрина. Карусель лишається свайпом у своєму рядку, сторінка не ширшає. */
+	@media (width < 80rem) {
+		[data-vitrina] [data-block="gallery-carousel"] > div:first-child,
+		[data-vitrina] [data-block="team-cards"] > div:first-child,
+		[data-vitrina] [data-block="reviews-cards"] > div:first-child {
+			min-width: 0;
+			max-width: 100%;
+			overflow-x: clip;
+		}
+
+		[data-vitrina] [data-block="gallery-carousel"] [data-track],
+		[data-vitrina] [data-block="team-cards"] [data-track],
+		[data-vitrina] [data-block="reviews-cards"] [data-track] {
+			min-width: 0;
+			max-width: 100%;
+			overflow-x: auto;
+		}
+
+		[data-vitrina] [data-block="gallery-carousel"] [data-slide],
+		[data-vitrina] [data-block="team-cards"] [data-slide],
+		[data-vitrina] [data-block="reviews-cards"] [data-slide] {
+			min-width: 0;
+			max-width: 85%;
+		}
+	}
+</style>
