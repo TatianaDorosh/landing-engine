@@ -14,16 +14,19 @@ interface Props {
 	items: GalleryItem[];
 	/** Якір секції. За замовчуванням gallery, щоб не змінити наявні сторінки. */
 	sectionId?: string;
+	/** Менший верхній відступ, щоб блок починався вище на першому екрані. */
+	spacing?: "regular" | "tight";
 }
 
-const { title, categories, items, sectionId = "gallery" } = Astro.props;
+const { title, categories, items, sectionId = "gallery", spacing = "regular" } = Astro.props;
 const first = categories[0] ?? "";
+const tight = spacing === "tight";
 ---
 
 <section id={sectionId} data-block="gallery-carousel">
-	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+	<div class:list={["mx-auto max-w-6xl px-4 xl:px-8", tight ? "pt-4 pb-12" : "py-12"]}>
 		<h2 class="text-3xl">{typograf(title)}</h2>
-		<div class="mt-6 flex flex-wrap gap-2">
+		<div class:list={["flex flex-wrap gap-2", tight ? "mt-3" : "mt-6"]}>
 			{
 				categories.map((category) => (
 					<button
@@ -45,7 +48,10 @@ const first = categories[0] ?? "";
 
 		<div
 			data-track
-			class="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto xl:grid xl:grid-cols-3 xl:overflow-visible"
+			class:list={[
+				"flex snap-x snap-mandatory gap-3 overflow-x-auto xl:grid xl:grid-cols-3 xl:overflow-visible",
+				tight ? "mt-3" : "mt-6",
+			]}
 		>
 			{
 				items.map((item) => {

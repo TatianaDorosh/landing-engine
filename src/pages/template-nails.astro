@@ -16,8 +16,8 @@ import { header, hero, gallery, prices, steps, rules, booking, contacts } from "
 <Base config={demoLavender}>
 	<Header {...header} nameHref="/template-nails/" />
 	<main>
-		<HeroCover {...hero} />
-		<Gallery {...gallery} sectionId="services" />
+		<HeroCover {...hero} compact />
+		<Gallery {...gallery} sectionId="services" spacing="tight" />
 		<PricesSimple {...prices} />
 		<Steps {...steps} />
 		<RulesList {...rules} />
