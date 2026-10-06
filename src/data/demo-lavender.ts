@@ -4,6 +4,18 @@ import { getUi } from "../i18n";
 
 const ui = getUi(demoLavender.locale);
 
+export const header = {
+	name: demoLavender.name,
+	nav: [
+		{ label: "Послуги", href: "#services" },
+		{ label: "Ціни", href: "#prices" },
+		{ label: "Правила", href: "#rules" },
+		{ label: "Контакти", href: "#contacts" },
+	],
+	ctaLabel: ui.buttons.book,
+	ctaHref: "#booking",
+};
+
 export const hero = {
 	eyebrow: "Нейл-студія у Києві",
 	title: "Манікюр і педикюр за 2 години, за один візит",
@@ -34,8 +46,8 @@ export const gallery = {
 	title: "Роботи",
 	categories: ["Манікюр", "Педикюр"],
 	items: [
-		...manicureAlts.map((alt) => ({ category: "Манікюр", alt })),
-		...pedicureAlts.map((alt) => ({ category: "Педикюр", alt })),
+		...manicureAlts.map((alt) => ({ category: "Манікюр", label: alt })),
+		...pedicureAlts.map((alt) => ({ category: "Педикюр", label: alt })),
 	],
 };
 
@@ -115,6 +127,21 @@ export const steps = {
 			text: "Олія, перевірка покриття — і ви вільні.",
 		},
 	],
+};
+
+export const booking = {
+	title: "Запис",
+	text: "Напишіть у зручний месенджер: день, час і що потрібно — манікюр, педикюр чи обидва. Підтвердимо запис у відповідь.",
+	captions: {
+		telegram: "Найшвидше, відповідаємо протягом години",
+		viber: "Повідомлення або дзвінок",
+		instagram: "Напишіть у директ",
+	},
+};
+
+export const contacts = {
+	title: "Як нас знайти",
+	directions: "Вхід з вулиці Саксаганського",
 };
 
 export const rules = {

@@ -13,7 +13,7 @@ export const demoLavender = {
 		phoneDisplay: '+38 (093) 111-22-66',
 		address: 'вул. Саксаганського, 40',
 		city: 'Київ',
-		geo: { lat: 50.4362, lng: 30.5101 },
+		geo: { lat: 50.4501, lng: 30.5234 },
 		hours: 'Пн–Нд 10:00–20:00',
 		hoursSchema: [
 			{

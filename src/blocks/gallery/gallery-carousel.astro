@@ -12,13 +12,15 @@ interface Props {
 	title: string;
 	categories: string[];
 	items: GalleryItem[];
+	/** Якір секції. За замовчуванням gallery, щоб не змінити наявні сторінки. */
+	sectionId?: string;
 }
 
-const { title, categories, items } = Astro.props;
+const { title, categories, items, sectionId = "gallery" } = Astro.props;
 const first = categories[0] ?? "";
 ---
 
-<section id="gallery" data-block="gallery-carousel">
+<section id={sectionId} data-block="gallery-carousel">
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
 		<h2 class="text-3xl">{typograf(title)}</h2>
 		<div class="mt-6 flex flex-wrap gap-2">

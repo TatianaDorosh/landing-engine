@@ -33,7 +33,15 @@ const positionDesktop = image?.positionDesktop || "50% 20%";
 						style={image.position ? `object-position: ${image.position}` : undefined}
 					/>
 				) : (
-					<PhotoPlaceholder label={title} class="absolute inset-0 h-full" />
+					<>
+						<PhotoPlaceholder label="" class="absolute inset-0 h-full" />
+						<p
+							class="pointer-events-none absolute inset-0 hidden items-center justify-center px-6 text-center font-body text-sm text-muted lg:flex"
+							aria-hidden="true"
+						>
+							{title}
+						</p>
+					</>
 				)
 			}
 			{

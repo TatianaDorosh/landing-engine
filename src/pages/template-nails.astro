@@ -1,0 +1,28 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import HeroCover from "../blocks/hero/hero-cover.astro";
+import Gallery from "../blocks/gallery/gallery-carousel.astro";
+import PricesSimple from "../blocks/prices/prices-simple.astro";
+import Steps from "../blocks/steps/steps-visit.astro";
+import RulesList from "../blocks/rules/rules-list.astro";
+import BookingMessengers from "../blocks/booking/booking-messengers.astro";
+import ContactsMap from "../blocks/contacts/contacts-map.astro";
+import Footer from "../blocks/layout/layout-footer.astro";
+import { demoLavender } from "../config/demo-lavender";
+import { header, hero, gallery, prices, steps, rules, booking, contacts } from "../data/demo-lavender";
+---
+
+<Base config={demoLavender}>
+	<Header {...header} nameHref="/template-nails/" />
+	<main>
+		<HeroCover {...hero} />
+		<Gallery {...gallery} sectionId="services" />
+		<PricesSimple {...prices} />
+		<Steps {...steps} />
+		<RulesList {...rules} />
+		<BookingMessengers {...booking} contacts={demoLavender.contacts} locale={demoLavender.locale} />
+		<ContactsMap {...contacts} contacts={demoLavender.contacts} />
+	</main>
+	<Footer config={demoLavender} privacyHref="/template-nails/privacy/" />
+</Base>
