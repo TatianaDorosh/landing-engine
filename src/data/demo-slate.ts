@@ -57,6 +57,11 @@ export const effects = {
 			priceFrom: 1700,
 			imageLabel: "Фото: 2D",
 			href: "#booking",
+			image: {
+				src: "/images/demo-slate/effect-2d.webp",
+				alt: "Крупний план ока з легкими розділеними віями та бровою",
+				position: "center center",
+			},
 		},
 		{
 			title: "3D",
