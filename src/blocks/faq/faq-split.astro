@@ -1,0 +1,201 @@
+---
+import type { Locale } from "../../config/types";
+import { getUi } from "../../i18n";
+import { typograf } from "../../lib/typograf";
+
+interface Item {
+	myth: string;
+	fact: string;
+	author: string;
+}
+
+interface Props {
+	title: string;
+	items: Item[];
+	locale?: Locale;
+}
+
+const { title, items, locale = "uk" } = Astro.props;
+const ui = getUi(locale);
+---
+
+<section id="myths" data-block="faq-split" class="scroll-mt-24">
+	<div class="mx-auto max-w-6xl min-w-0 px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		<div class="mt-6 flex min-w-0 flex-col lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-10" data-faq-split>
+			<div class="contents lg:col-span-5 lg:flex lg:min-w-0 lg:flex-col" data-faq-tabs>
+				{
+					items.map((item, index) => (
+						<button
+							type="button"
+							id={`myth-tab-${index}`}
+							data-faq-tab={index}
+							aria-controls={`myth-panel-${index}`}
+							aria-expanded={index === 0 ? "true" : "false"}
+							class:list={[
+								"relative flex min-h-11 w-full min-w-0 items-center border-b border-border py-3 text-left font-body text-[17px] font-medium text-muted last:border-b-0 hover:text-text lg:pl-4",
+								index === 0 && "is-active",
+							]}
+							style={`order: ${index * 2}`}
+						>
+							<span class="faq-bar absolute inset-y-0 left-0 w-[3px] bg-primary" aria-hidden="true" />
+							{typograf(item.myth)}
+						</button>
+					))
+				}
+			</div>
+			<div class="contents lg:col-span-7 lg:grid lg:min-w-0" data-faq-panels>
+				{
+					items.map((item, index) => (
+						<div
+							id={`myth-panel-${index}`}
+							data-faq-panel={index}
+							class:list={["faq-panel min-w-0 max-lg:pb-4", index !== 0 && "is-closed"]}
+							style={`order: ${index * 2 + 1}`}
+						>
+							<article class="flex h-full min-h-full flex-col rounded-theme border border-border bg-surface p-6">
+								<p class="hidden font-body text-sm text-muted lg:block">{ui.faq.myth}</p>
+								<h3 class="mt-1 hidden font-body text-[17px] font-semibold lg:block">{typograf(item.myth)}</h3>
+								<p class="font-body text-sm font-semibold text-primary lg:mt-4">{ui.faq.fact}</p>
+								<p class="mt-1 font-body text-[15px] leading-[1.5]">{item.fact}</p>
+								<p class="mt-auto pt-4 font-body text-sm text-muted">{item.author}</p>
+							</article>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.faq-bar {
+		display: none;
+	}
+
+	[data-faq-tab].is-active {
+		color: var(--color-text);
+	}
+
+	.faq-panel.is-closed {
+		display: none;
+	}
+
+	@media (min-width: 1024px) {
+		.faq-panel {
+			grid-area: 1 / 1;
+			height: 100%;
+		}
+
+		.faq-panel.is-closed {
+			display: block;
+			visibility: hidden;
+			pointer-events: none;
+		}
+
+		.faq-panel:not(.is-closed) {
+			position: relative;
+			z-index: 1;
+		}
+
+		[data-faq-tab].is-active .faq-bar {
+			display: block;
+		}
+	}
+</style>
+
+<script>
+	function bindFaqSplit() {
+		document.querySelectorAll("[data-block='faq-split']").forEach((root) => {
+			if (!(root instanceof HTMLElement) || root.dataset.faqBound === "true") return;
+			root.dataset.faqBound = "true";
+
+			const desktop = window.matchMedia("(min-width: 1024px)");
+			const tablist = root.querySelector("[data-faq-tabs]");
+			const tabs = [...root.querySelectorAll("[data-faq-tab]")];
+			const panels = [...root.querySelectorAll("[data-faq-panel]")];
+			let current = tabs.findIndex((tab) => tab.classList.contains("is-active"));
+			if (current < 0) current = 0;
+
+			function select(index: number, focus: boolean) {
+				current = index;
+				const wide = desktop.matches;
+
+				if (tablist instanceof HTMLElement) {
+					if (wide) {
+						tablist.setAttribute("role", "tablist");
+						tablist.setAttribute("aria-orientation", "vertical");
+					} else {
+						tablist.removeAttribute("role");
+						tablist.removeAttribute("aria-orientation");
+					}
+				}
+
+				tabs.forEach((tab, i) => {
+					if (!(tab instanceof HTMLButtonElement)) return;
+					const on = i === index;
+					tab.classList.toggle("is-active", on);
+					tab.classList.toggle("text-text", on);
+					tab.classList.toggle("text-muted", !on);
+					if (wide) {
+						tab.setAttribute("role", "tab");
+						tab.setAttribute("aria-selected", on ? "true" : "false");
+						tab.removeAttribute("aria-expanded");
+						tab.tabIndex = on ? 0 : -1;
+					} else {
+						tab.removeAttribute("role");
+						tab.removeAttribute("aria-selected");
+						tab.setAttribute("aria-expanded", on ? "true" : "false");
+						tab.tabIndex = 0;
+					}
+				});
+
+				panels.forEach((panel, i) => {
+					if (!(panel instanceof HTMLElement)) return;
+					const on = i === index;
+					panel.classList.toggle("is-closed", !on);
+					const tab = tabs[i];
+					if (wide) {
+						panel.setAttribute("role", "tabpanel");
+						if (tab instanceof HTMLElement) panel.setAttribute("aria-labelledby", tab.id);
+						if (on) {
+							panel.removeAttribute("aria-hidden");
+							panel.removeAttribute("inert");
+						} else {
+							panel.setAttribute("aria-hidden", "true");
+							panel.setAttribute("inert", "");
+						}
+					} else {
+						panel.removeAttribute("role");
+						panel.removeAttribute("aria-labelledby");
+						panel.removeAttribute("aria-hidden");
+						panel.removeAttribute("inert");
+					}
+				});
+
+				const next = tabs[index];
+				if (focus && next instanceof HTMLElement) next.focus();
+			}
+
+			tabs.forEach((tab, index) => {
+				tab.addEventListener("click", () => select(index, false));
+			});
+
+			tablist?.addEventListener("keydown", (event) => {
+				if (!(event instanceof KeyboardEvent) || !desktop.matches) return;
+				const key = event.key;
+				if (key !== "ArrowDown" && key !== "ArrowUp" && key !== "Home" && key !== "End") return;
+				event.preventDefault();
+				if (key === "Home") select(0, true);
+				else if (key === "End") select(tabs.length - 1, true);
+				else if (key === "ArrowDown") select((current + 1) % tabs.length, true);
+				else select((current - 1 + tabs.length) % tabs.length, true);
+			});
+
+			desktop.addEventListener("change", () => select(current, false));
+			select(current, false);
+		});
+	}
+
+	bindFaqSplit();
+</script>

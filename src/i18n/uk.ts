@@ -64,6 +64,10 @@ export interface UiStrings {
 		/** Рядок під кнопками запису: «Або зателефонуйте:». */
 		orCall: string;
 	};
+	faq: {
+		myth: string;
+		fact: string;
+	};
 }
 
 export const uk = {
@@ -125,5 +129,9 @@ export const uk = {
 		instagram: 'Instagram',
 		hours: 'Графік:',
 		orCall: 'Або зателефонуйте:',
+	},
+	faq: {
+		myth: 'Міф',
+		fact: 'Факт',
 	},
 } satisfies UiStrings;
