@@ -15,6 +15,7 @@ import Prices from "../blocks/prices/prices-levels.astro";
 import TeamCards from "../blocks/team/team-cards.astro";
 import TeamCompact from "../blocks/team/team-compact.astro";
 import Steps from "../blocks/steps/steps-visit.astro";
+import RulesList from "../blocks/rules/rules-list.astro";
 import Reviews from "../blocks/reviews/reviews-cards.astro";
 import Gifts from "../blocks/gifts/gifts-certificates.astro";
 import Booking from "../blocks/booking/booking-form.astro";
@@ -33,6 +34,29 @@ import { header, hero, trust, services, safety, gallery, beforeAfter, prices, te
 import { hero as mokkaHero, about as mokkaAbout, prices as mokkaPrices, booking as mokkaBooking } from "../data/demo-mokka";
 
 const ui = getUi(demoBeauty.locale);
+
+const rules = {
+	title: "Правила запису",
+	intro: "Час у студії заброньований особисто для вас. Коротко про те, як ми його тримаємо.",
+	items: [
+		{
+			title: "Передоплата",
+			text: "Щоб час був за вами, потрібна передоплата. Вона входить у вартість візиту, а не додається зверху.",
+		},
+		{
+			title: "Запізнення",
+			text: "Якщо запізнюєтесь більше ніж на 15 хвилин, візит скорочуємо або переносимо: наступний запис уже стоїть.",
+		},
+		{
+			title: "Перенесення",
+			text: "Перенести або скасувати запис можна не пізніше ніж за добу. Якщо пізніше, передоплата не повертається.",
+		},
+		{
+			title: "Гарантія",
+			text: "Якщо покриття скололось не з вашої вини протягом тижня, переробимо безкоштовно.",
+		},
+	],
+};
 ---
 
 <Base config={demoBeauty} noindex={true} title="Вітрина блоків landing-engine">
@@ -84,6 +108,9 @@ const ui = getUi(demoBeauty.locale);
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">steps-visit</p>
 	<Steps {...steps} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">rules-list</p>
+	<RulesList {...rules} />
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">reviews-cards</p>
 	<Reviews {...reviews} />

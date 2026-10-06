@@ -1,0 +1,46 @@
+---
+import { typograf } from "../../lib/typograf";
+
+interface RuleItem {
+	title: string;
+	text: string;
+}
+
+interface Props {
+	title: string;
+	intro?: string;
+	items: RuleItem[];
+}
+
+const { title, intro, items } = Astro.props;
+---
+
+<section id="rules" data-block="rules-list" class="scroll-mt-24">
+	<div class="mx-auto grid max-w-6xl min-w-0 gap-8 px-4 py-12 lg:grid-cols-12 lg:items-start lg:gap-x-10 xl:px-8">
+		<div class="min-w-0 lg:col-span-4">
+			<h2 class="text-3xl">{typograf(title)}</h2>
+			{
+				intro && (
+					<p class="mt-4 font-body text-base leading-relaxed">{typograf(intro)}</p>
+				)
+			}
+		</div>
+		<div class="min-w-0 lg:col-span-8">
+			<ol class="m-0 list-none divide-y divide-border p-0">
+				{
+					items.map((item, index) => (
+						<li class="py-5 first:pt-0 last:pb-0">
+							<p class="font-heading text-[28px] leading-none text-primary tabular-nums" aria-hidden="true">
+								{index + 1}
+							</p>
+							<h3 class="mt-2 font-body text-[17px] font-semibold leading-snug text-text">
+								{typograf(item.title)}
+							</h3>
+							<p class="mt-1 font-body text-[15px] leading-[1.6]">{typograf(item.text)}</p>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</div>
+</section>
