@@ -18,23 +18,27 @@ interface Props {
 	spacing?: "regular" | "tight";
 	/** pill — кнопки-таблетки, underline — текстові вкладки з лінією. */
 	tabsStyle?: "pill" | "underline";
+	/** grid — сітка на комп'ютері, carousel — горизонтальна доріжка на всіх ширинах. */
+	layout?: "grid" | "carousel";
 }
 
-const { title, categories, items, sectionId = "gallery", spacing = "regular", tabsStyle = "pill" } = Astro.props;
+const { title, categories, items, sectionId = "gallery", spacing = "regular", tabsStyle = "pill", layout = "grid" } = Astro.props;
 const first = categories[0] ?? "";
 const tight = spacing === "tight";
 const underline = tabsStyle === "underline";
+const carousel = layout === "carousel";
 ---
 
-<section id={sectionId} data-block="gallery-carousel">
+<section id={sectionId} data-block="gallery-carousel" data-layout={layout}>
 	<div class:list={["mx-auto max-w-6xl px-4 xl:px-8", tight ? "pt-4 pb-12" : "py-12"]}>
 		<h2 class="text-3xl">{typograf(title)}</h2>
+		<div class:list={[carousel && ["flex items-center gap-4", tight ? "mt-3" : "mt-6"]]}>
 		<div
 			data-tabs-style={tabsStyle}
 			role={underline ? "tablist" : undefined}
 			aria-label={underline ? "Категорії" : undefined}
 			class:list={[
-				tight ? "mt-3" : "mt-6",
+				carousel ? "min-w-0 flex-1" : tight ? "mt-3" : "mt-6",
 				underline
 					? "flex flex-nowrap items-stretch gap-8 border-b border-border"
 					: "flex flex-wrap gap-2",
@@ -81,11 +85,45 @@ const underline = tabsStyle === "underline";
 				})
 			}
 		</div>
+		{
+			carousel && (
+				<div class="hidden shrink-0 gap-2 sm:flex">
+					<button
+						type="button"
+						data-carousel-prev
+						class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-transparent text-text disabled:opacity-40"
+						aria-label="Попередні роботи"
+						disabled
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+						</svg>
+					</button>
+					<button
+						type="button"
+						data-carousel-next
+						class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-transparent text-text disabled:opacity-40"
+						aria-label="Наступні роботи"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+						</svg>
+					</button>
+				</div>
+			)
+		}
+		</div>
 
 		<div
 			data-track
+			data-layout={layout}
+			tabindex={carousel ? 0 : undefined}
+			aria-label={carousel ? "Роботи" : undefined}
 			class:list={[
-				"flex snap-x snap-mandatory gap-3 overflow-x-auto xl:grid xl:grid-cols-3 xl:overflow-visible",
+				"flex gap-3 overflow-x-auto",
+				carousel
+					? "min-w-0 max-w-full snap-x snap-mandatory overscroll-x-contain"
+					: "snap-x snap-mandatory xl:grid xl:grid-cols-3 xl:overflow-visible",
 				tight ? "mt-3" : "mt-6",
 			]}
 		>
@@ -102,7 +140,10 @@ const underline = tabsStyle === "underline";
 							data-alt={item.image?.alt ?? item.label}
 							hidden={!visible}
 							class:list={[
-								"w-[85%] shrink-0 snap-center overflow-hidden rounded-theme border border-border text-left xl:w-auto",
+								"shrink-0 overflow-hidden rounded-theme border border-border text-left",
+								carousel
+									? "snap-start"
+									: "w-[85%] snap-center xl:w-auto",
 								!visible && "hidden",
 							]}
 						>
@@ -114,18 +155,47 @@ const underline = tabsStyle === "underline";
 									height={item.image.height}
 									loading="lazy"
 									decoding="async"
-									class="aspect-square w-full object-cover"
+									class:list={["w-full object-cover", carousel ? "aspect-[4/5] lg:aspect-square" : "aspect-square"]}
 								/>
 							) : (
-								<PhotoPlaceholder label={item.label} class="aspect-square" />
+								<PhotoPlaceholder
+									label={item.label}
+									class={carousel ? "aspect-[4/5] lg:aspect-square" : "aspect-square"}
+								/>
 							)}
 						</button>
 					);
 				})
 			}
 		</div>
-		<div data-dots class="mt-2 flex justify-center xl:hidden" aria-label="Фото галереї"></div>
+		<div data-dots class:list={[carousel ? "hidden" : "mt-2 flex justify-center xl:hidden"]} aria-label="Фото галереї"></div>
 	</div>
+
+	<style>
+		[data-track][data-layout="carousel"] {
+			scrollbar-width: none;
+		}
+		[data-track][data-layout="carousel"]::-webkit-scrollbar {
+			display: none;
+		}
+		[data-track][data-layout="carousel"]:focus-visible {
+			outline: 2px solid var(--color-primary);
+			outline-offset: 2px;
+		}
+		[data-track][data-layout="carousel"] [data-slide] {
+			width: 84%;
+		}
+		@media (min-width: 640px) {
+			[data-track][data-layout="carousel"] [data-slide] {
+				width: calc((100% - 1.5rem) / 2.12);
+			}
+		}
+		@media (min-width: 1024px) {
+			[data-track][data-layout="carousel"] [data-slide] {
+				width: calc((100% - 2.25rem) / 3.12);
+			}
+		}
+	</style>
 
 	<div
 		data-lightbox
@@ -184,6 +254,9 @@ const underline = tabsStyle === "underline";
 
 		const tabs = [...root.querySelectorAll("[data-category-tab]")];
 		const underline = root.querySelector("[data-tabs-style]")?.getAttribute("data-tabs-style") === "underline";
+		const carousel = root.getAttribute("data-layout") === "carousel";
+		const prevBtn = root.querySelector("[data-carousel-prev]");
+		const nextBtn = root.querySelector("[data-carousel-next]");
 		let index = 0;
 		let lastTrigger = null;
 
@@ -250,7 +323,34 @@ const underline = tabsStyle === "underline";
 			});
 			setPressed(category);
 			rebuildDots();
+			scrollTarget = null;
 			track.scrollTo({ left: 0 });
+			if (carousel) requestAnimationFrame(updateArrows);
+		}
+
+		let scrollTarget = null;
+
+		function scrollStep(direction) {
+			const slide = visibleSlides()[0];
+			if (!(track instanceof HTMLElement) || !(slide instanceof HTMLElement)) return;
+			const gap = parseFloat(getComputedStyle(track).columnGap) || 12;
+			const step = slide.getBoundingClientRect().width + gap;
+			const max = Math.max(0, track.scrollWidth - track.clientWidth);
+			const base = scrollTarget ?? track.scrollLeft;
+			const next = Math.max(0, Math.min(max, base + direction * step));
+			scrollTarget = next;
+			track.scrollTo({ left: next, behavior: "auto" });
+			updateArrows();
+		}
+
+		function updateArrows() {
+			if (!(track instanceof HTMLElement)) return;
+			if (!(prevBtn instanceof HTMLButtonElement) || !(nextBtn instanceof HTMLButtonElement)) return;
+			const max = Math.max(0, track.scrollWidth - track.clientWidth);
+			const left = scrollTarget ?? track.scrollLeft;
+			if (scrollTarget !== null && Math.abs(track.scrollLeft - scrollTarget) <= 2) scrollTarget = null;
+			prevBtn.disabled = left <= 2;
+			nextBtn.disabled = max <= 2 || left >= max - 2;
 		}
 
 		function renderLightbox() {
@@ -336,7 +436,21 @@ const underline = tabsStyle === "underline";
 			slide?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 		});
 
-		if ("IntersectionObserver" in window) {
+		if (carousel && prevBtn instanceof HTMLButtonElement && nextBtn instanceof HTMLButtonElement) {
+			prevBtn.addEventListener("click", () => scrollStep(-1));
+			nextBtn.addEventListener("click", () => scrollStep(1));
+			track.addEventListener("scroll", updateArrows, { passive: true });
+			window.addEventListener("resize", updateArrows);
+			track.addEventListener("keydown", (event) => {
+				if (!(event instanceof KeyboardEvent)) return;
+				if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+				event.preventDefault();
+				scrollStep(event.key === "ArrowRight" ? 1 : -1);
+			});
+			updateArrows();
+		}
+
+		if (!carousel && "IntersectionObserver" in window) {
 			const observer = new IntersectionObserver(
 				(entries) => {
 					if (window.matchMedia("(min-width: 1280px)").matches) return;
