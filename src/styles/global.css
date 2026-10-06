@@ -5,6 +5,8 @@
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/jost";
 @import "@fontsource-variable/lora";
+@import "@fontsource-variable/unbounded";
+@import "@fontsource-variable/onest";
 
 /* Запасні значення. :where має нульову вагу, тож тема з Base.astro завжди перемагає. */
 :where(:root) {
