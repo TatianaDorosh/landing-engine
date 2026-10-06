@@ -38,13 +38,13 @@ const manicureAlts = [
 	"Темно-сливовий манікюр, матове покриття, форма балерина",
 ];
 
-const pedicureAlts = [
-	"Педикюр у нюдовому кольорі, акуратна овальна форма",
-	"Молочний педикюр на світлій підставці для ніг",
-	"Педикюр великого пальця в студії",
-	"Лавандовий педикюр із блиском на великому пальці",
-	"Французький педикюр, натуральна довжина нігтів",
-	"Синій педикюр",
+const pedicureItems = [
+	{ file: 1, label: "Педикюр у нюдовому кольорі, акуратна овальна форма" },
+	{ file: 5, label: "Французький педикюр, натуральна довжина нігтів" },
+	{ file: 3, label: "Педикюр великого пальця в студії" },
+	{ file: 4, label: "Лавандовий педикюр із блиском на великому пальці" },
+	{ file: 2, label: "Молочний педикюр на світлій підставці для ніг" },
+	{ file: 6, label: "Синій педикюр" },
 ];
 
 function galleryImage(folder: "manicure" | "pedicure", index: number, alt: string) {
@@ -66,10 +66,10 @@ export const gallery = {
 			label,
 			image: galleryImage("manicure", index + 1, `Манікюр, робота студії Lavo Nails, фото ${index + 1}`),
 		})),
-		...pedicureAlts.map((label, index) => ({
+		...pedicureItems.map((item, index) => ({
 			category: "Педикюр",
-			label,
-			image: galleryImage("pedicure", index + 1, `Педикюр, фото ${index + 1}`),
+			label: item.label,
+			image: galleryImage("pedicure", item.file, `Педикюр, фото ${index + 1}`),
 		})),
 	],
 };
