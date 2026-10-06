@@ -38,6 +38,7 @@ export const demoSlate = {
 		description:
 			'Нарощення вій і ламінування брів у Nuvo Brow & Lash, Київ. Софія Коваль підбирає ефект під форму очей — без лялькового вигляду. Пн–Сб 10:00–19:00.',
 		ogImage: '/og/demo-slate.jpg',
+		favicon: '/favicon-slate.svg',
 	},
 	rating: { value: 4.9, count: 86 },
 	theme: {

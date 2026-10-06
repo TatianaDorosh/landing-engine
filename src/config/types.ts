@@ -42,6 +42,8 @@ export interface SiteConfig {
 		description: string;
 		/** Шлях від кореня сайту, наприклад /og/demo-beauty.jpg. */
 		ogImage: string;
+		/** Якщо не задано, сторінка бере спільний /favicon.svg. */
+		favicon?: string;
 	};
 	rating: { value: number; count: number } | null;
 	theme: {

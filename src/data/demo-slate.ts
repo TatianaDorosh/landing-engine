@@ -24,6 +24,13 @@ export const hero = {
 	primaryCta: { label: ui.buttons.book, href: "#booking" },
 	secondaryCta: { label: "Дивитися ціни", href: "#prices" },
 	imageLabel: "Фото: вії або брови",
+	image: {
+		src: "/images/demo-slate/hero.webp",
+		alt: "Чорно-білий портрет жінки: видно обличчя, брови й очі, пасмо волосся закриває щоку",
+		width: 1100,
+		height: 1921,
+		position: "center 32%",
+	},
 };
 
 export const effects = {
@@ -37,6 +44,11 @@ export const effects = {
 			priceFrom: 1400,
 			imageLabel: "Фото: класика",
 			href: "#booking",
+			image: {
+				src: "/images/demo-slate/effect-classic.webp",
+				alt: "Чорно-білий крупний план ока з виразними віями та бровою",
+				position: "center 42%",
+			},
 		},
 		{
 			title: "2D",
@@ -53,6 +65,11 @@ export const effects = {
 			priceFrom: 2000,
 			imageLabel: "Фото: 3D",
 			href: "#booking",
+			image: {
+				src: "/images/demo-slate/effect-3d.webp",
+				alt: "Крупний план ока з густими віями, темною бровою і рожевими тінями",
+				position: "40% 32%",
+			},
 		},
 		{
 			title: "Ламінування своїх вій",
@@ -61,6 +78,11 @@ export const effects = {
 			priceFrom: 1100,
 			imageLabel: "Фото: ламінування",
 			href: "#booking",
+			image: {
+				src: "/images/demo-slate/effect-lamination.webp",
+				alt: "Жінка лежить під лампою: ламіновані брови й підкручені вії",
+				position: "center 42%",
+			},
 		},
 	],
 };
@@ -77,6 +99,11 @@ export const about = {
 		"Стерильні інструменти й сертифіковані матеріали",
 	],
 	signature: "Софія",
+	image: {
+		src: "/images/demo-slate/about.webp",
+		alt: "Майстриня в сірому піджаку й чорних рукавичках коригує брову клієнтки",
+		position: "center 22%",
+	},
 };
 
 export const prices = {
