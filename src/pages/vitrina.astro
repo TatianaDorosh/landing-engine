@@ -32,9 +32,10 @@ import Footer from "../blocks/layout/layout-footer.astro";
 import { demoBeauty } from "../config/demo-beauty";
 import { demoMokka } from "../config/demo-mokka";
 import { getUi } from "../i18n";
-import { header, hero, trust, services, safety, gallery, beforeAfter, prices, team, steps, reviews, gifts, booking, bookingOnline, faq, myths, contacts } from "../data/demo-beauty";
+import { header, hero, trust, services, safety, gallery, beforeAfter, prices, team, steps, reviews, gifts, booking, faq, myths, contacts } from "../data/demo-beauty";
 import { hero as mokkaHero, about as mokkaAbout, prices as mokkaPrices, booking as mokkaBooking } from "../data/demo-mokka";
-import { effects, myths as slateMyths } from "../data/demo-slate";
+import { demoSlate } from "../config/demo-slate";
+import { effects, myths as slateMyths, booking as slateBooking } from "../data/demo-slate";
 
 const ui = getUi(demoBeauty.locale);
 
@@ -153,7 +154,12 @@ const rules = {
 	/>
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">booking-online-service</p>
-	<BookingOnline {...bookingOnline} phone={demoBeauty.contacts.phone} />
+	<BookingOnline
+		{...slateBooking}
+		phone={demoSlate.contacts.phoneDisplay ?? demoSlate.contacts.phone}
+		contacts={demoSlate.contacts}
+		locale={demoSlate.locale}
+	/>
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">faq-accordion</p>
 	<Faq {...faq} telegram={demoBeauty.contacts.telegram} />

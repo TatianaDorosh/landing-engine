@@ -31,7 +31,7 @@ export const demoSlate = {
 		timeFrom: '10:00',
 		timeTo: '19:00',
 		stepMinutes: 30,
-		onlineService: { name: '[ЗАПОВНИТИ]', url: '[ЗАПОВНИТИ]' },
+		onlineService: { name: 'Altegio', url: '[ЗАПОВНИТИ]' },
 	},
 	seo: {
 		title: 'Nuvo Brow & Lash — нарощення вій і ламінування брів у Києві',

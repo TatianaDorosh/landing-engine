@@ -68,6 +68,14 @@ export interface UiStrings {
 		myth: string;
 		fact: string;
 	};
+	booking: {
+		/** Головна кнопка запису через зовнішній сервіс. */
+		online: string;
+		/** {name} — назва сервісу запису. */
+		via: string;
+		/** Підпис на лінії перед телефоном і месенджерами. */
+		or: string;
+	};
 }
 
 export const uk = {
@@ -133,5 +141,10 @@ export const uk = {
 	faq: {
 		myth: 'Міф',
 		fact: 'Факт',
+	},
+	booking: {
+		online: 'Записатися онлайн',
+		via: 'Запис через {name}',
+		or: 'або',
 	},
 } satisfies UiStrings;

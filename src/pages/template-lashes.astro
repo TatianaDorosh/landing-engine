@@ -23,7 +23,12 @@ import { header, hero, effects, about, prices, myths, reviews, booking, contacts
 		<Prices {...prices} />
 		<Myths {...myths} />
 		<Reviews {...reviews} />
-		<BookingOnline {...booking} phone={demoSlate.contacts.phoneDisplay ?? demoSlate.contacts.phone} />
+		<BookingOnline
+			{...booking}
+			phone={demoSlate.contacts.phoneDisplay ?? demoSlate.contacts.phone}
+			contacts={demoSlate.contacts}
+			locale={demoSlate.locale}
+		/>
 		<ContactsMap {...contacts} contacts={demoSlate.contacts} />
 	</main>
 	<Footer config={demoSlate} privacyHref="/template-lashes/privacy/" />

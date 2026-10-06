@@ -76,7 +76,7 @@ const ui = getUi(config.locale);
 		document.addEventListener("click", (event) => {
 			const target = event.target;
 			if (!(target instanceof Element)) return;
-			const link = target.closest("a[data-messenger], a[href^='tel:']");
+			const link = target.closest("a[data-messenger], a[href^='tel:'], a[data-demo-booking]");
 			if (!link || dialog.contains(link)) return;
 			event.preventDefault();
 			open();
