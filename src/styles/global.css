@@ -7,6 +7,10 @@
 @import "@fontsource-variable/lora";
 @import "@fontsource-variable/unbounded";
 @import "@fontsource-variable/onest";
+@import "@fontsource/tenor-sans";
+@import "@fontsource/golos-text/400.css";
+@import "@fontsource/golos-text/500.css";
+@import "@fontsource/golos-text/600.css";
 
 /* Запасні значення. :where має нульову вагу, тож тема з Base.astro завжди перемагає. */
 :where(:root) {

@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import Header from "../../blocks/layout/layout-header.astro";
+import Footer from "../../blocks/layout/layout-footer.astro";
+import PrivacyPolicy from "../../components/PrivacyPolicy.astro";
+import { demoSlate } from "../../config/demo-slate";
+import { header } from "../../data/demo-slate";
+---
+
+<Base config={demoSlate} noindex={true} title="Політика приватності — Nuvo Brow & Lash">
+	<Header {...header} nameHref="/template-lashes/" />
+	<main>
+		<PrivacyPolicy config={demoSlate} />
+	</main>
+	<Footer config={demoSlate} privacyHref="/template-lashes/privacy/" />
+</Base>
