@@ -1,0 +1,136 @@
+---
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { typograf } from "../../lib/typograf";
+
+interface CollageItem {
+	kind: "desktop" | "phone";
+	src: string;
+	fallbackSrc: string;
+	alt: string;
+}
+
+interface Props {
+	eyebrow: string;
+	title: string;
+	text: string;
+	primaryCta: { label: string; href: string; service?: string };
+	secondaryCta: { label: string; href: string };
+	caption: string;
+	collage: CollageItem[];
+}
+
+const { eyebrow, title, text, primaryCta, secondaryCta, caption, collage } = Astro.props;
+
+function publicFile(urlPath: string) {
+	return join(process.cwd(), "public", urlPath.replace(/^\//, ""));
+}
+
+function imageSize(filePath: string) {
+	const buf = readFileSync(filePath);
+	const format = buf.toString("ascii", 12, 16);
+	if (format === "VP8X" && buf.length >= 30) {
+		return { width: 1 + buf.readUIntLE(24, 3), height: 1 + buf.readUIntLE(27, 3) };
+	}
+	if (format === "VP8 " && buf.length >= 30) {
+		return { width: buf.readUInt16LE(26) & 0x3fff, height: buf.readUInt16LE(28) & 0x3fff };
+	}
+	if (format === "VP8L" && buf.length >= 25) {
+		const bits = buf.readUInt32LE(21);
+		return { width: (bits & 0x3fff) + 1, height: ((bits >> 14) & 0x3fff) + 1 };
+	}
+	return { width: 1200, height: 1600 };
+}
+
+const frames = collage.map((item) => {
+	const preferred = publicFile(item.src);
+	const file = existsSync(preferred) ? preferred : publicFile(item.fallbackSrc);
+	const src = existsSync(preferred) ? item.src : item.fallbackSrc;
+	return { ...item, src, ...imageSize(file) };
+});
+
+const desktop = frames.find((item) => item.kind === "desktop");
+const phones = frames.filter((item) => item.kind === "phone");
+---
+
+<section id="hero" data-block="hero-showcase">
+	<div class="mx-auto grid max-w-6xl items-center gap-6 px-4 py-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-center lg:gap-x-10 lg:gap-y-6 lg:px-8 lg:py-12">
+		<div class="order-1 lg:col-start-1 lg:row-start-1">
+			<p class="text-sm text-muted">{eyebrow}</p>
+			<h1 class="mt-3 font-heading text-[36px] leading-[1.15] lg:text-[56px]">{typograf(title)}</h1>
+			<p class="mt-4 max-w-xl font-body text-base leading-relaxed">{text}</p>
+		</div>
+		<div class="order-2 flex w-full flex-col items-start gap-3 lg:col-start-1 lg:row-start-2 lg:w-auto lg:flex-row lg:self-start">
+			<a
+				href={primaryCta.href}
+				data-service={primaryCta.service}
+				class="inline-flex min-h-11 w-full items-center justify-center rounded-theme bg-primary px-5 text-primary-contrast lg:w-auto"
+			>
+				{primaryCta.label}
+			</a>
+			<a
+				href={secondaryCta.href}
+				class="inline-flex min-h-11 w-full items-center justify-center rounded-theme border border-primary px-5 text-primary lg:w-auto"
+			>
+				{secondaryCta.label}
+			</a>
+		</div>
+		<figure class="order-3 min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
+			<div class="overflow-hidden p-2">
+				{
+					desktop && (
+						<div class="device-shadow relative z-0 mx-auto w-[74%] overflow-hidden rounded-theme border border-border bg-surface">
+							<div class="flex h-8 items-center gap-1.5 border-b border-border px-3" aria-hidden="true">
+								<span class="h-1.5 w-1.5 rounded-full bg-muted"></span>
+								<span class="h-1.5 w-1.5 rounded-full bg-muted"></span>
+								<span class="h-1.5 w-1.5 rounded-full bg-muted"></span>
+							</div>
+							<img
+								src={desktop.src}
+								alt={desktop.alt}
+								width={desktop.width}
+								height={desktop.height}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+								class:list={[
+									"aspect-[16/10] w-full object-cover",
+									desktop.height > desktop.width ? "object-center" : "object-top",
+								]}
+							/>
+						</div>
+					)
+				}
+				{
+					phones.length > 0 && (
+						<div class="relative z-10 -mt-[20%] flex items-end justify-between">
+							{phones.map((phone) => (
+								<div class="device-shadow w-[34%] overflow-hidden rounded-[1.35rem] border-2 border-border bg-surface p-1">
+									<img
+										src={phone.src}
+										alt={phone.alt}
+										width={phone.width}
+										height={phone.height}
+										loading="lazy"
+										decoding="async"
+										class:list={[
+											"aspect-[9/16] w-full rounded-[1.05rem] object-cover",
+											phone.height > phone.width ? "object-center" : "object-top",
+										]}
+									/>
+								</div>
+							))}
+						</div>
+					)
+				}
+			</div>
+			<figcaption class="mt-1 px-2 font-body text-[15px] leading-[1.5] text-muted">{caption}</figcaption>
+		</figure>
+	</div>
+</section>
+
+<style>
+	.device-shadow {
+		box-shadow: 0 12px 28px -16px color-mix(in srgb, var(--color-text) 45%, transparent);
+	}
+</style>

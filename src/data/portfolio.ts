@@ -18,6 +18,27 @@ export const hero = {
 	primaryCta: { label: "Подивитися приклади", href: "#examples" },
 	secondaryCta: { label: "Написати мені", href: "#booking" },
 	imageLabel: "[ЗАПОВНИТИ]",
+	caption: "Демо-сайти: Студія краси, MOKKA, VERDE",
+	collage: [
+		{
+			kind: "desktop" as const,
+			src: "/images/portfolio/example-beauty-desktop.webp",
+			fallbackSrc: "/images/demo-beauty/hero.webp",
+			alt: "Приклад сайту: Студія краси",
+		},
+		{
+			kind: "phone" as const,
+			src: "/images/portfolio/example-mokka-phone.webp",
+			fallbackSrc: "/images/demo-mokka/hero.webp",
+			alt: "Приклад сайту: MOKKA",
+		},
+		{
+			kind: "phone" as const,
+			src: "/images/portfolio/example-verde-phone.webp",
+			fallbackSrc: "/images/demo-verde/hero.webp",
+			alt: "Приклад сайту: VERDE",
+		},
+	],
 };
 
 export const services = {

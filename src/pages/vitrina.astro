@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import Header from "../blocks/layout/layout-header.astro";
 import Hero from "../blocks/hero/hero-result.astro";
+import HeroShowcase from "../blocks/hero/hero-showcase.astro";
 import HeroCover from "../blocks/hero/hero-cover.astro";
 import AboutMe from "../blocks/about/about-me.astro";
 import PricesSimple from "../blocks/prices/prices-simple.astro";
@@ -41,7 +42,7 @@ import { header, hero, trust, services, safety, gallery, beforeAfter, prices, te
 import { hero as mokkaHero, about as mokkaAbout, prices as mokkaPrices, booking as mokkaBooking } from "../data/demo-mokka";
 import { demoSlate } from "../config/demo-slate";
 import { effects, myths as slateMyths, booking as slateBooking, reviews as slateReviews } from "../data/demo-slate";
-import { services as portfolioServices, examples, examplesCount, pains, packages } from "../data/portfolio";
+import { hero as portfolioHero, services as portfolioServices, examples, examplesCount, pains, packages } from "../data/portfolio";
 
 const ui = getUi(demoBeauty.locale);
 
@@ -80,6 +81,9 @@ const rules = {
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">hero-result</p>
 	<Hero {...hero} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">hero-showcase</p>
+	<HeroShowcase {...portfolioHero} />
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">hero-cover</p>
 	<HeroCover {...mokkaHero} />
