@@ -15,11 +15,14 @@ export interface SiteConfig {
 	tagline: string;
 	/** Тип schema.org, наприклад BeautySalon, NailSalon, Dentist. */
 	businessType: string;
+	/** Вилка цін для JSON-LD, наприклад «350–2000 ₴». Лише для реального клієнта. */
+	priceRange?: string;
 	contacts: {
 		/** Формат +380XXXXXXXXX. */
 		phone: string;
 		phoneDisplay?: string;
 		address?: string;
+		postalCode?: string;
 		city?: string;
 		geo?: { lat: number; lng: number };
 		/** Рядок для показу на сторінці. */

@@ -47,12 +47,14 @@ const jsonLd: Record<string, unknown> = {
 	url: canonical,
 	telephone: config.contacts.phone,
 	image: imageUrl,
+	...(config.priceRange ? { priceRange: config.priceRange } : {}),
 };
 
-if (config.contacts.address || config.contacts.city) {
+if (config.contacts.address || config.contacts.city || config.contacts.postalCode) {
 	jsonLd.address = {
 		"@type": "PostalAddress",
 		...(config.contacts.address ? { streetAddress: config.contacts.address } : {}),
+		...(config.contacts.postalCode ? { postalCode: config.contacts.postalCode } : {}),
 		...(config.contacts.city ? { addressLocality: config.contacts.city } : {}),
 		addressCountry: "UA",
 	};
