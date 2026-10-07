@@ -1,0 +1,116 @@
+---
+import { typograf } from "../lib/typograf";
+import { termsPage } from "../data/portfolio-terms";
+
+interface Props {
+	telegram: string;
+}
+
+const { telegram } = Astro.props;
+const { title, intro, sections, closingBefore, closingLink } = termsPage;
+
+function isPlaceholder(value: string) {
+	const trimmed = value.trim();
+	return trimmed === "[ЗАПОВНИТИ]" || trimmed === "ЗАПОВНИТИ" || trimmed === "";
+}
+
+const telegramHref = isPlaceholder(telegram) ? "#" : `https://t.me/${telegram.replace(/^@/, "")}`;
+---
+
+<article class="mx-auto min-w-0 max-w-[760px] px-4 py-12 font-body text-base leading-relaxed xl:px-8">
+	<h1 class="text-3xl">{typograf(title)}</h1>
+	<p class="mt-4">{typograf(intro)}</p>
+
+	<nav class="mt-6" aria-label="Зміст">
+		<ol class="m-0 list-none p-0">
+			{
+				sections.map((section, index) => (
+					<li>
+						<a href={`#${section.id}`} class="inline-flex min-h-11 items-center text-primary">
+							{index + 1}. {section.title}
+						</a>
+					</li>
+				))
+			}
+		</ol>
+	</nav>
+
+	{
+		sections.map((section) => (
+			<section id={section.id} class="scroll-mt-24">
+				<h2 class="mt-10 text-2xl">{typograf(section.title)}</h2>
+				{section.paragraphs?.map((paragraph) => (
+					<p class="mt-3">{typograf(paragraph)}</p>
+				))}
+				{section.steps && (
+					<ol class="m-0 mt-4 list-none space-y-5 p-0">
+						{section.steps.map((step, index) => (
+							<li>
+								<h3 class="font-body text-[17px] font-semibold leading-snug">
+									{index + 1}. {typograf(step.title)}
+								</h3>
+								<p class="mt-1 text-[15px] leading-[1.6]">{typograf(step.text)}</p>
+							</li>
+						))}
+					</ol>
+				)}
+				{section.table && (
+					<div class="mt-4 max-w-full overflow-x-auto overscroll-x-contain">
+						<table
+							class:list={[
+								"w-full border-collapse text-left text-[15px] leading-[1.5]",
+								section.table.align === "center" && "min-w-[36rem]",
+							]}
+						>
+							<thead>
+								<tr class="border-b border-border text-muted">
+									{section.table.columns.map((column) => (
+										<th class="py-3 pr-4 font-body font-medium" scope="col">
+											{column}
+										</th>
+									))}
+								</tr>
+							</thead>
+							<tbody>
+								{section.table.rows.map((row) => (
+									<tr class="border-b border-border">
+										{row.map((cell, cellIndex) =>
+											cellIndex === 0 ? (
+												<th
+													class="py-3 pr-4 align-top font-body font-semibold break-words"
+													scope="row"
+												>
+													{typograf(cell)}
+												</th>
+											) : (
+												<td
+													class:list={[
+														"py-3 pr-4 align-top break-words",
+														section.table?.align === "center" && "text-center",
+													]}
+												>
+													{typograf(cell)}
+												</td>
+											),
+										)}
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				)}
+			</section>
+		))
+	}
+
+	<p class="mt-10">
+		{closingBefore}{" "}
+		<a
+			href={telegramHref}
+			class="inline-flex min-h-11 items-center text-primary underline underline-offset-2"
+			{...(telegramHref === "#" ? {} : { target: "_blank", rel: "noopener" })}
+		>
+			{closingLink}
+		</a>
+	</p>
+</article>

@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import Footer from "../blocks/layout/layout-footer.astro";
+import TermsPage from "../components/TermsPage.astro";
+import { portfolio } from "../config/portfolio";
+import { header } from "../data/portfolio";
+import { termsDescription } from "../data/portfolio-terms";
+---
+
+<Base config={portfolio} noindex={true} title="Умови роботи | Тетяна Дорош" description={termsDescription}>
+	<Header {...header} nameHref="/portfolio/" anchorBase="/portfolio/" />
+	<main>
+		<TermsPage telegram={portfolio.contacts.telegram ?? ""} />
+	</main>
+	<Footer config={portfolio} termsHref="/umovy/" />
+</Base>
