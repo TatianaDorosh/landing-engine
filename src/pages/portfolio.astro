@@ -11,7 +11,7 @@ import { portfolio } from "../config/portfolio";
 import { header, hero, steps, about, faq, booking } from "../data/portfolio";
 ---
 
-<Base config={portfolio}>
+<Base config={portfolio} noindex={true}>
 	<Header {...header} />
 	<main>
 		<Hero {...hero} />
