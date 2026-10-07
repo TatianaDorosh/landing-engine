@@ -2,20 +2,28 @@
 import Base from "../layouts/Base.astro";
 import Header from "../blocks/layout/layout-header.astro";
 import Hero from "../blocks/hero/hero-result.astro";
+import ServicesScope from "../blocks/services/services-scope.astro";
+import ExamplesTabs from "../blocks/examples/examples-tabs.astro";
+import PainsTable from "../blocks/pains/pains-table.astro";
 import Steps from "../blocks/steps/steps-visit.astro";
+import PricesPackages from "../blocks/prices/prices-packages.astro";
 import About from "../blocks/about/about-me.astro";
 import Faq from "../blocks/faq/faq-accordion.astro";
 import BookingMessengers from "../blocks/booking/booking-messengers.astro";
 import Footer from "../blocks/layout/layout-footer.astro";
 import { portfolio } from "../config/portfolio";
-import { header, hero, steps, about, faq, booking } from "../data/portfolio";
+import { header, hero, services, examples, examplesCount, pains, steps, packages, about, faq, booking } from "../data/portfolio";
 ---
 
 <Base config={portfolio} noindex={true}>
 	<Header {...header} />
 	<main>
 		<Hero {...hero} />
+		<ServicesScope {...services} />
+		<ExamplesTabs {...examples} count={examplesCount} locale={portfolio.locale} />
+		<PainsTable {...pains} />
 		<Steps {...steps} />
+		<PricesPackages {...packages} locale={portfolio.locale} />
 		<About {...about} />
 		<Faq {...faq} telegram={portfolio.contacts.telegram ?? ""} />
 		<BookingMessengers {...booking} contacts={portfolio.contacts} locale={portfolio.locale} />

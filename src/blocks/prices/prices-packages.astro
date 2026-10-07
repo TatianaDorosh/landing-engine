@@ -1,0 +1,79 @@
+---
+import type { Locale } from "../../config/types";
+import { getUi } from "../../i18n";
+import { typograf } from "../../lib/typograf";
+
+interface PackageItem {
+	name: string;
+	price: number;
+	text: string;
+	fits: string;
+	featured?: boolean;
+}
+
+interface Props {
+	title: string;
+	text: string;
+	currency: string;
+	fitsLabel: string;
+	items: PackageItem[];
+	notes: string[];
+	locale?: Locale;
+	bookingHref?: string;
+}
+
+const { title, text, currency, fitsLabel, items, notes, locale = "uk", bookingHref = "#booking" } = Astro.props;
+const ui = getUi(locale);
+
+function money(price: number) {
+	const formatted = String(price).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
+	return `${formatted}\u00a0${currency}`;
+}
+---
+
+<section id="prices" data-block="prices-packages" class="scroll-mt-24">
+	<div class="mx-auto max-w-6xl min-w-0 px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		<p class="mt-4 max-w-[760px] font-body text-base leading-relaxed">{typograf(text)}</p>
+
+		<ul class="mt-8 grid list-none items-stretch gap-4 p-0 lg:grid-cols-3">
+			{
+				items.map((item) => (
+					<li class="h-full min-w-0">
+						<article
+							class:list={[
+								"flex h-full flex-col rounded-theme border p-5",
+								item.featured ? "border-primary bg-primary text-primary-contrast" : "border-border bg-surface",
+							]}
+						>
+							<h3 class="font-body text-lg font-semibold">{typograf(item.name)}</h3>
+							<p class:list={["mt-3 font-heading text-[28px] leading-none", item.featured ? "text-primary-contrast" : "text-primary"]}>
+								{money(item.price)}
+							</p>
+							<p class="mt-4 font-body text-[15px] leading-[1.5]">{typograf(item.text)}</p>
+							<p class="mt-4 font-body text-[15px] leading-[1.5]">
+								<span class="font-semibold">{fitsLabel}: </span>
+								{typograf(item.fits)}
+							</p>
+							<div class="mt-auto pt-6">
+								<a
+									href={bookingHref}
+									class:list={[
+										"inline-flex min-h-11 w-full items-center justify-center rounded-theme px-5 lg:w-auto",
+										item.featured ? "bg-surface text-text" : "bg-primary text-primary-contrast",
+									]}
+								>
+									{ui.buttons.choose}
+								</a>
+							</div>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+
+		<ul class="mt-8 max-w-[760px] list-disc space-y-2 pl-5 font-body text-[15px] leading-[1.5]">
+			{notes.map((note) => <li class="break-words">{typograf(note)}</li>)}
+		</ul>
+	</div>
+</section>

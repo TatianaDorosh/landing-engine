@@ -1,0 +1,62 @@
+---
+import { typograf } from "../../lib/typograf";
+
+interface PainRow {
+	problem: string;
+	solution: string;
+}
+
+interface Props {
+	title: string;
+	intro: string;
+	problemLabel: string;
+	solutionLabel: string;
+	rows: PainRow[];
+	note: string;
+}
+
+const { title, intro, problemLabel, solutionLabel, rows, note } = Astro.props;
+---
+
+<section id="why" data-block="pains-table" class="scroll-mt-24">
+	<div class="mx-auto max-w-6xl min-w-0 px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		<p class="mt-4 max-w-[760px] font-body text-base leading-relaxed">{typograf(intro)}</p>
+
+		<table class="mt-8 hidden w-full table-fixed border-collapse text-left md:table">
+			<thead>
+				<tr class="border-b border-border text-[15px] text-muted">
+					<th class="w-1/2 py-3 pr-6 font-body font-medium" scope="col">{problemLabel}</th>
+					<th class="w-1/2 py-3 font-body font-medium" scope="col">{solutionLabel}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{
+					rows.map((row) => (
+						<tr class="border-b border-border">
+							<th class="py-4 pr-6 align-top font-body text-[15px] font-semibold leading-[1.5] break-words" scope="row">
+								{typograf(row.problem)}
+							</th>
+							<td class="py-4 align-top font-body text-[15px] leading-[1.5] break-words">{typograf(row.solution)}</td>
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+
+		<ul class="mt-6 grid list-none gap-3 p-0 md:hidden">
+			{
+				rows.map((row) => (
+					<li class="min-w-0 rounded-theme border border-border bg-surface p-4">
+						<p class="font-body text-[15px] leading-[1.5] text-muted">{problemLabel}</p>
+						<h3 class="mt-1 font-body text-[17px] font-semibold leading-snug">{typograf(row.problem)}</h3>
+						<p class="mt-3 font-body text-[15px] leading-[1.5] text-muted">{solutionLabel}</p>
+						<p class="mt-1 font-body text-[15px] leading-[1.5]">{typograf(row.solution)}</p>
+					</li>
+				))
+			}
+		</ul>
+
+		<p class="mt-6 max-w-[760px] font-body text-[15px] leading-[1.5] text-muted">{typograf(note)}</p>
+	</div>
+</section>

@@ -9,6 +9,10 @@ export interface UiStrings {
 		submit: string;
 		more: string;
 		close: string;
+		openDemo: string;
+		wantThis: string;
+		writeMe: string;
+		choose: string;
 	};
 	form: {
 		name: string;
@@ -93,6 +97,10 @@ export const uk = {
 		submit: 'Надіслати заявку',
 		more: 'Детальніше',
 		close: 'Закрити',
+		openDemo: 'Відкрити демо',
+		wantThis: 'Хочу такий',
+		writeMe: 'Написати мені',
+		choose: 'Обрати',
 	},
 	form: {
 		name: "Ім'я",
