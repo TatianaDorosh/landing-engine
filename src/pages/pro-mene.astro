@@ -1,0 +1,42 @@
+---
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import Footer from "../blocks/layout/layout-footer.astro";
+import AboutPage from "../components/AboutPage.astro";
+import { portfolio } from "../config/portfolio";
+import { header } from "../data/portfolio";
+import { aboutDescription } from "../data/portfolio-about";
+
+function webpSize(filePath: string) {
+	const buf = readFileSync(filePath);
+	const format = buf.toString("ascii", 12, 16);
+	if (format === "VP8X" && buf.length >= 30) {
+		return { width: 1 + buf.readUIntLE(24, 3), height: 1 + buf.readUIntLE(27, 3) };
+	}
+	if (format === "VP8 " && buf.length >= 30) {
+		return { width: buf.readUInt16LE(26) & 0x3fff, height: buf.readUInt16LE(28) & 0x3fff };
+	}
+	if (format === "VP8L" && buf.length >= 25) {
+		const bits = buf.readUInt32LE(21);
+		return { width: (bits & 0x3fff) + 1, height: ((bits >> 14) & 0x3fff) + 1 };
+	}
+	return { width: 1200, height: 1600 };
+}
+
+const aboutPhotoPath = join(process.cwd(), "public/images/portfolio/me-about.webp");
+const aboutImage = existsSync(aboutPhotoPath)
+	? { src: "/images/portfolio/me-about.webp", alt: "Тетяна Дорош", ...webpSize(aboutPhotoPath) }
+	: undefined;
+
+const pageTitle = "Про мене: менеджерка, що робить сайти | Тетяна Дорош";
+---
+
+<Base config={portfolio} noindex={true} title={pageTitle} description={aboutDescription}>
+	<Header {...header} nameHref="/portfolio/" anchorBase="/portfolio/" />
+	<main>
+		<AboutPage telegram={portfolio.contacts.telegram ?? ""} image={aboutImage} />
+	</main>
+	<Footer config={portfolio} aboutHref="/pro-mene/" termsHref="/umovy/" />
+</Base>

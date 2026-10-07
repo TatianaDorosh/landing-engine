@@ -1,0 +1,135 @@
+---
+import PhotoPlaceholder from "./PhotoPlaceholder.astro";
+import { typograf } from "../lib/typograf";
+import { aboutPage } from "../data/portfolio-about";
+
+interface Props {
+	telegram: string;
+	image?: { src: string; alt: string; width: number; height: number };
+}
+
+const { telegram, image } = Astro.props;
+const { title, imageLabel, intro, sections, certificates, findMe } = aboutPage;
+
+function isPlaceholder(value: string) {
+	const trimmed = value.trim();
+	return trimmed === "[ЗАПОВНИТИ]" || trimmed === "ЗАПОВНИТИ" || trimmed === "";
+}
+
+function telegramHref(value: string) {
+	return isPlaceholder(value) ? "#" : `https://t.me/${value.replace(/^@/, "")}`;
+}
+
+const outlineButton =
+	"inline-flex min-h-11 w-full items-center justify-center rounded-theme border border-primary px-5 text-center text-primary lg:w-auto";
+---
+
+<article class="mx-auto min-w-0 max-w-[760px] px-4 py-12 font-body text-base leading-relaxed xl:px-8">
+	<h1 class="text-3xl">{typograf(title)}</h1>
+	<div class="mt-6 max-w-[320px] overflow-hidden rounded-theme">
+		{
+			image ? (
+				<img
+					src={image.src}
+					alt={image.alt}
+					width={image.width}
+					height={image.height}
+					loading="lazy"
+					decoding="async"
+					class="h-auto w-full"
+				/>
+			) : (
+				<PhotoPlaceholder label={imageLabel} ratio="3/4" />
+			)
+		}
+	</div>
+	<p class="mt-6">{typograf(intro)}</p>
+
+	{
+		sections.map((section) => (
+			<section id={section.id} class="scroll-mt-24">
+				<h2 class="mt-10 text-2xl">{typograf(section.title)}</h2>
+				{section.paragraphs.map((paragraph) => (
+					<p class="mt-3">{typograf(paragraph)}</p>
+				))}
+				{section.links && (
+					<div class="mt-6 flex flex-col gap-3 lg:flex-row lg:flex-wrap">
+						{section.links.map((link) => (
+							<a href={link.href} target="_blank" rel="noopener" class={outlineButton}>
+								{link.label}
+							</a>
+						))}
+					</div>
+				)}
+			</section>
+		))
+	}
+
+	<section id={certificates.id} class="scroll-mt-24">
+		<h2 class="mt-10 text-2xl">{typograf(certificates.title)}</h2>
+		{
+			certificates.groups.map((group) => {
+				const items = group.items.filter((item) => item.completed !== false);
+				if (items.length === 0) return null;
+				return (
+					<div class="mt-6">
+						<h3 class="font-body text-[17px] font-semibold leading-snug">{typograf(group.group)}</h3>
+						<ul class="m-0 mt-3 list-none space-y-4 p-0">
+							{items.map((item) => (
+								<li class="min-w-0">
+									<p class="font-body text-[15px] font-semibold leading-snug break-words">{item.title}</p>
+									<p class="mt-1 text-[15px] leading-[1.5] text-muted break-words">
+										{item.org}, {item.year}
+									</p>
+									{isPlaceholder(item.href) ? (
+										<span class="mt-1 inline-flex min-h-11 items-center text-[15px] text-muted">{item.href}</span>
+									) : (
+										<a
+											href={item.href}
+											target="_blank"
+											rel="noopener"
+											class="mt-1 inline-flex min-h-11 items-center text-primary"
+										>
+											{item.title}
+										</a>
+									)}
+								</li>
+							))}
+						</ul>
+					</div>
+				);
+			})
+		}
+		<a
+			href={isPlaceholder(certificates.link.href) ? "#" : certificates.link.href}
+			class:list={["mt-6", outlineButton]}
+			{...(isPlaceholder(certificates.link.href) ? {} : { target: "_blank", rel: "noopener" })}
+		>
+			{certificates.link.label}
+		</a>
+	</section>
+
+	<section id={findMe.id} class="scroll-mt-24">
+		<h2 class="mt-10 text-2xl">{typograf(findMe.title)}</h2>
+		<ul class="m-0 mt-3 list-none p-0">
+			{
+				findMe.links.map((link) => {
+					const href = link.label === "Telegram" ? telegramHref(telegram) : link.href;
+					const external = href.startsWith("http");
+					const text = link.label === "Telegram" && isPlaceholder(telegram) ? `${link.label}: [ЗАПОВНИТИ]` : link.label;
+					return (
+						<li>
+							<a
+								href={href}
+								class="inline-flex min-h-11 items-center text-primary"
+								{...(external ? { target: "_blank", rel: "noopener" } : {})}
+							>
+								{text}
+							</a>
+						</li>
+					);
+				})
+			}
+		</ul>
+	</section>
+</article>

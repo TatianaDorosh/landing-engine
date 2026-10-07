@@ -8,9 +8,11 @@ interface Props {
 	privacyHref?: string;
 	/** Якщо не передано, посилання на умови не показуємо. */
 	termsHref?: string;
+	/** Якщо не передано, посилання «Про мене» не показуємо. */
+	aboutHref?: string;
 }
 
-const { config, privacyHref = "", termsHref = "" } = Astro.props;
+const { config, privacyHref = "", termsHref = "", aboutHref = "" } = Astro.props;
 const ui = getUi(config.locale);
 const year = new Date().getFullYear();
 const order = ui.demo.order;
@@ -23,6 +25,13 @@ const plaqueBefore = plaque.endsWith(order) ? plaque.slice(0, plaque.length - or
 		<div class="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-6 font-body text-[15px] sm:flex-row sm:items-center sm:justify-between xl:px-8">
 			<p>© {year} {config.name}</p>
 			<div class="flex flex-col sm:flex-row sm:items-center sm:gap-6">
+				{
+					aboutHref && (
+						<a href={aboutHref} class="inline-flex min-h-11 items-center text-primary">
+							Про мене
+						</a>
+					)
+				}
 				{
 					termsHref && (
 						<a href={termsHref} class="inline-flex min-h-11 items-center text-primary">

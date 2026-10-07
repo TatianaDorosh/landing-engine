@@ -57,5 +57,5 @@ const heroImage = existsSync(meHeroPath)
 		<Faq {...faq} openFirst telegram={portfolio.contacts.telegram ?? ""} />
 		<BookingMessengers {...booking} contacts={portfolio.contacts} locale={portfolio.locale} />
 	</main>
-	<Footer config={portfolio} termsHref="/umovy/" />
+	<Footer config={portfolio} aboutHref="/pro-mene/" termsHref="/umovy/" />
 </Base>
