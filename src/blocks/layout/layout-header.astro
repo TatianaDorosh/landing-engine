@@ -10,9 +10,20 @@ interface Props {
 	ctaLabel: string;
 	ctaHref: string;
 	nameHref?: string;
+	/** Якщо задано, якірні посилання ведуть на головну: /template-lashes/#prices. */
+	anchorBase?: string;
 }
 
-const { name, nav, ctaLabel, ctaHref, nameHref = "#hero" } = Astro.props;
+const { name, nav, ctaLabel, ctaHref, nameHref = "#hero", anchorBase = "" } = Astro.props;
+
+function withBase(href: string) {
+	if (!anchorBase || !href.startsWith("#")) return href;
+	const base = anchorBase.endsWith("/") ? anchorBase.slice(0, -1) : anchorBase;
+	return `${base}/${href}`;
+}
+
+const links = nav.map((item) => ({ ...item, href: withBase(item.href) }));
+const bookHref = withBase(ctaHref);
 const menuId = "layout-header-menu";
 ---
 
@@ -25,7 +36,7 @@ const menuId = "layout-header-menu";
 
 		<nav class="hidden items-center gap-x-3 text-sm lg:flex xl:gap-x-5" aria-label="Основна навігація">
 			{
-				nav.map((item) => (
+				links.map((item) => (
 					<a href={item.href} class="text-text hover:text-primary">
 						{item.label}
 					</a>
@@ -35,7 +46,7 @@ const menuId = "layout-header-menu";
 
 		<div class="flex items-center gap-2">
 			<a
-				href={ctaHref}
+				href={bookHref}
 				class="hidden min-h-11 items-center justify-center rounded-theme bg-primary px-5 text-primary-contrast lg:inline-flex"
 			>
 				{ctaLabel}
@@ -61,14 +72,14 @@ const menuId = "layout-header-menu";
 	<div id={menuId} data-mobile-nav class="hidden border-t border-border bg-bg lg:hidden" hidden>
 		<nav class="mx-auto flex max-w-6xl flex-col px-4 py-2 xl:px-8" aria-label="Мобільна навігація">
 			{
-				nav.map((item) => (
+				links.map((item) => (
 					<a href={item.href} class="flex min-h-11 items-center text-text">
 						{item.label}
 					</a>
 				))
 			}
 			<a
-				href={ctaHref}
+				href={bookHref}
 				class="mt-2 inline-flex min-h-11 items-center justify-center rounded-theme bg-primary px-5 text-primary-contrast"
 			>
 				{ctaLabel}

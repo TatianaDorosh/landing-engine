@@ -126,7 +126,7 @@ export const prices = {
 				{ service: "Класика", duration: "2 год", prices: [1400, 800] },
 				{ service: "2D", duration: "2,5 год", prices: [1700, 1000] },
 				{ service: "3D", duration: "3 год", prices: [2000, 1200] },
-				{ service: "Ламінування вій", duration: "60 хв", prices: [1100, "—"] },
+				{ service: "Ламінування вій", duration: "60 хв", prices: [1100, "Окремо не потрібна"] },
 			],
 		},
 		{
@@ -220,5 +220,5 @@ export const booking = {
 
 export const contacts = {
 	title: "Контакти",
-	directions: "[ЗАПОВНИТИ]",
+	directions: "Метро «Театральна», 5 хвилин пішки. Вхід з двору, 2 поверх",
 };

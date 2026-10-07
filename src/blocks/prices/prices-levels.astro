@@ -6,7 +6,7 @@ import { typograf } from "../../lib/typograf";
 interface PriceRow {
 	service: string;
 	duration: string;
-	prices: [number | "—", number | "—"];
+	prices: [number | string, number | string];
 }
 
 interface PriceTab {
@@ -36,8 +36,8 @@ function showAllLabel(count: number) {
 	return ui.prices.showAll.replace("{count}", String(count));
 }
 
-function money(value: number | "—") {
-	if (value === "—") return "—";
+function money(value: number | string) {
+	if (typeof value !== "number") return value;
 	return `${value} ${currency}`;
 }
 ---
