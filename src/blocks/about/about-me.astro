@@ -6,35 +6,44 @@ interface Props {
 	title: string;
 	paragraphs: string[];
 	facts: string[];
-	signature: string;
+	signature?: string;
 	/** Підпис на заглушці фото. Якщо не передано, береться заголовок. Порожній рядок ховає текст. */
 	imageLabel?: string;
 	image?: { src: string; alt: string; position?: string };
+	cta?: { label: string; href: string };
 }
 
-const { title, paragraphs, facts, signature, imageLabel, image } = Astro.props;
+const { title, paragraphs, facts, signature, imageLabel, image, cta } = Astro.props;
 const photoLabel = imageLabel ?? title;
+const showPhoto = Boolean(image) || imageLabel !== undefined;
 ---
 
 <section id="about" data-block="about-me" class="bg-surface">
-	<div class="mx-auto grid max-w-6xl min-w-0 items-stretch gap-8 px-4 py-12 lg:grid-cols-12 lg:gap-x-10 xl:px-8">
-		<div class="relative aspect-[3/4] min-w-0 overflow-hidden rounded-theme lg:col-span-5 lg:aspect-auto lg:h-full lg:min-h-[320px]">
-			{
-				image ? (
-					<img
-						src={image.src}
-						alt={image.alt}
-						loading="lazy"
-						decoding="async"
-						class="absolute inset-0 h-full w-full object-cover"
-						style={image.position ? `object-position: ${image.position}` : undefined}
-					/>
-				) : (
-					<PhotoPlaceholder label={photoLabel} class="absolute inset-0 h-full" />
-				)
-			}
-		</div>
-		<div class="min-w-0 lg:col-span-7">
+	<div
+		class:list={[
+			"mx-auto max-w-6xl min-w-0 px-4 py-12 xl:px-8",
+			showPhoto && "grid items-stretch gap-8 lg:grid-cols-12 lg:gap-x-10",
+		]}
+	>
+		{
+			showPhoto && (
+				<div class="relative aspect-[3/4] min-w-0 overflow-hidden rounded-theme lg:col-span-5 lg:aspect-auto lg:h-full lg:min-h-[320px]">
+					{image ? (
+						<img
+							src={image.src}
+							alt={image.alt}
+							loading="lazy"
+							decoding="async"
+							class="absolute inset-0 h-full w-full object-cover"
+							style={image.position ? `object-position: ${image.position}` : undefined}
+						/>
+					) : (
+						<PhotoPlaceholder label={photoLabel} class="absolute inset-0 h-full" />
+					)}
+				</div>
+			)
+		}
+		<div class:list={["min-w-0", showPhoto ? "lg:col-span-7" : "max-w-[760px]"]}>
 			<h2 class="text-3xl">{typograf(title)}</h2>
 			<div class="mt-4 space-y-4">
 				{
@@ -53,7 +62,17 @@ const photoLabel = imageLabel ?? title;
 					))
 				}
 			</ul>
-			<p class="mt-8 font-heading text-[28px] leading-none">{signature}</p>
+			{
+				cta && (
+					<a
+						href={cta.href}
+						class="mt-8 inline-flex min-h-11 w-full items-center justify-center rounded-theme border border-primary px-5 text-primary lg:w-auto"
+					>
+						{cta.label}
+					</a>
+				)
+			}
+			{signature && <p class="mt-8 font-heading text-[28px] leading-none">{signature}</p>}
 		</div>
 	</div>
 </section>
