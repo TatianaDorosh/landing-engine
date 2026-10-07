@@ -1,4 +1,5 @@
 ---
+import { getUi } from "../../i18n";
 import { typograf } from "../../lib/typograf";
 
 interface Review {
@@ -18,6 +19,7 @@ interface Props {
 
 const { title, items, allLink, variant = "cards" } = Astro.props;
 const open = variant === "open";
+const ui = getUi("uk");
 ---
 
 <section id="reviews" data-block="reviews-cards" data-variant={variant}>
@@ -34,6 +36,9 @@ const open = variant === "open";
 		</div>
 		<div
 			data-track
+			tabindex="0"
+			role="region"
+			aria-label={ui.reviews.region}
 			class:list={[
 				"mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto",
 				open
@@ -59,7 +64,7 @@ const open = variant === "open";
 								</p>
 							)
 						}
-						<p class:list={["flex gap-1 text-primary", open && "mt-3"]} aria-label={`Оцінка ${item.rating} з 5`}>
+						<p class:list={["flex gap-1 text-primary", open && "mt-3"]} role="img" aria-label={`Оцінка ${item.rating} з 5`}>
 							{[1, 2, 3, 4, 5].map((star) => (
 								<svg
 									xmlns="http://www.w3.org/2000/svg"

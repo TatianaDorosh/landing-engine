@@ -33,6 +33,9 @@ const { title, items, bookLabel = getUi("uk").buttons.book } = Astro.props;
 		<h2 class="text-3xl">{typograf(title)}</h2>
 		<div
 			data-track
+			tabindex="0"
+			role="region"
+			aria-label="Майстри"
 			class="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto xl:grid xl:grid-cols-3 xl:overflow-visible"
 		>
 			{

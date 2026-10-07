@@ -117,8 +117,9 @@ const carousel = layout === "carousel";
 		<div
 			data-track
 			data-layout={layout}
-			tabindex={carousel ? 0 : undefined}
-			aria-label={carousel ? "Роботи" : undefined}
+			tabindex="0"
+			role="region"
+			aria-label={carousel ? "Роботи" : "Фото галереї"}
 			class:list={[
 				"flex gap-3 overflow-x-auto",
 				carousel

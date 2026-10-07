@@ -70,6 +70,10 @@ export interface UiStrings {
 		/** Рядок над списком міфів. */
 		hint: string;
 	};
+	reviews: {
+		/** Підпис стрічки відгуків для клавіатури і читачів екрана. */
+		region: string;
+	};
 	booking: {
 		/** Головна кнопка запису через зовнішній сервіс. */
 		online: string;
@@ -144,6 +148,9 @@ export const uk = {
 		myth: 'Міф',
 		fact: 'Факт',
 		hint: 'Оберіть міф, щоб побачити факт',
+	},
+	reviews: {
+		region: 'Відгуки',
 	},
 	booking: {
 		online: 'Записатися онлайн',
