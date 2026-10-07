@@ -179,6 +179,7 @@ export const myths = {
 
 export const reviews = {
 	title: "Відгуки",
+	variant: "open" as const,
 	allLink: { label: "Усі відгуки", href: "[ЗАПОВНИТИ]" },
 	items: [
 		{
@@ -212,6 +213,7 @@ export const booking = {
 		"Запис можна безкоштовно перенести за 24 години",
 	],
 	note: "Підтвердження прийде в месенджер або SMS",
+	variant: "band" as const,
 	serviceName: online ? online.name : "[ЗАПОВНИТИ]",
 	url: online ? online.url : "[ЗАПОВНИТИ]",
 };

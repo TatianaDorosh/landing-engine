@@ -12,12 +12,15 @@ interface Props {
 	title: string;
 	items: Review[];
 	allLink?: { label: string; href: string };
+	/** cards — картки з рамкою. open — текст без коробок, з лініями між колонками. */
+	variant?: "cards" | "open";
 }
 
-const { title, items, allLink } = Astro.props;
+const { title, items, allLink, variant = "cards" } = Astro.props;
+const open = variant === "open";
 ---
 
-<section id="reviews" data-block="reviews-cards">
+<section id="reviews" data-block="reviews-cards" data-variant={variant}>
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
 		<div class="flex flex-wrap items-end justify-between gap-3">
 			<h2 class="text-3xl">{typograf(title)}</h2>
@@ -31,15 +34,32 @@ const { title, items, allLink } = Astro.props;
 		</div>
 		<div
 			data-track
-			class="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto xl:grid xl:grid-cols-3 xl:overflow-visible"
+			class:list={[
+				"mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto",
+				open
+					? "md:grid md:grid-cols-3 md:gap-0 md:overflow-visible"
+					: "xl:grid xl:grid-cols-3 xl:overflow-visible",
+			]}
 		>
 			{
 				items.map((item) => (
 					<article
 						data-slide
-						class="flex w-[85%] shrink-0 snap-center flex-col rounded-theme border border-border bg-surface p-4 xl:w-auto"
+						class:list={[
+							"flex w-[85%] shrink-0 snap-center flex-col",
+							open
+								? "md:w-auto md:shrink md:border-l md:border-border md:px-6 md:[&:nth-child(3n)]:pr-0 md:[&:nth-child(3n+1)]:border-l-0 md:[&:nth-child(3n+1)]:pl-0"
+								: "rounded-theme border border-border bg-surface p-4 xl:w-auto",
+						]}
 					>
-						<p class="flex gap-1 text-primary" aria-label={`Оцінка ${item.rating} з 5`}>
+						{
+							open && (
+								<p class="font-heading text-5xl leading-none text-accent" aria-hidden="true">
+									«
+								</p>
+							)
+						}
+						<p class:list={["flex gap-1 text-primary", open && "mt-3"]} aria-label={`Оцінка ${item.rating} з 5`}>
 							{[1, 2, 3, 4, 5].map((star) => (
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +77,7 @@ const { title, items, allLink } = Astro.props;
 								</svg>
 							))}
 						</p>
-						<p class="mt-3 leading-relaxed">{item.text}</p>
+						<p class:list={["mt-3 leading-relaxed", open && "text-lg"]}>{item.text}</p>
 						<p class="mt-auto pt-4 text-sm text-muted">
 							{item.name} · {item.service}
 						</p>
@@ -65,7 +85,7 @@ const { title, items, allLink } = Astro.props;
 				))
 			}
 		</div>
-		<div data-dots class="mt-2 flex justify-center xl:hidden" aria-label="Відгуки"></div>
+		<div data-dots class:list={["mt-2 flex justify-center", open ? "md:hidden" : "xl:hidden"]} aria-label="Відгуки"></div>
 	</div>
 </section>
 
@@ -74,6 +94,7 @@ const { title, items, allLink } = Astro.props;
 		const track = root.querySelector("[data-track]");
 		const dots = root.querySelector("[data-dots]");
 		if (!track || !dots) return;
+		const wideQuery = root.getAttribute("data-variant") === "open" ? "(min-width: 768px)" : "(min-width: 1280px)";
 
 		const slides = () => [...root.querySelectorAll("[data-slide]")];
 
@@ -103,7 +124,7 @@ const { title, items, allLink } = Astro.props;
 		if ("IntersectionObserver" in window) {
 			const observer = new IntersectionObserver(
 				(entries) => {
-					if (window.matchMedia("(min-width: 1280px)").matches) return;
+					if (window.matchMedia(wideQuery).matches) return;
 					const visible = entries
 						.filter((entry) => entry.isIntersecting)
 						.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
