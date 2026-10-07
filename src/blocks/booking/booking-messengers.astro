@@ -23,6 +23,11 @@ function handle(value: string) {
 	return value.replace(/^@/, "");
 }
 
+function isPlaceholder(value: string) {
+	const trimmed = value.trim();
+	return trimmed === "[ЗАПОВНИТИ]" || trimmed === "ЗАПОВНИТИ";
+}
+
 function viberHref(phone: string) {
 	const digits = phone.replace(/\D/g, "");
 	return `viber://chat?number=%2B${digits}`;
@@ -32,19 +37,19 @@ const messengers = [
 	contacts.telegram
 		? {
 				id: "telegram" as const,
-				href: `https://t.me/${handle(contacts.telegram)}`,
+				href: isPlaceholder(contacts.telegram) ? "#" : `https://t.me/${handle(contacts.telegram)}`,
 			}
 		: null,
 	contacts.viber
 		? {
 				id: "viber" as const,
-				href: viberHref(contacts.viber),
+				href: isPlaceholder(contacts.viber) ? "#" : viberHref(contacts.viber),
 			}
 		: null,
 	contacts.instagram
 		? {
 				id: "instagram" as const,
-				href: `https://instagram.com/${handle(contacts.instagram)}`,
+				href: isPlaceholder(contacts.instagram) ? "#" : `https://instagram.com/${handle(contacts.instagram)}`,
 			}
 		: null,
 ].filter((item) => item !== null);

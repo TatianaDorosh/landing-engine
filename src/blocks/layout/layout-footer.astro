@@ -4,10 +4,11 @@ import { getUi } from "../../i18n";
 
 interface Props {
 	config: SiteConfig;
-	privacyHref: string;
+	/** Якщо не передано, посилання на політику не показуємо. */
+	privacyHref?: string;
 }
 
-const { config, privacyHref } = Astro.props;
+const { config, privacyHref = "" } = Astro.props;
 const ui = getUi(config.locale);
 const year = new Date().getFullYear();
 const order = ui.demo.order;
@@ -19,7 +20,13 @@ const plaqueBefore = plaque.endsWith(order) ? plaque.slice(0, plaque.length - or
 	<div class="border-t border-border">
 		<div class="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-6 font-body text-[15px] sm:flex-row sm:items-center sm:justify-between xl:px-8">
 			<p>© {year} {config.name}</p>
-			<a href={privacyHref} class="inline-flex min-h-11 items-center text-primary">Політика приватності</a>
+			{
+				privacyHref && (
+					<a href={privacyHref} class="inline-flex min-h-11 items-center text-primary">
+						Політика приватності
+					</a>
+				)
+			}
 		</div>
 	</div>
 	{

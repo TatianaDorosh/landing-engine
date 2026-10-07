@@ -1,0 +1,24 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import Hero from "../blocks/hero/hero-result.astro";
+import Steps from "../blocks/steps/steps-visit.astro";
+import About from "../blocks/about/about-me.astro";
+import Faq from "../blocks/faq/faq-accordion.astro";
+import BookingMessengers from "../blocks/booking/booking-messengers.astro";
+import Footer from "../blocks/layout/layout-footer.astro";
+import { portfolio } from "../config/portfolio";
+import { header, hero, steps, about, faq, booking } from "../data/portfolio";
+---
+
+<Base config={portfolio}>
+	<Header {...header} />
+	<main>
+		<Hero {...hero} />
+		<Steps {...steps} />
+		<About {...about} />
+		<Faq {...faq} telegram={portfolio.contacts.telegram ?? ""} />
+		<BookingMessengers {...booking} contacts={portfolio.contacts} locale={portfolio.locale} />
+	</main>
+	<Footer config={portfolio} />
+</Base>

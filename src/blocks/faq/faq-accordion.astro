@@ -14,7 +14,11 @@ interface Props {
 }
 
 const { title, items, helpText, telegram } = Astro.props;
-const telegramHref = telegram ? `https://t.me/${telegram.replace(/^@/, "")}` : "";
+const telegramHandle = (telegram ?? "").trim();
+const telegramHref =
+	telegramHandle && telegramHandle !== "[ЗАПОВНИТИ]" && telegramHandle !== "ЗАПОВНИТИ"
+		? `https://t.me/${telegramHandle.replace(/^@/, "")}`
+		: "";
 ---
 
 <section id="faq" data-block="faq-accordion" class="scroll-mt-24">

@@ -1,0 +1,56 @@
+import type { SiteConfig } from './types';
+
+export const portfolio = {
+	id: 'portfolio',
+	locale: 'uk',
+	siteUrl: 'https://landing-engine-gamma.vercel.app',
+	name: 'Тетяна Дорош',
+	tagline: 'Сайти для малого бізнесу, що працює з людьми',
+	businessType: 'ProfessionalService',
+	contacts: {
+		// Телефон на сторінці не показуємо.
+		phone: '',
+		hours: '[ЗАПОВНИТИ]',
+		telegram: '[ЗАПОВНИТИ]',
+		viber: '[ЗАПОВНИТИ]',
+		instagram: '[ЗАПОВНИТИ]',
+	},
+	booking: {
+		// Форми на цій сторінці немає, ключ не використовується.
+		web3formsKey: '[ЗАПОВНИТИ]',
+		timeFrom: '[ЗАПОВНИТИ]',
+		timeTo: '[ЗАПОВНИТИ]',
+		stepMinutes: 30,
+		onlineService: null,
+	},
+	seo: {
+		title: 'Сайти для малого бізнесу під ключ від Тетяни Дорош',
+		description:
+			'Сайт, який приймає заявки, поки ви працюєте. Я з’ясовую, що болить вашим клієнтам, і збираю сторінку, яка це закриває: план, фіксована ціна й без доплат.',
+		// TODO: додати картинку прев’ю для соцмереж
+		ogImage: '',
+	},
+	rating: null,
+	theme: {
+		colors: {
+			bg: '#F5F7FA',
+			surface: '#FFFFFF',
+			text: '#1D2733',
+			muted: '#5A6675',
+			primary: '#2F4057',
+			primaryContrast: '#FFFFFF',
+			accent: '#E0A458',
+			border: '#DDE3EA',
+		},
+		fonts: {
+			heading: 'Montserrat Variable',
+			body: 'Inter Variable',
+		},
+		radius: '12px',
+	},
+	portfolio: {
+		enabled: false,
+		author: 'Тетяна Дорош',
+		contactUrl: '[ЗАПОВНИТИ]',
+	},
+} satisfies SiteConfig;
