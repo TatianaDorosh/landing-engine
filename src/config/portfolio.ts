@@ -1,5 +1,12 @@
 import type { SiteConfig } from './types';
 
+export const terms = {
+	warrantyDays: 60,
+	revisionRounds: 2,
+	deliveryDays: '5–7',
+	prepaymentPercent: 50,
+};
+
 export const portfolio = {
 	id: 'portfolio',
 	locale: 'uk',

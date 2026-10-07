@@ -7,27 +7,49 @@ interface PackageItem {
 	name: string;
 	price: number;
 	text: string;
-	fits: string;
+	included: string[];
+	excluded: string[];
 	featured?: boolean;
+}
+
+interface PackageNoteLink {
+	text: string;
+	linkLabel: string;
+	href: string;
 }
 
 interface Props {
 	title: string;
 	text: string;
 	currency: string;
-	fitsLabel: string;
+	includedLabel: string;
+	excludedLabel: string;
 	items: PackageItem[];
-	notes: string[];
+	notes: Array<string | PackageNoteLink>;
 	locale?: Locale;
 	bookingHref?: string;
 }
 
-const { title, text, currency, fitsLabel, items, notes, locale = "uk", bookingHref = "#booking" } = Astro.props;
+const {
+	title,
+	text,
+	currency,
+	includedLabel,
+	excludedLabel,
+	items,
+	notes,
+	locale = "uk",
+	bookingHref = "#booking",
+} = Astro.props;
 const ui = getUi(locale);
 
 function money(price: number) {
 	const formatted = String(price).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
 	return `${formatted}\u00a0${currency}`;
+}
+
+function isLink(note: string | PackageNoteLink): note is PackageNoteLink {
+	return typeof note !== "string";
 }
 ---
 
@@ -51,10 +73,33 @@ function money(price: number) {
 								{money(item.price)}
 							</p>
 							<p class="mt-4 font-body text-[15px] leading-[1.5]">{typograf(item.text)}</p>
-							<p class="mt-4 font-body text-[15px] leading-[1.5]">
-								<span class="font-semibold">{fitsLabel}: </span>
-								{typograf(item.fits)}
-							</p>
+							<p class="mt-4 font-body text-[15px] font-semibold leading-[1.5]">{includedLabel}</p>
+							<ul class="mt-2 flex list-none flex-col gap-2 p-0">
+								{item.included.map((line) => (
+									<li class="flex items-start gap-2">
+										<span class:list={["mt-0.5 inline-flex h-5 w-5 shrink-0", item.featured ? "text-primary-contrast" : "text-primary"]} aria-hidden="true">
+											<svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+												<path d="M20 6 9 17l-5-5" />
+											</svg>
+										</span>
+										<span class="min-w-0 font-body text-[15px] leading-[1.5]">{typograf(line)}</span>
+									</li>
+								))}
+							</ul>
+							<p class="mt-4 font-body text-[15px] font-semibold leading-[1.5]">{excludedLabel}</p>
+							<ul class="mt-2 flex list-none flex-col gap-2 p-0">
+								{item.excluded.map((line) => (
+									<li class="flex items-start gap-2">
+										<span class:list={["mt-0.5 inline-flex h-5 w-5 shrink-0", item.featured ? "text-primary-contrast" : "text-muted"]} aria-hidden="true">
+											<svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+												<path d="M18 6 6 18" />
+												<path d="m6 6 12 12" />
+											</svg>
+										</span>
+										<span class="min-w-0 font-body text-[15px] leading-[1.5]">{typograf(line)}</span>
+									</li>
+								))}
+							</ul>
 							<div class="mt-auto pt-6">
 								<a
 									href={bookingHref}
@@ -73,7 +118,20 @@ function money(price: number) {
 		</ul>
 
 		<ul class="mt-8 max-w-[760px] list-disc space-y-2 pl-5 font-body text-[15px] leading-[1.5]">
-			{notes.map((note) => <li class="break-words">{typograf(note)}</li>)}
+			{
+				notes.map((note) =>
+					isLink(note) ? (
+						<li class="break-words">
+							{typograf(note.text)}{" "}
+							<a href={note.href} class="text-primary underline underline-offset-2">
+								{note.linkLabel}
+							</a>
+						</li>
+					) : (
+						<li class="break-words">{typograf(note)}</li>
+					),
+				)
+			}
 		</ul>
 	</div>
 </section>

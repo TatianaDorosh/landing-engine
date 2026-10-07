@@ -1,10 +1,11 @@
 ---
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import Base from "../layouts/Base.astro";
 import Header from "../blocks/layout/layout-header.astro";
-import Hero from "../blocks/hero/hero-showcase.astro";
+import Hero from "../blocks/hero/hero-result.astro";
 import ServicesScope from "../blocks/services/services-scope.astro";
 import ExamplesTabs from "../blocks/examples/examples-tabs.astro";
-import PainsTable from "../blocks/pains/pains-table.astro";
 import Steps from "../blocks/steps/steps-visit.astro";
 import PricesPackages from "../blocks/prices/prices-packages.astro";
 import About from "../blocks/about/about-me.astro";
@@ -12,21 +13,49 @@ import Faq from "../blocks/faq/faq-accordion.astro";
 import BookingMessengers from "../blocks/booking/booking-messengers.astro";
 import Footer from "../blocks/layout/layout-footer.astro";
 import { portfolio } from "../config/portfolio";
-import { header, hero, services, examples, examplesCount, pains, steps, packages, about, faq, booking } from "../data/portfolio";
+import { header, hero, services, examples, examplesCount, steps, packages, about, faq, booking } from "../data/portfolio";
+
+function webpSize(filePath: string) {
+	const buf = readFileSync(filePath);
+	const format = buf.toString("ascii", 12, 16);
+	if (format === "VP8X" && buf.length >= 30) {
+		return { width: 1 + buf.readUIntLE(24, 3), height: 1 + buf.readUIntLE(27, 3) };
+	}
+	if (format === "VP8 " && buf.length >= 30) {
+		return { width: buf.readUInt16LE(26) & 0x3fff, height: buf.readUInt16LE(28) & 0x3fff };
+	}
+	if (format === "VP8L" && buf.length >= 25) {
+		const bits = buf.readUInt32LE(21);
+		return { width: (bits & 0x3fff) + 1, height: ((bits >> 14) & 0x3fff) + 1 };
+	}
+	return { width: 1200, height: 1600 };
+}
+
+const meHeroPath = join(process.cwd(), "public/images/portfolio/me-hero.webp");
+const heroImage = existsSync(meHeroPath)
+	? { src: "/images/portfolio/me-hero.webp", alt: "Тетяна Дорош", ...webpSize(meHeroPath) }
+	: undefined;
 ---
 
 <Base config={portfolio} noindex={true}>
 	<Header {...header} />
 	<main>
-		<Hero {...hero} />
+		<Hero
+			eyebrow={hero.eyebrow}
+			title={hero.title}
+			text={hero.text}
+			primaryCta={hero.primaryCta}
+			secondaryCta={hero.secondaryCta}
+			imageLabel={hero.imageLabel}
+			image={heroImage}
+		/>
 		<ServicesScope {...services} />
 		<ExamplesTabs {...examples} count={examplesCount} locale={portfolio.locale} />
-		<PainsTable {...pains} />
 		<Steps {...steps} />
 		<PricesPackages {...packages} locale={portfolio.locale} />
 		<About {...about} />
-		<Faq {...faq} telegram={portfolio.contacts.telegram ?? ""} />
+		<Faq {...faq} openFirst telegram={portfolio.contacts.telegram ?? ""} />
 		<BookingMessengers {...booking} contacts={portfolio.contacts} locale={portfolio.locale} />
 	</main>
-	<Footer config={portfolio} />
+	<Footer config={portfolio} termsHref="/umovy/" />
 </Base>

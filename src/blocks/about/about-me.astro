@@ -7,10 +7,13 @@ interface Props {
 	paragraphs: string[];
 	facts: string[];
 	signature: string;
+	/** Підпис на заглушці фото. Якщо не передано, береться заголовок. Порожній рядок ховає текст. */
+	imageLabel?: string;
 	image?: { src: string; alt: string; position?: string };
 }
 
-const { title, paragraphs, facts, signature, image } = Astro.props;
+const { title, paragraphs, facts, signature, imageLabel, image } = Astro.props;
+const photoLabel = imageLabel ?? title;
 ---
 
 <section id="about" data-block="about-me" class="bg-surface">
@@ -27,7 +30,7 @@ const { title, paragraphs, facts, signature, image } = Astro.props;
 						style={image.position ? `object-position: ${image.position}` : undefined}
 					/>
 				) : (
-					<PhotoPlaceholder label={title} class="absolute inset-0 h-full" />
+					<PhotoPlaceholder label={photoLabel} class="absolute inset-0 h-full" />
 				)
 			}
 		</div>

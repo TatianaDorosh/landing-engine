@@ -10,10 +10,13 @@ interface Props {
 	title: string;
 	items: Item[];
 	helpText: string;
+	helpLink?: { label: string; href: string };
+	/** Відкрити перше питання. За замовчуванням усі закриті. */
+	openFirst?: boolean;
 	telegram: string;
 }
 
-const { title, items, helpText, telegram } = Astro.props;
+const { title, items, helpText, helpLink, openFirst = false, telegram } = Astro.props;
 const telegramHandle = (telegram ?? "").trim();
 const telegramHref =
 	telegramHandle && telegramHandle !== "[ЗАПОВНИТИ]" && telegramHandle !== "ЗАПОВНИТИ"
@@ -27,8 +30,8 @@ const telegramHref =
 		<div class="max-w-[760px]">
 			<div class="mt-6 divide-y divide-border border-y border-border">
 				{
-					items.map((item) => (
-						<details>
+					items.map((item, index) => (
+						<details open={openFirst && index === 0 ? true : undefined}>
 							<summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 py-4 [&::-webkit-details-marker]:hidden">
 								<h3 class="font-body text-[17px] font-semibold">{typograf(item.question)}</h3>
 								<span class="faq-plus relative h-3.5 w-3.5 shrink-0" aria-hidden="true">
@@ -42,7 +45,19 @@ const telegramHref =
 				}
 			</div>
 			<div class="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-				<p class="font-body text-base text-muted">{helpText}</p>
+				<p class="font-body text-base text-muted">
+					{helpText}
+					{
+						helpLink && (
+							<>
+								{" "}
+								<a href={helpLink.href} class="text-primary underline underline-offset-2">
+									{helpLink.label}
+								</a>
+							</>
+						)
+					}
+				</p>
 				{
 					telegramHref && (
 						<a
