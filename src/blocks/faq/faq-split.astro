@@ -23,7 +23,16 @@ const ui = getUi(locale);
 	<div class="mx-auto max-w-6xl min-w-0 px-4 py-12 xl:px-8">
 		<h2 class="text-3xl">{typograf(title)}</h2>
 		<div class="mt-6 flex min-w-0 flex-col lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-10" data-faq-split>
-			<div class="contents lg:col-span-5 lg:flex lg:min-w-0 lg:flex-col" data-faq-tabs>
+			<p
+				class="faq-hint mb-3 font-body text-sm text-muted lg:col-span-5 lg:col-start-1 lg:row-start-1"
+				style="order: -1"
+			>
+				{ui.faq.hint}
+			</p>
+			<div
+				class="contents lg:col-span-5 lg:col-start-1 lg:row-start-2 lg:flex lg:min-w-0 lg:flex-col"
+				data-faq-tabs
+			>
 				{
 					items.map((item, index) => (
 						<button
@@ -33,18 +42,31 @@ const ui = getUi(locale);
 							aria-controls={`myth-panel-${index}`}
 							aria-expanded={index === 0 ? "true" : "false"}
 							class:list={[
-								"relative flex min-h-11 w-full min-w-0 items-center border-b border-border py-3 text-left font-body text-[17px] font-medium text-muted last:border-b-0 hover:text-text lg:pl-4",
+								"faq-tab relative flex min-h-11 w-full min-w-0 cursor-pointer items-center gap-3 border-b border-border py-3 text-left font-body text-[17px] font-medium text-muted lg:pl-4 lg:pr-2",
 								index === 0 && "is-active",
 							]}
 							style={`order: ${index * 2}`}
 						>
 							<span class="faq-bar absolute inset-y-0 left-0 w-[3px] bg-primary" aria-hidden="true" />
-							{typograf(item.myth)}
+							<span class="min-w-0 flex-1">{typograf(item.myth)}</span>
+							<svg
+								class="faq-chevron h-5 w-5 shrink-0"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.5"
+								aria-hidden="true"
+							>
+								<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+							</svg>
 						</button>
 					))
 				}
 			</div>
-			<div class="contents lg:col-span-7 lg:grid lg:min-w-0" data-faq-panels>
+			<div
+				class="contents lg:col-span-7 lg:col-start-6 lg:row-start-2 lg:grid lg:min-w-0"
+				data-faq-panels
+			>
 				{
 					items.map((item, index) => (
 						<div
@@ -53,12 +75,12 @@ const ui = getUi(locale);
 							class:list={["faq-panel min-w-0 max-lg:pb-4", index !== 0 && "is-closed"]}
 							style={`order: ${index * 2 + 1}`}
 						>
-							<article class="flex h-full min-h-full flex-col rounded-theme border border-border bg-surface p-6">
+							<article class="flex h-full min-h-full flex-col max-lg:overflow-hidden max-lg:pb-4">
 								<p class="hidden font-body text-sm text-muted lg:block">{ui.faq.myth}</p>
-								<h3 class="mt-1 hidden font-body text-[17px] font-semibold lg:block">{typograf(item.myth)}</h3>
-								<p class="font-body text-sm font-semibold text-primary lg:mt-4">{ui.faq.fact}</p>
-								<p class="mt-1 font-body text-[15px] leading-[1.5]">{item.fact}</p>
-								<p class="mt-auto pt-4 font-body text-sm text-muted">{item.author}</p>
+								<h3 class="faq-myth-title mt-2 hidden leading-tight lg:block">{typograf(item.myth)}</h3>
+								<p class="font-body text-sm font-semibold text-primary lg:mt-5">{ui.faq.fact}</p>
+								<p class="mt-2 font-body text-lg leading-[1.6]">{item.fact}</p>
+								<p class="mt-auto border-b border-border pt-6 pb-3 font-body text-sm text-muted">{item.author}</p>
 							</article>
 						</div>
 					))
@@ -73,33 +95,101 @@ const ui = getUi(locale);
 		display: none;
 	}
 
-	[data-faq-tab].is-active {
+	.faq-myth-title {
+		font-family: var(--font-heading);
+		font-size: clamp(1.5rem, 2vw, 2rem);
+		font-weight: 400;
+	}
+
+	.faq-tab {
+		cursor: pointer;
+		transition: background-color 150ms ease;
+	}
+
+	.faq-tab:hover {
+		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+	}
+
+	.faq-chevron {
+		color: var(--color-muted);
+		transition: transform 150ms ease, color 150ms ease;
+	}
+
+	.faq-tab.is-active {
 		color: var(--color-text);
+		font-weight: 600;
+	}
+
+	.faq-tab.is-active .faq-chevron {
+		color: var(--color-primary);
+	}
+
+	.faq-panel {
+		display: grid;
+		grid-template-rows: 1fr;
+		opacity: 1;
+		transition: grid-template-rows 150ms ease, opacity 150ms ease;
 	}
 
 	.faq-panel.is-closed {
-		display: none;
+		grid-template-rows: 0fr;
+		opacity: 0;
+		visibility: hidden;
+		transition: grid-template-rows 150ms ease, opacity 150ms ease, visibility 0s linear 150ms;
+	}
+
+	.faq-panel > article {
+		min-height: 0;
+	}
+
+	@media (max-width: 1023px) {
+		.faq-tab.is-active {
+			border-bottom-color: transparent;
+		}
+
+		.faq-tab.is-active .faq-chevron {
+			transform: rotate(90deg);
+		}
 	}
 
 	@media (min-width: 1024px) {
 		.faq-panel {
 			grid-area: 1 / 1;
+			grid-template-rows: none;
 			height: 100%;
+			display: block;
+			visibility: visible;
+			transition: opacity 150ms ease, visibility 0s linear;
 		}
 
 		.faq-panel.is-closed {
 			display: block;
+			grid-template-rows: none;
+			height: 100%;
+			opacity: 0;
 			visibility: hidden;
 			pointer-events: none;
+			transition: opacity 150ms ease, visibility 0s linear 150ms;
 		}
 
 		.faq-panel:not(.is-closed) {
 			position: relative;
 			z-index: 1;
+			opacity: 1;
+			visibility: visible;
 		}
 
-		[data-faq-tab].is-active .faq-bar {
+		.faq-tab.is-active .faq-bar {
 			display: block;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.faq-tab,
+		.faq-chevron,
+		.faq-panel,
+		.faq-panel.is-closed {
+			transition: none;
 		}
 	}
 </style>

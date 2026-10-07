@@ -67,6 +67,8 @@ export interface UiStrings {
 	faq: {
 		myth: string;
 		fact: string;
+		/** Рядок над списком міфів. */
+		hint: string;
 	};
 	booking: {
 		/** Головна кнопка запису через зовнішній сервіс. */
@@ -141,6 +143,7 @@ export const uk = {
 	faq: {
 		myth: 'Міф',
 		fact: 'Факт',
+		hint: 'Оберіть міф, щоб побачити факт',
 	},
 	booking: {
 		online: 'Записатися онлайн',

@@ -113,7 +113,7 @@ export const about = {
 
 export const prices = {
 	title: "Ціни",
-	note: "Тире в колонці «Корекція» і «Повторний візит» — ціни ще немає, назву на консультації. Ламінування вій стоїть у колонці нового нарощення, бо це окрема процедура.",
+	note: "Корекція діє протягом 3 тижнів після нарощення, пізніше це вже нове нарощення. Ціна в колонці «Разом із віями» діє, коли ви записуєтесь на обидві процедури за один візит.",
 	ctaLabel: ui.buttons.book,
 	bookLabel: ui.buttons.book,
 	currency: ui.currency,
@@ -121,21 +121,21 @@ export const prices = {
 	tabs: [
 		{
 			name: "Вії",
-			levels: ["Нове нарощення", "Корекція"],
+			levels: ["Нове нарощення", "Корекція до 3 тижнів"],
 			rows: [
-				{ service: "Класика", duration: "2 год", prices: [1400, "—"] },
-				{ service: "2D", duration: "2,5 год", prices: [1700, "—"] },
-				{ service: "3D", duration: "3 год", prices: [2000, "—"] },
+				{ service: "Класика", duration: "2 год", prices: [1400, 800] },
+				{ service: "2D", duration: "2,5 год", prices: [1700, 1000] },
+				{ service: "3D", duration: "3 год", prices: [2000, 1200] },
 				{ service: "Ламінування вій", duration: "60 хв", prices: [1100, "—"] },
 			],
 		},
 		{
 			name: "Брови",
-			levels: ["Вартість", "Повторний візит"],
+			levels: ["Вартість", "Разом із віями"],
 			rows: [
-				{ service: "Ламінування", duration: "60 хв", prices: [900, "—"] },
-				{ service: "Корекція й фарбування", duration: "45 хв", prices: [450, "—"] },
-				{ service: "Корекція форми", duration: "30 хв", prices: [350, "—"] },
+				{ service: "Ламінування", duration: "60 хв", prices: [900, 800] },
+				{ service: "Корекція й фарбування", duration: "45 хв", prices: [450, 400] },
+				{ service: "Корекція форми", duration: "30 хв", prices: [350, 300] },
 			],
 		},
 	],
