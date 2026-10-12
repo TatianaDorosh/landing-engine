@@ -11,9 +11,17 @@ interface Props {
 	items: Step[];
 	note?: string;
 	cta?: { label: string; href: string };
+	/** Номер кроку від 1. Якщо не передали, усі кроки однакові. */
+	highlightStep?: number;
 }
 
-const { title, items, note, cta } = Astro.props;
+const { title, items, note, cta, highlightStep } = Astro.props;
+const highlightIndex =
+	typeof highlightStep === "number" && highlightStep >= 1 && highlightStep <= items.length
+		? highlightStep - 1
+		: -1;
+const stepsColumns =
+	highlightIndex >= 0 ? items.map((_, index) => (index === highlightIndex ? "2fr" : "1fr")).join(" ") : "";
 ---
 
 <section id="steps" data-block="steps-visit">
@@ -22,27 +30,43 @@ const { title, items, note, cta } = Astro.props;
 		<ol
 			class:list={[
 				"mt-8 flex list-none flex-col gap-6 p-0 lg:grid lg:gap-6",
-				items.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4",
+				highlightIndex < 0 && (items.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4"),
 			]}
+			style={highlightIndex >= 0 ? `grid-template-columns: ${stepsColumns}` : undefined}
 		>
 			{
-				items.map((item, index) => (
-					<li class="relative flex min-w-0 items-start gap-4 lg:flex-col lg:gap-3">
-						{index < items.length - 1 && (
-							<span
-								class="absolute bottom-[-24px] left-[21px] top-11 w-px bg-border lg:bottom-auto lg:left-11 lg:top-[22px] lg:h-px lg:w-[calc(100%-1.25rem)] lg:-translate-y-1/2"
-								aria-hidden="true"
-							></span>
-						)}
-						<span class="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-primary bg-bg font-body text-lg font-semibold text-primary">
-							{index + 1}
-						</span>
-						<div class="min-w-0">
-							<h3 class="font-body text-lg font-semibold text-text">{typograf(item.title)}</h3>
-							<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{item.text}</p>
-						</div>
-					</li>
-				))
+				items.map((item, index) => {
+					const highlighted = index === highlightIndex;
+					return (
+						<li class="relative flex min-w-0 items-start gap-4 lg:flex-col lg:gap-3">
+							{index < items.length - 1 && (
+								<span
+									class="absolute bottom-[-24px] left-[21px] top-11 w-px bg-border lg:bottom-auto lg:left-11 lg:top-[22px] lg:h-px lg:w-[calc(100%-1.25rem)] lg:-translate-y-1/2"
+									aria-hidden="true"
+								></span>
+							)}
+							<span class="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-primary bg-bg font-body text-lg font-semibold text-primary">
+								{index + 1}
+							</span>
+							<div
+								class:list={[
+									"min-w-0",
+									highlighted && "rounded-theme border-2 border-primary bg-surface p-4",
+								]}
+							>
+								<h3
+									class:list={[
+										"font-body font-semibold text-text",
+										highlighted ? "text-2xl leading-snug" : "text-lg",
+									]}
+								>
+									{typograf(item.title)}
+								</h3>
+								<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{item.text}</p>
+							</div>
+						</li>
+					);
+				})
 			}
 		</ol>
 		{

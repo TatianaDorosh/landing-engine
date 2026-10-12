@@ -42,7 +42,7 @@ import { portfolio } from "../config/portfolio";
 import { demoMokka } from "../config/demo-mokka";
 import { getUi } from "../i18n";
 import { header, hero, trust, services, safety, gallery, beforeAfter, prices, team, steps, reviews, gifts, booking, faq, myths, contacts } from "../data/demo-beauty";
-import { urgentToday, anesthesiaComfort, licensesDocs } from "../data/demo-dental";
+import { urgentToday, anesthesiaComfort, licensesDocs, steps as dentalSteps } from "../data/demo-dental";
 import { hero as mokkaHero, about as mokkaAbout, prices as mokkaPrices, booking as mokkaBooking } from "../data/demo-mokka";
 import { demoSlate } from "../config/demo-slate";
 import { effects, myths as slateMyths, booking as slateBooking, reviews as slateReviews } from "../data/demo-slate";
@@ -151,6 +151,9 @@ const rules = {
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">steps-visit</p>
 	<Steps {...steps} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">steps-visit (highlightStep)</p>
+	<Steps {...dentalSteps} highlightStep={4} />
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">rules-list</p>
 	<RulesList {...rules} />
