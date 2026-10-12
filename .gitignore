@@ -1,5 +1,8 @@
 # build output
 dist/
+
+# original photos
+photos-src/
 # generated types
 .astro/
 
