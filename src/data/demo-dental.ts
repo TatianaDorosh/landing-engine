@@ -89,8 +89,6 @@ export const steps = {
 	],
 };
 
-const gap = "[ЗАПОВНИТИ]";
-
 export const footerNote = "Не є медичною консультацією. Діагноз і лікування призначає лікар.";
 
 export const header = {
@@ -108,13 +106,13 @@ export const header = {
 };
 
 export const hero = {
-	eyebrow: gap,
+	eyebrow: "Стоматологія в Києві",
 	title: "Лікуємо спокійно: з анестезією, планом і ціною до початку",
 	text: "Огляд, зрозумілий план і кошторис письмово ще до початку лікування",
 	points: ["Анестезія", "Кошторис письмово", "Запис на сьогодні"],
 	primaryCta: { label: "Записатися на огляд", href: "#booking", service: "Огляд і консультація" },
 	secondaryCta: { label: "Дивитись ціни", href: "#prices" },
-	imageLabel: gap,
+	imageLabel: "Фото клініки",
 };
 
 const ratingItem = demoDental.rating
@@ -136,41 +134,41 @@ export const trust = {
 };
 
 export const services = {
-	title: gap,
+	title: "Послуги",
 	currency: ui.currency,
 	items: [
 		{
 			title: "Лікування зубів",
-			text: gap,
+			text: "Спершу огляд. План і кошторис письмово, ще до початку.",
 			priceFrom: 1500,
 			linkLabel: ui.buttons.book,
 			href: "#booking",
 			service: "Лікування зубів",
-			imageLabel: gap,
+			imageLabel: "Лікування зубів",
 		},
 		{
 			title: "Імплантація",
-			text: gap,
+			text: "Консультація, план і ціна письмово. Нічого не починаємо без згоди.",
 			priceFrom: 25000,
 			linkLabel: ui.buttons.book,
 			href: "#booking",
 			service: "Імплантація",
-			imageLabel: gap,
+			imageLabel: "Імплантація",
 		},
 		{
 			title: "Брекети й елайнери",
-			text: gap,
+			text: "Консультація ортодонта. План і ціну узгоджуємо до старту.",
 			priceFrom: 20000,
 			linkLabel: ui.buttons.book,
 			href: "#booking",
 			service: "Брекети й елайнери",
-			imageLabel: gap,
+			imageLabel: "Брекети й елайнери",
 		},
 	],
 };
 
 export const team = {
-	title: gap,
+	title: "Лікарі",
 	items: [
 		{
 			name: "Олена Мельник",
@@ -194,12 +192,12 @@ function lead(price: number) {
 	return Math.round(price * 1.3);
 }
 
-function priceRow(service: string, price: number) {
-	return { service, duration: gap, prices: [price, lead(price)] as [number, number] };
+function priceRow(service: string, price: number, duration: string) {
+	return { service, duration, prices: [price, lead(price)] as [number, number] };
 }
 
 export const prices = {
-	title: gap,
+	title: "Ціни",
 	note: "Остаточну ціну називає лікар після огляду, письмово. Оплата: готівка, картка, частинами.",
 	ctaLabel: "Записатися на огляд",
 	bookLabel: ui.buttons.book,
@@ -210,54 +208,54 @@ export const prices = {
 			name: "Лікування",
 			levels: ["Лікар", "Провідний лікар"] as [string, string],
 			rows: [
-				priceRow("Огляд і консультація", 400),
-				priceRow("Лікування карієсу", 1800),
-				priceRow("Пломба", 1500),
-				priceRow("Лікування каналів", 3500),
-				priceRow("Видалення зуба", 1200),
-				priceRow("Професійна гігієна", 1800),
-				priceRow("Відбілювання", 4500),
-				priceRow("Лікування ясен", 2000),
+				priceRow("Огляд і консультація", 400, "30 хв"),
+				priceRow("Лікування карієсу", 1800, "60 хв"),
+				priceRow("Пломба", 1500, "40 хв"),
+				priceRow("Лікування каналів", 3500, "90 хв"),
+				priceRow("Видалення зуба", 1200, "30 хв"),
+				priceRow("Професійна гігієна", 1800, "60 хв"),
+				priceRow("Відбілювання", 4500, "60 хв"),
+				priceRow("Лікування ясен", 2000, "45 хв"),
 			],
 		},
 		{
 			name: "Імплантація",
 			levels: ["Лікар", "Провідний лікар"] as [string, string],
 			rows: [
-				priceRow("Консультація й 3D-знімок", 600),
-				priceRow("Імплант", 25000),
-				priceRow("Коронка", 8000),
-				priceRow("Підсадка кістки", 9000),
-				priceRow("Видалення з імплантацією", 5000),
+				priceRow("Консультація й 3D-знімок", 600, "40 хв"),
+				priceRow("Імплант", 25000, "90 хв"),
+				priceRow("Коронка", 8000, "60 хв"),
+				priceRow("Підсадка кістки", 9000, "90 хв"),
+				priceRow("Видалення з імплантацією", 5000, "90 хв"),
 			],
 		},
 		{
 			name: "Ортодонтія",
 			levels: ["Лікар", "Провідний лікар"] as [string, string],
 			rows: [
-				priceRow("Консультація", 500),
-				priceRow("Брекети металеві", 20000),
-				priceRow("Брекети керамічні", 28000),
-				priceRow("Елайнери", 55000),
-				priceRow("Ретейнер", 3500),
+				priceRow("Консультація", 500, "40 хв"),
+				priceRow("Брекети металеві", 20000, "90 хв"),
+				priceRow("Брекети керамічні", 28000, "90 хв"),
+				priceRow("Елайнери", 55000, "60 хв"),
+				priceRow("Ретейнер", 3500, "30 хв"),
 			],
 		},
 		{
 			name: "Гігієна",
 			levels: ["Лікар", "Провідний лікар"] as [string, string],
 			rows: [
-				priceRow("Чистка ультразвуком", 1200),
-				priceRow("Air Flow", 1000),
-				priceRow("Комплексна гігієна", 1800),
-				priceRow("Фторування", 600),
-				priceRow("Консультація гігієніста", 300),
+				priceRow("Чистка ультразвуком", 1200, "40 хв"),
+				priceRow("Air Flow", 1000, "30 хв"),
+				priceRow("Комплексна гігієна", 1800, "60 хв"),
+				priceRow("Фторування", 600, "20 хв"),
+				priceRow("Консультація гігієніста", 300, "30 хв"),
 			],
 		},
 	],
 };
 
 export const reviews = {
-	title: gap,
+	title: "Відгуки",
 	allLink: { label: "Усі відгуки в Google", href: "#" },
 	items: [
 		{
@@ -282,7 +280,7 @@ export const reviews = {
 };
 
 export const faq = {
-	title: gap,
+	title: "Часті питання",
 	openFirst: true,
 	helpText: "Не знайшли відповіді?",
 	items: [
@@ -315,9 +313,9 @@ export const booking = {
 	title: "Запишіться на огляд",
 	ctaTitle: "Запишіться на огляд",
 	ctaLabel: "Записатися на огляд",
-	ctaText: gap,
+	ctaText: "Після огляду лікар складе план і кошторис письмово. Ціна не змінюється без вашої згоди.",
 	writeLabel: "або напишіть:",
-	note: gap,
+	note: "Підтвердимо час у месенджері в робочі години.",
 	privacyHref: "/flagship-medicine/privacy/",
 	services: [
 		{
@@ -333,6 +331,6 @@ export const booking = {
 };
 
 export const contacts = {
-	title: gap,
+	title: "Як нас знайти",
 	directions: "Як дістатися: 5 хвилин пішки від метро (демо)",
 };

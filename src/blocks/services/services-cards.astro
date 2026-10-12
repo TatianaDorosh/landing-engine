@@ -21,6 +21,10 @@ interface Props {
 }
 
 const { title, currency, items } = Astro.props;
+
+function grouped(value: number) {
+	return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
+}
 ---
 
 <section id="services" data-block="services-cards">
@@ -51,7 +55,7 @@ const { title, currency, items } = Astro.props;
 								<p class="mt-3 font-body leading-relaxed">{item.text}</p>
 								<div class="mt-auto pt-4">
 									<p class="font-heading text-[28px] text-primary">
-										від {item.priceFrom} {currency}
+										від {grouped(item.priceFrom)} {currency}
 									</p>
 									<a
 										href={item.href}
