@@ -10,9 +10,11 @@ interface Props {
 	termsHref?: string;
 	/** Якщо не передано, посилання «Про мене» не показуємо. */
 	aboutHref?: string;
+	/** Додатковий рядок під копірайтом. Якщо не передано — футер як раніше. */
+	note?: string;
 }
 
-const { config, privacyHref = "", termsHref = "", aboutHref = "" } = Astro.props;
+const { config, privacyHref = "", termsHref = "", aboutHref = "", note = "" } = Astro.props;
 const ui = getUi(config.locale);
 const year = new Date().getFullYear();
 const order = ui.demo.order;
@@ -48,6 +50,13 @@ const plaqueBefore = plaque.endsWith(order) ? plaque.slice(0, plaque.length - or
 				}
 			</div>
 		</div>
+		{
+			note && (
+				<p class="mx-auto max-w-6xl px-4 pb-6 font-body text-[15px] leading-relaxed text-muted xl:px-8">
+					{note}
+				</p>
+			)
+		}
 	</div>
 	{
 		config.portfolio.enabled && (

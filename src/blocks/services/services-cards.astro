@@ -8,6 +8,8 @@ interface ServiceItem {
 	priceFrom: number;
 	linkLabel: string;
 	href: string;
+	/** Якщо задано, кнопка передає послугу в панель запису. */
+	service?: string;
 	imageLabel: string;
 	image?: { src: string; alt: string; width: number; height: number };
 }
@@ -51,7 +53,11 @@ const { title, currency, items } = Astro.props;
 									<p class="font-heading text-[28px] text-primary">
 										від {item.priceFrom} {currency}
 									</p>
-									<a href={item.href} class="inline-flex min-h-11 items-center pt-4 text-primary">
+									<a
+										href={item.href}
+										data-service={item.service}
+										class="inline-flex min-h-11 items-center pt-4 text-primary"
+									>
 										{item.linkLabel}
 									</a>
 								</div>

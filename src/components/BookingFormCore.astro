@@ -31,6 +31,7 @@ const {
 	successClose = false,
 } = Astro.props;
 const ui = getUi(config.locale);
+const staffLabel = config.staffLabel ?? "Майстер";
 const phoneDisplay = config.contacts.phoneDisplay ?? config.contacts.phone;
 const fieldClass =
 	"w-full min-w-0 max-w-full rounded-theme border border-border bg-bg px-3 font-body text-base text-text";
@@ -104,7 +105,7 @@ const id = (name: string) => `${idPrefix}-${name}`;
 			</div>
 
 			<div>
-				<label for={id("master")} class="font-body text-[15px] font-semibold">Майстер</label>
+				<label for={id("master")} class="font-body text-[15px] font-semibold">{staffLabel}</label>
 				<select id={id("master")} name="master" data-field="master" class:list={[fieldClass, "mt-1 min-h-11"]}>
 					<option value="Будь-який" selected>Будь-який</option>
 					{masters.map((name) => <option value={name}>{name}</option>)}
@@ -266,7 +267,7 @@ const id = (name: string) => `${idPrefix}-${name}`;
 			name: ui.form.name,
 			phone: ui.form.phone,
 			service: ui.form.service,
-			master: "Майстер",
+			master: staffLabel,
 			date: ui.form.date,
 			time: ui.form.time,
 			contactMethod: ui.form.contactMethod,

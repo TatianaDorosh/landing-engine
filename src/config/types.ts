@@ -71,4 +71,6 @@ export interface SiteConfig {
 		author: string;
 		contactUrl: string;
 	};
+	/** Підпис спеціаліста у формі запису. Якщо не задано — «Майстер». */
+	staffLabel?: string;
 }

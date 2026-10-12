@@ -1,0 +1,26 @@
+---
+import Base from "../../layouts/Base.astro";
+import Header from "../../blocks/layout/layout-header.astro";
+import Footer from "../../blocks/layout/layout-footer.astro";
+import PrivacyPolicy from "../../components/PrivacyPolicy.astro";
+import { demoDental } from "../../config/demo-dental";
+import { header, footerNote } from "../../data/demo-dental";
+---
+
+<Base config={demoDental} noindex={true} title="Політика приватності — Світла">
+	<Header {...header} nameHref="/flagship-medicine/" anchorBase="/flagship-medicine/" />
+	<main data-page="flagship-medicine">
+		<PrivacyPolicy config={demoDental} />
+	</main>
+	<Footer config={demoDental} privacyHref="/flagship-medicine/privacy/" note={footerNote} />
+</Base>
+
+<style is:global>
+	html:has([data-page="flagship-medicine"]) .font-heading {
+		font-weight: 600;
+	}
+
+	html:has([data-page="flagship-medicine"]) h2 {
+		font-weight: 500;
+	}
+</style>

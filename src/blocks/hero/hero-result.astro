@@ -10,9 +10,11 @@ interface Props {
 	secondaryCta: { label: string; href: string };
 	image?: { src: string; alt: string; width: number; height: number; position?: string };
 	imageLabel: string;
+	/** Короткі пункти під текстом. Якщо не передано — блок як раніше. */
+	points?: string[];
 }
 
-const { eyebrow, title, text, primaryCta, secondaryCta, image, imageLabel } = Astro.props;
+const { eyebrow, title, text, primaryCta, secondaryCta, image, imageLabel, points = [] } = Astro.props;
 ---
 
 <section id="hero" data-block="hero-result">
@@ -21,6 +23,20 @@ const { eyebrow, title, text, primaryCta, secondaryCta, image, imageLabel } = As
 			<p class="text-sm text-muted">{eyebrow}</p>
 			<h1 class="mt-3 font-heading text-[36px] leading-[1.15] lg:text-[56px]">{typograf(title)}</h1>
 			<p class="mt-4 max-w-xl font-body text-base leading-relaxed">{text}</p>
+			{
+				points.length > 0 && (
+					<ul class="mt-4 flex list-none flex-col gap-2 p-0">
+						{points.map((point) => (
+							<li class="flex items-start gap-2 font-body text-base">
+								<span class="text-primary" aria-hidden="true">
+									✓
+								</span>
+								<span>{point}</span>
+							</li>
+						))}
+					</ul>
+				)
+			}
 		</div>
 		<div class="order-3 flex w-full flex-col items-start gap-3 lg:col-start-1 lg:row-start-2 lg:w-auto lg:flex-row lg:self-start">
 			<a

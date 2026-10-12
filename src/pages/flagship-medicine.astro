@@ -1,0 +1,86 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import Urgent from "../blocks/urgent/urgent-today.astro";
+import Hero from "../blocks/hero/hero-result.astro";
+import Trust from "../blocks/trust/trust-strip.astro";
+import Services from "../blocks/services/services-cards.astro";
+import Comfort from "../blocks/anesthesia/anesthesia-comfort.astro";
+import Team from "../blocks/team/team-cards.astro";
+import Licenses from "../blocks/licenses/licenses-docs.astro";
+import Prices from "../blocks/prices/prices-levels.astro";
+import Steps from "../blocks/steps/steps-visit.astro";
+import Reviews from "../blocks/reviews/reviews-cards.astro";
+import Faq from "../blocks/faq/faq-accordion.astro";
+import BookingCta from "../blocks/booking/booking-cta.astro";
+import BookingDrawer from "../blocks/booking/booking-drawer.astro";
+import ContactsMap from "../blocks/contacts/contacts-map.astro";
+import Messengers from "../blocks/layout/layout-messengers.astro";
+import Footer from "../blocks/layout/layout-footer.astro";
+import { demoDental } from "../config/demo-dental";
+import { getUi } from "../i18n";
+import {
+	urgentToday,
+	header,
+	hero,
+	trust,
+	services,
+	anesthesiaComfort,
+	team,
+	licensesDocs,
+	prices,
+	steps,
+	reviews,
+	faq,
+	booking,
+	contacts,
+	footerNote,
+} from "../data/demo-dental";
+
+const ui = getUi(demoDental.locale);
+---
+
+<Base config={demoDental}>
+	<Header {...header} />
+	<main data-page="flagship-medicine">
+		<Urgent {...urgentToday} />
+		<Hero {...hero} />
+		<Trust {...trust} />
+		<Services {...services} />
+		<Comfort {...anesthesiaComfort} />
+		<Team {...team} bookLabel={ui.buttons.book} />
+		<Licenses {...licensesDocs} />
+		<Prices {...prices} />
+		<Steps {...steps} highlightStep={4} />
+		<Reviews {...reviews} />
+		<Faq {...faq} telegram={demoDental.contacts.telegram ?? ""} />
+		<BookingCta
+			title={booking.ctaTitle}
+			text={booking.ctaText}
+			writeLabel={booking.writeLabel}
+			ctaLabel={booking.ctaLabel}
+			config={demoDental}
+		/>
+		<BookingDrawer
+			title={booking.title}
+			note={booking.note}
+			services={booking.services}
+			masters={booking.masters}
+			privacyHref={booking.privacyHref}
+			config={demoDental}
+		/>
+		<ContactsMap {...contacts} contacts={demoDental.contacts} />
+	</main>
+	<Messengers config={demoDental} />
+	<Footer config={demoDental} privacyHref="/flagship-medicine/privacy/" note={footerNote} />
+</Base>
+
+<style is:global>
+	html:has([data-page="flagship-medicine"]) .font-heading {
+		font-weight: 600;
+	}
+
+	html:has([data-page="flagship-medicine"]) h2 {
+		font-weight: 500;
+	}
+</style>
