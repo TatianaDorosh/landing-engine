@@ -15,6 +15,9 @@ import PainsTable from "../blocks/pains/pains-table.astro";
 import PricesPackages from "../blocks/prices/prices-packages.astro";
 import Effects from "../blocks/effects/effects-cards.astro";
 import Safety from "../blocks/safety/safety-standards.astro";
+import UrgentToday from "../blocks/urgent/urgent-today.astro";
+import AnesthesiaComfort from "../blocks/anesthesia/anesthesia-comfort.astro";
+import LicensesDocs from "../blocks/licenses/licenses-docs.astro";
 import Gallery from "../blocks/gallery/gallery-carousel.astro";
 import BeforeAfter from "../blocks/gallery/gallery-before-after.astro";
 import Prices from "../blocks/prices/prices-levels.astro";
@@ -39,6 +42,7 @@ import { portfolio } from "../config/portfolio";
 import { demoMokka } from "../config/demo-mokka";
 import { getUi } from "../i18n";
 import { header, hero, trust, services, safety, gallery, beforeAfter, prices, team, steps, reviews, gifts, booking, faq, myths, contacts } from "../data/demo-beauty";
+import { urgentToday, anesthesiaComfort, licensesDocs } from "../data/demo-dental";
 import { hero as mokkaHero, about as mokkaAbout, prices as mokkaPrices, booking as mokkaBooking } from "../data/demo-mokka";
 import { demoSlate } from "../config/demo-slate";
 import { effects, myths as slateMyths, booking as slateBooking, reviews as slateReviews } from "../data/demo-slate";
@@ -120,6 +124,15 @@ const rules = {
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">safety-standards</p>
 	<Safety {...safety} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">urgent-today</p>
+	<UrgentToday {...urgentToday} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">anesthesia-comfort</p>
+	<AnesthesiaComfort {...anesthesiaComfort} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">licenses-docs</p>
+	<LicensesDocs {...licensesDocs} />
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">gallery-carousel</p>
 	<Gallery {...gallery} />

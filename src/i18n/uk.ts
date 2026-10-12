@@ -86,6 +86,16 @@ export interface UiStrings {
 		/** Підпис на лінії перед телефоном і месенджерами. */
 		or: string;
 	};
+	urgent: {
+		/** Кнопка дзвінка на смужці. Номер власник передає в props. */
+		call: string;
+		/** Кнопка запису, якщо блок не отримав свій підпис. */
+		book: string;
+	};
+	licenses: {
+		/** Початок доступної назви картки документа. */
+		open: string;
+	};
 }
 
 export const uk = {
@@ -164,5 +174,12 @@ export const uk = {
 		online: 'Записатися онлайн',
 		via: 'Запис через {name}',
 		or: 'або',
+	},
+	urgent: {
+		call: 'Подзвонити',
+		book: 'Записатися',
+	},
+	licenses: {
+		open: 'Відкрити документ',
 	},
 } satisfies UiStrings;

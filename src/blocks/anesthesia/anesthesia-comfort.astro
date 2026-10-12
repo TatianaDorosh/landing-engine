@@ -1,0 +1,61 @@
+---
+import PhotoPlaceholder from "../../components/PhotoPlaceholder.astro";
+import { typograf } from "../../lib/typograf";
+
+interface ComfortItem {
+	title: string;
+	text: string;
+}
+
+interface Props {
+	title: string;
+	intro: string;
+	/** Три картки. Нумерація «1 · …» береться з порядку масиву. */
+	items: ComfortItem[];
+	image?: { src: string; alt: string; position?: string };
+}
+
+// Жодних обіцянок у коді: заголовок, вступ і картки лише з props.
+const { title, intro, items, image } = Astro.props;
+const photo = image?.src && image.alt ? image : undefined;
+---
+
+<section id="comfort" data-block="anesthesia-comfort">
+	<div class="mx-auto grid max-w-6xl items-stretch gap-8 px-4 py-12 lg:grid-cols-12 lg:gap-x-10 lg:px-8">
+		<div class="order-2 min-w-0 lg:order-1 lg:col-span-7">
+			<h2 class="text-3xl">{typograf(title)}</h2>
+			<p class="mt-4 max-w-[760px] font-body text-base leading-relaxed">{typograf(intro)}</p>
+			<ul class="mt-6 flex list-none flex-col gap-3 p-0">
+				{
+					items.map((item, index) => (
+						<li class="rounded-theme border border-border bg-surface p-4">
+							<h3 class="font-body text-[17px] font-semibold leading-snug">
+								<span class="text-primary">
+									{index + 1} ·{" "}
+								</span>
+								{typograf(item.title)}
+							</h3>
+							<p class="mt-2 font-body text-[15px] leading-[1.5] text-muted">{typograf(item.text)}</p>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+		<div class="relative order-1 h-[200px] overflow-hidden rounded-theme lg:order-2 lg:col-span-5 lg:h-full lg:min-h-[280px]">
+			{
+				photo ? (
+					<img
+						src={photo.src}
+						alt={photo.alt}
+						loading="lazy"
+						decoding="async"
+						class="absolute inset-0 h-full w-full object-cover"
+						style={photo.position ? `object-position: ${photo.position}` : undefined}
+					/>
+				) : (
+					<PhotoPlaceholder label={title} class="absolute inset-0 h-full" />
+				)
+			}
+		</div>
+	</div>
+</section>

@@ -1,0 +1,52 @@
+---
+import { getUi } from "../../i18n";
+import { typograf } from "../../lib/typograf";
+
+interface Props {
+	text: string;
+	note?: string;
+	phone: { label: string; href: string };
+	cta?: { label?: string; href?: string };
+}
+
+// Текст про вільні місця задає власник у props (text).
+// Блок не перевіряє розклад і не показує живу доступність.
+const { text, note, phone, cta } = Astro.props;
+const ui = getUi("uk");
+const callLabel = ui.urgent.call;
+const bookLabel = cta?.label || ui.urgent.book;
+const bookHref = cta?.href || "#booking";
+---
+
+<section id="urgent" data-block="urgent-today" class="bg-primary text-primary-contrast">
+	<div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-8 lg:py-5">
+		<div class="min-w-0">
+			<p class="font-body text-base font-semibold leading-snug">{typograf(text)}</p>
+			{note && <p class="mt-1 font-body text-[15px] leading-[1.5]">{typograf(note)}</p>}
+		</div>
+		<div class="flex w-full shrink-0 flex-col gap-2 lg:w-auto lg:flex-row lg:gap-3">
+			<a
+				href={phone.href}
+				aria-label={`${callLabel} ${phone.label}`}
+				class="inline-flex min-h-11 w-full flex-wrap items-center justify-center gap-x-2 rounded-theme bg-primary-contrast px-5 text-center font-body text-[15px] font-semibold text-primary lg:w-auto"
+			>
+				{callLabel}
+				<span>{phone.label}</span>
+			</a>
+			<a
+				href={bookHref}
+				class="inline-flex min-h-11 w-full items-center justify-center rounded-theme border border-primary-contrast bg-transparent px-5 text-center font-body text-[15px] font-semibold text-primary-contrast lg:w-auto"
+			>
+				{bookLabel}
+			</a>
+		</div>
+	</div>
+</section>
+
+<style is:global>
+	[data-block="urgent-today"] a:focus-visible,
+	[data-block="urgent-today"] button:focus-visible {
+		outline: 2px solid var(--color-primary-contrast);
+		outline-offset: 2px;
+	}
+</style>
