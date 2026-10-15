@@ -6,7 +6,6 @@ import Trust from "../blocks/trust/trust-strip.astro";
 import Services from "../blocks/services/services-cards.astro";
 import Safety from "../blocks/safety/safety-standards.astro";
 import Gallery from "../blocks/gallery/gallery-carousel.astro";
-import BeforeAfter from "../blocks/gallery/gallery-before-after.astro";
 import Prices from "../blocks/prices/prices-levels.astro";
 import Team from "../blocks/team/team-compact.astro";
 import Steps from "../blocks/steps/steps-visit.astro";
@@ -21,7 +20,7 @@ import Messengers from "../blocks/layout/layout-messengers.astro";
 import Footer from "../blocks/layout/layout-footer.astro";
 import { demoBeauty } from "../config/demo-beauty";
 import { getUi } from "../i18n";
-import { header, hero, trust, services, safety, gallery, beforeAfter, prices, team, steps, reviews, gifts, booking, faq, myths, contacts } from "../data/demo-beauty";
+import { header, hero, trust, services, safety, gallery, prices, team, steps, reviews, gifts, booking, faq, myths, contacts } from "../data/demo-beauty";
 
 const ui = getUi(demoBeauty.locale);
 ---
@@ -34,7 +33,6 @@ const ui = getUi(demoBeauty.locale);
 		<Services {...services} />
 		<Safety {...safety} />
 		<Gallery {...gallery} />
-		<BeforeAfter {...beforeAfter} />
 		<Prices {...prices} />
 		<Team {...team} bookLabel={ui.buttons.book} />
 		<Steps {...steps} />

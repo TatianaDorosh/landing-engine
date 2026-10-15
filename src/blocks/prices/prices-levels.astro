@@ -17,6 +17,7 @@ interface PriceTab {
 
 interface Props {
 	title: string;
+	subtitle?: string;
 	note: string;
 	tabs: PriceTab[];
 	ctaLabel: string;
@@ -28,7 +29,7 @@ interface Props {
 	tabsStyle?: "pill" | "underline";
 }
 
-const { title, note, tabs, ctaLabel, bookLabel, currency, maxVisible = 8, locale = "uk", tabsStyle = "pill" } = Astro.props;
+const { title, subtitle, note, tabs, ctaLabel, bookLabel, currency, maxVisible = 8, locale = "uk", tabsStyle = "pill" } = Astro.props;
 const underline = tabsStyle === "underline";
 const ui = getUi(locale);
 
@@ -46,6 +47,7 @@ function money(value: number | string) {
 <section id="prices" data-block="prices-levels">
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
 		<h2 class="text-3xl">{typograf(title)}</h2>
+		{subtitle && <p class="mt-2 font-body text-[15px] leading-[1.5] text-muted">{subtitle}</p>}
 		<div
 			data-tabs-style={tabsStyle}
 			class:list={[
@@ -113,8 +115,8 @@ function money(value: number | string) {
 								<tr class="border-b border-border text-[15px] text-muted">
 									<th class="py-3 pr-4 font-medium" scope="col">Послуга</th>
 									<th class="py-3 pr-4 font-medium" scope="col">Тривалість</th>
-									<th class="py-3 pr-4 font-medium" scope="col">{tab.levels[0]}</th>
-									<th class="py-3 font-medium" scope="col">{tab.levels[1]}</th>
+									<th class="py-3 pr-4 text-right font-medium" scope="col">{tab.levels[0]}</th>
+									<th class="py-3 text-right font-medium" scope="col">{tab.levels[1]}</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -123,7 +125,7 @@ function money(value: number | string) {
 										class:list={["border-b border-border", rowIndex >= maxVisible && "hidden"]}
 										data-price-extra={rowIndex >= maxVisible ? "" : undefined}
 									>
-										<th class="py-4 pr-4 font-semibold" scope="row">
+										<th class="py-4 pr-4 font-semibold text-text" scope="row">
 											{row.service}
 											<a
 												href="#booking"
@@ -133,9 +135,9 @@ function money(value: number | string) {
 												{bookLabel}
 											</a>
 										</th>
-										<td class="py-4 pr-4 text-muted">{row.duration}</td>
-										<td class="py-4 pr-4">{money(row.prices[0])}</td>
-										<td class="py-4">{money(row.prices[1])}</td>
+										<td class="py-4 pr-4 font-normal text-muted">{row.duration}</td>
+										<td class="py-4 pr-4 text-right font-semibold text-text">{money(row.prices[0])}</td>
+										<td class="py-4 text-right font-semibold text-text">{money(row.prices[1])}</td>
 									</tr>
 								))}
 							</tbody>
@@ -152,10 +154,10 @@ function money(value: number | string) {
 								>
 									<h3 class="font-body text-lg font-semibold">{typograf(row.service)}</h3>
 									<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{row.duration}</p>
-									<p class="mt-3">
+									<p class="mt-3 font-semibold text-text">
 										{tab.levels[0]} — {money(row.prices[0])}
 									</p>
-									<p>
+									<p class="font-semibold text-text">
 										{tab.levels[1]} — {money(row.prices[1])}
 									</p>
 									<a

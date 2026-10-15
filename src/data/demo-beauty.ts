@@ -212,8 +212,9 @@ export const beforeAfter = {
 };
 
 export const prices = {
-	title: "Ціни — тут, а не в директі",
-	note: "Ціни остаточні, без доплат на місці. Для масажу є абонементи.",
+	title: "Ціни",
+	subtitle: "Остаточні, без доплат на місці.",
+	note: "Для масажу є абонементи.",
 	ctaLabel: "Записатися на послугу",
 	bookLabel: ui.buttons.book,
 	currency: ui.currency,
@@ -353,6 +354,11 @@ export const gifts = {
 	ctaLabel: "Замовити сертифікат",
 	ctaHref: "#booking",
 	ctaService: "Подарунковий сертифікат",
+	image: {
+		src: "/images/demo-beauty/gift.webp",
+		alt: "Подарункова коробочка з персиковою стрічкою і сухоцвітом у руці",
+		position: "50% 45%",
+	},
 };
 
 export const booking = {
