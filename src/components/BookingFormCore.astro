@@ -93,7 +93,7 @@ const id = (name: string) => `${idPrefix}-${name}`;
 					<option value="">Оберіть послугу</option>
 					{
 						services.map((group) => (
-							<optgroup label={group.group}>
+							<optgroup label={group.group.toLocaleUpperCase("uk")}>
 								{group.items.map((item) => (
 									<option value={item}>{item}</option>
 								))}
