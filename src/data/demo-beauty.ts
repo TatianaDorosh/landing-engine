@@ -224,7 +224,7 @@ export const prices = {
 			levels: ["Майстер", "Топ-майстер"],
 			rows: [
 				{ service: "Манікюр без покриття", duration: "60 хв", prices: [550, 700] },
-				{ service: "Манікюр + покриття гель-лаком", duration: "90 хв", prices: [650, 850] },
+				{ service: "Манікюр + гель-лак", duration: "90 хв", prices: [650, 850] },
 				{ service: "Зняття + манікюр + покриття", duration: "120 хв", prices: [750, 950] },
 				{ service: "Педикюр з покриттям", duration: "90 хв", prices: [850, 1050] },
 				{ service: "Дизайн, 1 ніготь", duration: "10 хв", prices: [30, 50] },
@@ -267,7 +267,22 @@ export const team = {
 				width: 1067,
 				height: 1600,
 			},
-			certificates: [{ label: "Сертифікат 1" }, { label: "Сертифікат 2" }],
+			certificates: [
+				{
+					label: "Сертифікат про підвищення кваліфікації",
+					image: {
+						src: "/images/demo-beauty/certificates/certificate-1.webp",
+						alt: "Сертифікат про підвищення кваліфікації — Олена Коваль",
+					},
+				},
+				{
+					label: "Сертифікат курсу",
+					image: {
+						src: "/images/demo-beauty/certificates/certificate-2.webp",
+						alt: "Сертифікат курсу — Олена Коваль",
+					},
+				},
+			],
 		},
 		{
 			name: "Ірина Мельник",
@@ -280,7 +295,29 @@ export const team = {
 				width: 1067,
 				height: 1600,
 			},
-			certificates: [{ label: "Диплом" }, { label: "Сертифікат 1" }, { label: "Сертифікат 2" }],
+			certificates: [
+				{
+					label: "Диплом",
+					image: {
+						src: "/images/demo-beauty/certificates/diploma.webp",
+						alt: "Диплом — Ірина Мельник",
+					},
+				},
+				{
+					label: "Сертифікат про підвищення кваліфікації",
+					image: {
+						src: "/images/demo-beauty/certificates/certificate-1.webp",
+						alt: "Сертифікат про підвищення кваліфікації — Ірина Мельник",
+					},
+				},
+				{
+					label: "Сертифікат курсу",
+					image: {
+						src: "/images/demo-beauty/certificates/certificate-2.webp",
+						alt: "Сертифікат курсу — Ірина Мельник",
+					},
+				},
+			],
 		},
 		{
 			name: "Андрій Бондар",
@@ -293,7 +330,22 @@ export const team = {
 				width: 1067,
 				height: 1600,
 			},
-			certificates: [{ label: "Сертифікат 1" }, { label: "Сертифікат 2" }],
+			certificates: [
+				{
+					label: "Диплом",
+					image: {
+						src: "/images/demo-beauty/certificates/diploma.webp",
+						alt: "Диплом — Андрій Бондар",
+					},
+				},
+				{
+					label: "Сертифікат про підвищення кваліфікації",
+					image: {
+						src: "/images/demo-beauty/certificates/certificate-1.webp",
+						alt: "Сертифікат про підвищення кваліфікації — Андрій Бондар",
+					},
+				},
+			],
 		},
 	],
 };
@@ -375,7 +427,7 @@ export const booking = {
 			group: "Манікюр",
 			items: [
 				"Манікюр без покриття",
-				"Манікюр + покриття гель-лаком",
+				"Манікюр + гель-лак",
 				"Зняття + манікюр + покриття",
 				"Педикюр з покриттям",
 				"Дизайн, 1 ніготь",
