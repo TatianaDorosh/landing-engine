@@ -46,11 +46,11 @@ const buttons = [
 	data-static={alwaysVisible ? "true" : "false"}
 	data-open={alwaysVisible ? "true" : "false"}
 	hidden={!alwaysVisible}
-	class="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:inset-x-auto md:bottom-6 md:right-6 md:flex-col md:gap-3 md:border-0 md:bg-transparent md:pb-0"
+	class="fixed inset-x-0 bottom-0 z-40 flex items-center gap-2 border-t border-border bg-surface px-2.5 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] shadow-[0_-4px_12px_rgb(0_0_0/0.06)] md:inset-x-auto md:bottom-6 md:right-6 md:flex-col md:gap-3 md:border-0 md:bg-transparent md:p-0 md:shadow-none"
 >
 	<a
 		href="#booking"
-		class="inline-flex min-h-16 flex-1 items-center justify-center bg-primary px-4 font-body text-primary-contrast md:hidden"
+		class="inline-flex min-h-11 flex-1 items-center justify-center rounded-theme bg-primary px-4 font-body font-semibold text-primary-contrast md:hidden"
 	>
 		{ui.buttons.book}
 	</a>
@@ -60,7 +60,7 @@ const buttons = [
 				href={item.href}
 				data-messenger={item.id}
 				aria-label={item.label}
-				class="inline-flex size-16 shrink-0 items-center justify-center text-text md:size-[52px] md:min-h-0 md:flex-none md:rounded-full md:bg-primary md:text-primary-contrast"
+				class="inline-flex size-11 shrink-0 items-center justify-center rounded-theme border border-border text-text md:size-[52px] md:min-h-0 md:flex-none md:rounded-full md:border-0 md:bg-primary md:text-primary-contrast"
 			>
 				{item.id === "telegram" && (
 					<svg viewBox="0 0 24 24" class="h-6 w-6 text-primary md:text-primary-contrast" fill="currentColor" aria-hidden="true">
@@ -85,7 +85,7 @@ const buttons = [
 <style is:global>
 	@media (width < 48rem) {
 		body:has([data-block="layout-messengers"]:not([hidden])) {
-			padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+			padding-bottom: calc(3.75rem + env(safe-area-inset-bottom));
 		}
 	}
 </style>
