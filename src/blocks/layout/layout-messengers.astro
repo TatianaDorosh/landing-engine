@@ -46,11 +46,11 @@ const buttons = [
 	data-static={alwaysVisible ? "true" : "false"}
 	data-open={alwaysVisible ? "true" : "false"}
 	hidden={!alwaysVisible}
-	class="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] xl:inset-x-auto xl:bottom-6 xl:right-6 xl:flex-col xl:gap-3 xl:border-0 xl:bg-transparent xl:pb-0"
+	class="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:inset-x-auto md:bottom-6 md:right-6 md:flex-col md:gap-3 md:border-0 md:bg-transparent md:pb-0"
 >
 	<a
 		href="#booking"
-		class="inline-flex min-h-16 flex-1 items-center justify-center bg-primary px-4 font-body text-primary-contrast xl:hidden"
+		class="inline-flex min-h-16 flex-1 items-center justify-center bg-primary px-4 font-body text-primary-contrast md:hidden"
 	>
 		{ui.buttons.book}
 	</a>
@@ -60,20 +60,20 @@ const buttons = [
 				href={item.href}
 				data-messenger={item.id}
 				aria-label={item.label}
-				class="inline-flex size-16 shrink-0 items-center justify-center text-text xl:size-[52px] xl:min-h-0 xl:flex-none xl:rounded-full xl:bg-primary xl:text-primary-contrast"
+				class="inline-flex size-16 shrink-0 items-center justify-center text-text md:size-[52px] md:min-h-0 md:flex-none md:rounded-full md:bg-primary md:text-primary-contrast"
 			>
 				{item.id === "telegram" && (
-					<svg viewBox="0 0 24 24" class="h-6 w-6 text-primary xl:text-primary-contrast" fill="currentColor" aria-hidden="true">
+					<svg viewBox="0 0 24 24" class="h-6 w-6 text-primary md:text-primary-contrast" fill="currentColor" aria-hidden="true">
 						<path d="M21.2 4.4 2.9 11.2c-.9.3-.9.9-.2 1.1l4.7 1.5 10.8-6.8c.5-.3 1-.1.6.2l-8.7 7.9-.3 4.6c.5 0 .7-.2 1-.5l2.4-2.3 5 3.7c.9.5 1.6.2 1.8-.9l3.3-15.4c.3-1.3-.5-1.9-1.5-1.5Z" />
 					</svg>
 				)}
 				{item.id === "viber" && (
-					<svg viewBox="0 0 24 24" class="h-6 w-6 text-primary xl:text-primary-contrast" fill="currentColor" aria-hidden="true">
+					<svg viewBox="0 0 24 24" class="h-6 w-6 text-primary md:text-primary-contrast" fill="currentColor" aria-hidden="true">
 						<path d="M12.2 3C7.6 3 4.2 6.2 4 10.6c-.1 2.3.7 4.3 2.2 5.8l-.7 3.2c-.1.5.4.9.8.6l3.3-1.8c.8.3 1.7.4 2.6.4 4.7 0 8.1-3.3 8.3-7.8C20.7 6.3 17.2 3 12.2 3Zm4.6 9.4c-.2.5-1.1 1-1.5 1.1-.4.1-.8.2-2.4-.5-2-.9-3.3-3-3.4-3.1-.1-.2-.9-1.2-.9-2.3s.6-1.6.8-1.8c.2-.2.4-.3.6-.3h.4c.1 0 .3 0 .5.4.2.5.6 1.6.7 1.7.1.1.1.3 0 .5-.1.2-.2.3-.3.5l-.2.3c-.1.1-.2.2-.1.4.2.3.7 1.1 1.5 1.8.9.8 1.7 1 2 .9.2-.1.4-.2.6-.4.1-.2.3-.1.5-.1l1.4.7c.2.1.4.2.4.3.1.2 0 .8-.2 1.1Z" />
 					</svg>
 				)}
 				{item.id === "phone" && (
-					<svg viewBox="0 0 24 24" class="h-6 w-6 text-primary xl:text-primary-contrast" fill="currentColor" aria-hidden="true">
+					<svg viewBox="0 0 24 24" class="h-6 w-6 text-primary md:text-primary-contrast" fill="currentColor" aria-hidden="true">
 						<path d="M6.6 2.8c.4-.4 1-.5 1.5-.3l2.2.9c.5.2.9.7.9 1.3l-.1 2.4c0 .5-.3 1-.8 1.2l-1.3.6a12.2 12.2 0 0 0 5.6 5.6l.6-1.3c.2-.5.7-.8 1.2-.8l2.4-.1c.6 0 1.1.4 1.3.9l.9 2.2c.2.5 0 1.1-.3 1.5l-1.6 1.6c-.4.4-1 .6-1.6.5C10.2 18.4 5.6 13.8 4.7 6c-.1-.6.1-1.2.5-1.6L6.6 2.8Z" />
 					</svg>
 				)}
@@ -83,7 +83,7 @@ const buttons = [
 </div>
 
 <style is:global>
-	@media (width < 80rem) {
+	@media (width < 48rem) {
 		body:has([data-block="layout-messengers"]:not([hidden])) {
 			padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
 		}

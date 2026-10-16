@@ -42,7 +42,9 @@ const methods = [
 	{ id: "call", label: ui.form.methods.call },
 ] as const;
 const pairClass = stacked ? "grid gap-3.5" : "grid gap-3.5 md:grid-cols-2";
-const datePairClass = stacked ? "grid grid-cols-2 gap-3.5" : "grid gap-3.5 md:grid-cols-2";
+const datePairClass = stacked
+	? "grid grid-cols-1 gap-3.5 min-[420px]:grid-cols-2"
+	: "grid gap-3.5 md:grid-cols-2";
 const id = (name: string) => `${idPrefix}-${name}`;
 ---
 
@@ -144,10 +146,15 @@ const id = (name: string) => `${idPrefix}-${name}`;
 
 		<fieldset class="min-w-0 border-0 p-0" data-field="method">
 			<legend class="font-body text-[15px] font-semibold">{ui.form.contactMethod}</legend>
-			<div class:list={["mt-2 flex gap-2", stacked ? "flex-wrap" : "flex-nowrap"]}>
+			<div
+				class:list={[
+					"mt-2 grid grid-cols-2 gap-2 min-[420px]:flex",
+					stacked ? "min-[420px]:flex-wrap" : "min-[420px]:flex-nowrap",
+				]}
+			>
 				{
 					methods.map((method) => (
-						<label class="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border border-border px-3 font-body text-[15px]">
+						<label class="inline-flex min-h-11 w-full min-w-0 items-center gap-2 rounded-full border border-border px-3 font-body text-[15px] min-[420px]:w-auto min-[420px]:shrink-0">
 							<input
 								type="radio"
 								name="contact"

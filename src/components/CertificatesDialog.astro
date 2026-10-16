@@ -87,7 +87,7 @@ const { items, view = "grid" } = Astro.props;
 							</svg>
 						</button>
 					</div>
-					<ul class="mt-4 grid list-none grid-cols-2 gap-3 p-0">
+					<ul class="mt-4 grid list-none grid-cols-1 gap-3 p-0 md:grid-cols-2">
 						{item.certificates.map((certificate) => (
 							<li class="overflow-hidden rounded-theme">
 								{certificate.image ? (
