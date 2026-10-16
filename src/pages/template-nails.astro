@@ -19,7 +19,7 @@ import { header, hero, gallery, prices, steps, rules, booking, contacts } from "
 		<HeroCover {...hero} compact />
 		<Gallery {...gallery} sectionId="services" spacing="tight" tabsStyle="underline" layout="carousel" />
 		<PricesSimple {...prices} />
-		<Steps {...steps} />
+		<Steps {...steps} trackFrom="xl" />
 		<RulesList {...rules} />
 		<BookingMessengers {...booking} contacts={demoLavender.contacts} locale={demoLavender.locale} />
 		<ContactsMap {...contacts} contacts={demoLavender.contacts} />

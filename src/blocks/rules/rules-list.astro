@@ -13,36 +13,51 @@ interface Props {
 }
 
 const { title, intro, items } = Astro.props;
+const columnRows = Math.max(1, Math.ceil(items.length / 2));
+const rightFirst = columnRows;
+const leftLast = columnRows - 1;
 ---
 
 <section id="rules" data-block="rules-list" class="scroll-mt-24">
-	<div class="mx-auto grid max-w-6xl min-w-0 gap-4 px-4 py-12 sm:gap-8 lg:grid-cols-12 lg:items-start lg:gap-x-10 xl:px-8">
-		<div class="min-w-0 lg:col-span-4">
-			<h2 class="text-3xl">{typograf(title)}</h2>
+	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		{
+			intro && (
+				<p class="mt-4 max-w-[760px] font-body text-base leading-relaxed">{typograf(intro)}</p>
+			)
+		}
+		<ol
+			class="m-0 mt-8 grid list-none grid-cols-1 p-0 md:grid-flow-col md:grid-cols-2 md:gap-x-10 md:[grid-template-rows:repeat(var(--rules-rows),auto)]"
+			style={`--rules-rows: ${columnRows}`}
+		>
 			{
-				intro && (
-					<p class="mt-4 font-body text-base leading-relaxed">{typograf(intro)}</p>
-				)
-			}
-		</div>
-		<div class="min-w-0 lg:col-span-8">
-			<ol class="m-0 list-none divide-y divide-border p-0">
-				{
-					items.map((item, index) => (
-						<li class="grid grid-cols-[2.25rem_minmax(0,1fr)] items-start gap-x-2 py-2.5 first:pt-0 last:pb-0 sm:block sm:py-5">
+				items.map((item, index) => {
+					const lastOnPhone = index === items.length - 1;
+					const lastInLeftColumn = index === leftLast && !lastOnPhone;
+					const firstInRightColumn = index === rightFirst;
+					return (
+						<li
+							class:list={[
+								"grid grid-cols-[2.25rem_minmax(0,1fr)] items-start gap-x-2 border-border",
+								index === 0 ? "pt-0" : "pt-2.5",
+								firstInRightColumn && "md:pt-0",
+								lastOnPhone ? "border-b-0 pb-0" : "border-b pb-2.5",
+								lastInLeftColumn && "md:border-b-0 md:pb-0",
+							]}
+						>
 							<p class="font-heading text-2xl leading-none text-primary tabular-nums sm:text-[28px]" aria-hidden="true">
 								{index + 1}
 							</p>
 							<div class="min-w-0">
-								<h3 class="font-body text-[17px] font-semibold leading-snug text-text sm:mt-2">
+								<h3 class="font-body text-[17px] font-semibold leading-snug text-text">
 									{typograf(item.title)}
 								</h3>
-								<p class="mt-1 font-body text-[15px] leading-[1.5] sm:leading-[1.6]">{typograf(item.text)}</p>
+								<p class="mt-1 font-body text-[15px] leading-[1.5]">{typograf(item.text)}</p>
 							</div>
 						</li>
-					))
-				}
-			</ol>
-		</div>
+					);
+				})
+			}
+		</ol>
 	</div>
 </section>

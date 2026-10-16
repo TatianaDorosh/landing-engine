@@ -13,15 +13,18 @@ interface Props {
 	cta?: { label: string; href: string };
 	/** Номер кроку від 1. Якщо не передали, усі кроки однакові. */
 	highlightStep?: number;
+	/** З якої ширини кроки стають колонками. За замовчуванням lg, як раніше. */
+	trackFrom?: "xl" | "lg";
 }
 
-const { title, items, note, cta, highlightStep } = Astro.props;
+const { title, items, note, cta, highlightStep, trackFrom = "lg" } = Astro.props;
 const highlightIndex =
 	typeof highlightStep === "number" && highlightStep >= 1 && highlightStep <= items.length
 		? highlightStep - 1
 		: -1;
 const stepsColumns =
 	highlightIndex >= 0 ? items.map((_, index) => (index === highlightIndex ? "2fr" : "1fr")).join(" ") : "";
+const columnsFromXl = trackFrom === "xl";
 ---
 
 <section id="steps" data-block="steps-visit">
@@ -29,8 +32,10 @@ const stepsColumns =
 		<h2 class="text-3xl">{typograf(title)}</h2>
 		<ol
 			class:list={[
-				"mt-8 flex list-none flex-col gap-6 p-0 lg:grid lg:gap-6",
-				highlightIndex < 0 && (items.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4"),
+				"mt-8 flex list-none flex-col gap-6 p-0",
+				columnsFromXl ? "xl:grid xl:gap-6" : "lg:grid lg:gap-6",
+				!columnsFromXl && highlightIndex < 0 && (items.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4"),
+				columnsFromXl && highlightIndex < 0 && (items.length === 5 ? "xl:grid-cols-5" : "xl:grid-cols-4"),
 			]}
 			style={highlightIndex >= 0 ? `grid-template-columns: ${stepsColumns}` : undefined}
 		>
@@ -38,10 +43,20 @@ const stepsColumns =
 				items.map((item, index) => {
 					const highlighted = index === highlightIndex;
 					return (
-						<li class="relative flex min-w-0 items-start gap-4 lg:flex-col lg:gap-3">
+						<li
+							class:list={[
+								"relative flex min-w-0 items-start gap-4",
+								columnsFromXl ? "xl:h-full xl:flex-col xl:gap-3" : "lg:flex-col lg:gap-3",
+							]}
+						>
 							{index < items.length - 1 && (
 								<span
-									class="absolute bottom-[-24px] left-[21px] top-11 w-px bg-border lg:bottom-auto lg:left-11 lg:top-[22px] lg:h-px lg:w-[calc(100%-1.25rem)] lg:-translate-y-1/2"
+									class:list={[
+										"absolute bottom-[-24px] left-[21px] top-11 w-px bg-border",
+										columnsFromXl
+											? "xl:bottom-auto xl:left-11 xl:top-[22px] xl:h-px xl:w-[calc(100%-1.25rem)] xl:-translate-y-1/2"
+											: "lg:bottom-auto lg:left-11 lg:top-[22px] lg:h-px lg:w-[calc(100%-1.25rem)] lg:-translate-y-1/2",
+									]}
 									aria-hidden="true"
 								></span>
 							)}
