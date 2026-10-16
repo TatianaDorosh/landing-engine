@@ -60,21 +60,19 @@ const tileClass =
 ---
 
 <section id="booking" data-block="booking-messengers" class="scroll-mt-24 border-y border-border bg-surface">
-	<div class="mx-auto grid max-w-6xl min-w-0 gap-8 px-4 py-12 lg:grid-cols-12 lg:gap-x-10 xl:px-8">
-		<div class="min-w-0 lg:col-span-4">
-			<h2 class="text-3xl">{typograf(title)}</h2>
-			<p class="mt-4 font-body text-base leading-relaxed text-muted">{typograf(text)}</p>
-		</div>
-		<div class="min-w-0 lg:col-span-8">
-			<ul class="m-0 flex list-none flex-col gap-3 p-0">
+	<div class="mx-auto max-w-6xl min-w-0 px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		<p class="mt-4 max-w-none font-body text-base leading-relaxed text-muted lg:max-w-[640px]">{typograf(text)}</p>
+		<ul class="m-0 mt-8 flex list-none flex-col gap-3 p-0 lg:grid lg:grid-cols-3">
 				{
 					messengers.map((item) => (
-						<li class="min-w-0">
+						<li class="min-w-0 lg:flex">
 							<a
 								href={item.href}
 								data-messenger={item.id}
 								class:list={[
 									tileClass,
+									"lg:h-full",
 									item.id === "telegram"
 										? "border-transparent bg-primary text-primary-contrast"
 										: "border-border bg-transparent text-text hover:border-primary",
@@ -139,6 +137,5 @@ const tileClass =
 					</p>
 				)
 			}
-		</div>
 	</div>
 </section>
