@@ -108,7 +108,10 @@ function money(value: number | string) {
 						aria-labelledby={`prices-tab-${index}`}
 						aria-hidden={index === 0 ? "false" : "true"}
 						inert={index !== 0}
-						class:list={["col-start-1 row-start-1", index !== 0 && "pointer-events-none invisible"]}
+						class:list={[
+							"lg:col-start-1 lg:row-start-1",
+							index !== 0 && "hidden lg:block lg:invisible lg:pointer-events-none",
+						]}
 					>
 						<table class="hidden w-full border-collapse text-left md:table">
 							<thead>
@@ -224,8 +227,10 @@ function money(value: number | string) {
 			});
 			panels.forEach((panel) => {
 				const on = panel.getAttribute("data-price-panel") === String(index);
-				panel.classList.toggle("invisible", !on);
-				panel.classList.toggle("pointer-events-none", !on);
+				panel.classList.toggle("hidden", !on);
+				panel.classList.toggle("lg:block", !on);
+				panel.classList.toggle("lg:invisible", !on);
+				panel.classList.toggle("lg:pointer-events-none", !on);
 				panel.setAttribute("aria-hidden", on ? "false" : "true");
 				if (on) panel.removeAttribute("inert");
 				else panel.setAttribute("inert", "");
