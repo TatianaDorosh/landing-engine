@@ -92,7 +92,7 @@ export const steps = {
 export const footerNote = "Не є медичною консультацією. Діагноз і лікування призначає лікар.";
 
 export const header = {
-	name: demoDental.name,
+	name: "",
 	nav: [
 		{ label: "Послуги", href: "#services" },
 		{ label: "Ціни", href: "#prices" },

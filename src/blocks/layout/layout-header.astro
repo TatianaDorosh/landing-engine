@@ -32,7 +32,7 @@ const menuId = "layout-header-menu";
 	class="sticky top-0 z-50 border-b border-border bg-bg/90 backdrop-blur-md"
 >
 	<div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 xl:px-8">
-		<a href={nameHref} class="font-heading text-2xl text-text">{name}</a>
+		{name && <a href={nameHref} class="font-heading text-2xl text-text">{name}</a>}
 
 		<nav class="hidden items-center gap-x-3 text-sm lg:flex xl:gap-x-5" aria-label="Основна навігація">
 			{
@@ -44,7 +44,7 @@ const menuId = "layout-header-menu";
 			}
 		</nav>
 
-		<div class="flex items-center gap-2">
+		<div class:list={["flex items-center gap-2", !name && "ml-auto"]}>
 			<a
 				href={bookHref}
 				class="hidden min-h-11 w-fit shrink-0 items-center justify-center rounded-theme bg-primary px-5 text-primary-contrast md:inline-flex"
