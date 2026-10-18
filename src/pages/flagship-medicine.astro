@@ -21,6 +21,7 @@ import { demoDental } from "../config/demo-dental";
 import { getUi } from "../i18n";
 import {
 	urgentToday,
+	anesthesiaImage,
 	header,
 	hero,
 	trust,
@@ -47,7 +48,7 @@ const ui = getUi(demoDental.locale);
 		<Hero {...hero} />
 		<Trust {...trust} />
 		<Services {...services} />
-		<Comfort {...anesthesiaComfort} imageLabel="Фото: кабінет стоматолога" />
+		<Comfort {...anesthesiaComfort} imageLabel="Фото: кабінет стоматолога" image={anesthesiaImage} />
 		<Team {...team} bookLabel={ui.buttons.book} />
 		<Licenses {...licensesDocs} />
 		<Prices {...prices} />

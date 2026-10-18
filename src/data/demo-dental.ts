@@ -1,4 +1,4 @@
-// Усі дані вигадані, це демо. Фото немає навмисно: блоки показують заглушку.
+// Усі дані вигадані, це демо.
 import { demoDental } from "../config/demo-dental";
 import { getUi } from "../i18n";
 
@@ -11,6 +11,14 @@ export const urgentToday = {
 		label: "+38 (044) 000-00-00",
 		href: "tel:+380440000000",
 	},
+};
+
+export const anesthesiaImage = {
+	src: "/images/demo-dental/dental-anesthesia.webp",
+	alt: "Світлий кабінет стоматолога",
+	width: 667,
+	height: 1000,
+	position: "50% 70%",
 };
 
 export const anesthesiaComfort = {
@@ -114,6 +122,13 @@ export const hero = {
 	secondaryCta: { label: "Дивитись ціни", href: "#prices" },
 	imageLabel: "Фото: кабінет стоматолога",
 	imageAlt: "Кабінет стоматолога: лікар і пацієнт",
+	image: {
+		src: "/images/demo-dental/dental-hero.webp",
+		alt: "Стоматолог оглядає пацієнта в кріслі",
+		width: 933,
+		height: 1400,
+		position: "50% 28%",
+	},
 };
 
 const ratingItem = demoDental.rating
@@ -148,6 +163,12 @@ export const services = {
 			service: "Лікування зубів",
 			imageLabel: "Фото: лікування зубів",
 			imageAlt: "Лікування зубів",
+			image: {
+				src: "/images/demo-dental/dental-service-treatment.webp",
+				alt: "Стоматолог оглядає зуби пацієнта дзеркалом",
+				width: 1000,
+				height: 750,
+			},
 		},
 		{
 			title: "Імплантація",
@@ -158,6 +179,12 @@ export const services = {
 			service: "Імплантація",
 			imageLabel: "Фото: імплантація",
 			imageAlt: "Імплантація",
+			image: {
+				src: "/images/demo-dental/dental-service-implant.webp",
+				alt: "Крупний план передніх зубів",
+				width: 1000,
+				height: 727,
+			},
 		},
 		{
 			title: "Брекети й елайнери",
@@ -168,6 +195,12 @@ export const services = {
 			service: "Брекети й елайнери",
 			imageLabel: "Фото: брекети й елайнери",
 			imageAlt: "Брекети й елайнери",
+			image: {
+				src: "/images/demo-dental/dental-service-braces.webp",
+				alt: "Зуби з металевими брекетами",
+				width: 1000,
+				height: 750,
+			},
 		},
 	],
 };
@@ -179,16 +212,34 @@ export const team = {
 			name: "Олена Мельник",
 			role: "терапевт-стоматолог",
 			details: "12 років",
+			image: {
+				src: "/images/demo-dental/dental-doctor-melnyk.webp",
+				alt: "Олена Мельник, терапевт-стоматолог (демо-фото)",
+				width: 800,
+				height: 1000,
+			},
 		},
 		{
 			name: "Андрій Ковальчук",
 			role: "хірург-імплантолог",
 			details: "15 років",
+			image: {
+				src: "/images/demo-dental/dental-doctor-kovalchuk.webp",
+				alt: "Андрій Ковальчук, хірург-імплантолог (демо-фото)",
+				width: 800,
+				height: 1000,
+			},
 		},
 		{
 			name: "Ірина Шевчук",
 			role: "ортодонт",
 			details: "9 років",
+			image: {
+				src: "/images/demo-dental/dental-doctor-shevchuk.webp",
+				alt: "Ірина Шевчук, ортодонт (демо-фото)",
+				width: 800,
+				height: 1000,
+			},
 		},
 	],
 };

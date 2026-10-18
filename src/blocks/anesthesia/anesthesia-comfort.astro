@@ -12,7 +12,7 @@ interface Props {
 	intro: string;
 	/** Три картки. Нумерація «1 · …» береться з порядку масиву. */
 	items: ComfortItem[];
-	image?: { src: string; alt: string; position?: string };
+	image?: { src: string; alt: string; position?: string; width?: number; height?: number };
 	/** Підпис заглушки. Якщо не передано — лишається заголовок блоку. */
 	imageLabel?: string;
 }
@@ -49,6 +49,8 @@ const photo = image?.src && image.alt ? image : undefined;
 					<img
 						src={photo.src}
 						alt={photo.alt}
+						width={photo.width}
+						height={photo.height}
 						loading="lazy"
 						decoding="async"
 						class="absolute inset-0 h-full w-full object-cover"
