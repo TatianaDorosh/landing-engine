@@ -13,10 +13,12 @@ interface Props {
 	/** Три картки. Нумерація «1 · …» береться з порядку масиву. */
 	items: ComfortItem[];
 	image?: { src: string; alt: string; position?: string };
+	/** Підпис заглушки. Якщо не передано — лишається заголовок блоку. */
+	imageLabel?: string;
 }
 
 // Жодних обіцянок у коді: заголовок, вступ і картки лише з props.
-const { title, intro, items, image } = Astro.props;
+const { title, intro, items, image, imageLabel } = Astro.props;
 const photo = image?.src && image.alt ? image : undefined;
 ---
 
@@ -53,7 +55,7 @@ const photo = image?.src && image.alt ? image : undefined;
 						style={photo.position ? `object-position: ${photo.position}` : undefined}
 					/>
 				) : (
-					<PhotoPlaceholder label={title} class="absolute inset-0 h-full" />
+					<PhotoPlaceholder label={imageLabel ?? title} class="absolute inset-0 h-full" />
 				)
 			}
 		</div>

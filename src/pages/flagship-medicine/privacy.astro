@@ -7,7 +7,7 @@ import { demoDental } from "../../config/demo-dental";
 import { header, footerNote } from "../../data/demo-dental";
 ---
 
-<Base config={demoDental} noindex={true} title="Політика приватності — Світла">
+<Base config={demoDental} noindex={true} title={`Політика приватності — ${demoDental.name}`}>
 	<Header {...header} nameHref="/flagship-medicine/" anchorBase="/flagship-medicine/" />
 	<main data-page="flagship-medicine">
 		<PrivacyPolicy config={demoDental} />

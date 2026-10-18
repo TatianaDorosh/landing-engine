@@ -1,12 +1,14 @@
 ---
 interface Props {
 	label: string;
+	/** Якщо задано — доступна назва. Без нього розмітка як раніше. */
+	alt?: string;
 	ratio?: string;
 	class?: string;
 	tone?: "border" | "primary";
 }
 
-const { label, ratio = "4/3", class: className, tone = "border" } = Astro.props;
+const { label, alt = "", ratio = "4/3", class: className, tone = "border" } = Astro.props;
 const safeRatio = /^\d+\/\d+$/.test(ratio) ? ratio : "4/3";
 ---
 
@@ -17,6 +19,7 @@ const safeRatio = /^\d+\/\d+$/.test(ratio) ? ratio : "4/3";
 		className,
 	]}
 	style={className?.includes("aspect-") || className?.includes("h-full") ? undefined : `aspect-ratio: ${safeRatio}`}
+	aria-label={alt || undefined}
 >
 	{label}
 </div>

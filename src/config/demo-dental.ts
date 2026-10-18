@@ -5,7 +5,7 @@ export const demoDental = {
 	id: 'demo-dental',
 	locale: 'uk',
 	siteUrl: 'https://landing-engine-gamma.vercel.app',
-	name: 'Світла',
+	name: 'Спокій',
 	tagline: 'Стоматологія',
 	businessType: 'Dentist',
 	staffLabel: 'Лікар',
@@ -40,9 +40,9 @@ export const demoDental = {
 		onlineService: null,
 	},
 	seo: {
-		title: 'Стоматологія «Світла» — лікування з планом і ціною',
+		title: 'Стоматологія «Спокій» — лікування з планом і ціною',
 		description:
-			'Стоматологія «Світла» в Києві: огляд, письмовий план і кошторис ще до початку лікування. Анестезія, запис на сьогодні. вул. Прикладна, 12. Пн–Сб 09:00–20:00.',
+			'Стоматологія «Спокій» в Києві: огляд, письмовий план і кошторис ще до початку лікування. Анестезія, запис на сьогодні. вул. Прикладна, 12. Пн–Сб 09:00–20:00.',
 		ogImage: '/og/demo-dental.jpg',
 		favicon: '/favicon-dental.svg',
 	},

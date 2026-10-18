@@ -3,25 +3,28 @@ import PhotoPlaceholder from "../../components/PhotoPlaceholder.astro";
 import { typograf } from "../../lib/typograf";
 
 interface Props {
-	eyebrow: string;
+	/** Якщо не передано — рядок над заголовком не показуємо. */
+	eyebrow?: string;
 	title: string;
 	text: string;
 	primaryCta: { label: string; href: string; service?: string };
 	secondaryCta: { label: string; href: string };
 	image?: { src: string; alt: string; width: number; height: number; position?: string };
 	imageLabel: string;
+	/** Доступна назва заглушки. Якщо не передано — блок як раніше. */
+	imageAlt?: string;
 	/** Короткі пункти під текстом. Якщо не передано — блок як раніше. */
 	points?: string[];
 }
 
-const { eyebrow, title, text, primaryCta, secondaryCta, image, imageLabel, points = [] } = Astro.props;
+const { eyebrow = "", title, text, primaryCta, secondaryCta, image, imageLabel, imageAlt = "", points = [] } = Astro.props;
 ---
 
 <section id="hero" data-block="hero-result">
 	<div class="mx-auto grid max-w-6xl items-center gap-6 px-4 py-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-stretch lg:gap-x-10 lg:gap-y-6 lg:px-8 lg:py-12">
 		<div class="order-1 lg:col-start-1 lg:row-start-1">
-			<p class="text-sm text-muted">{eyebrow}</p>
-			<h1 class="mt-3 font-heading text-[36px] leading-[1.15] lg:text-[56px]">{typograf(title)}</h1>
+			{eyebrow && <p class="text-sm text-muted">{eyebrow}</p>}
+			<h1 class:list={["font-heading text-[36px] leading-[1.15] lg:text-[56px]", eyebrow && "mt-3"]}>{typograf(title)}</h1>
 			<p class="mt-4 max-w-xl font-body text-base leading-relaxed">{text}</p>
 			{
 				points.length > 0 && (
@@ -69,6 +72,7 @@ const { eyebrow, title, text, primaryCta, secondaryCta, image, imageLabel, point
 				) : (
 					<PhotoPlaceholder
 						label={imageLabel}
+						alt={imageAlt}
 						class="absolute inset-0 h-full"
 					/>
 				)

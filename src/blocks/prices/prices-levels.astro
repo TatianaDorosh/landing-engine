@@ -39,8 +39,7 @@ function showAllLabel(count: number) {
 
 function money(value: number | string) {
 	if (typeof value !== "number") return value;
-	const formatted = String(value).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
-	return `${formatted} ${currency}`;
+	return `${value} ${currency}`;
 }
 ---
 
