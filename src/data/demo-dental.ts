@@ -89,7 +89,8 @@ export const steps = {
 	],
 };
 
-export const footerNote = "Не є медичною консультацією. Діагноз і лікування призначає лікар.";
+export const footerNote =
+	"Інформація на сайті має ознайомчий характер і не замінює консультацію лікаря. Діагноз і план лікування визначає лікар після огляду.";
 
 export const header = {
 	name: "",
@@ -345,5 +346,5 @@ export const booking = {
 
 export const contacts = {
 	title: "Контакти",
-	directions: "Як дістатися: 5 хвилин пішки від метро (демо)",
+	directions: "5 хвилин пішки від метро (демо)",
 };
