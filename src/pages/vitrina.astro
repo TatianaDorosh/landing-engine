@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import Header from "../blocks/layout/layout-header.astro";
 import Hero from "../blocks/hero/hero-result.astro";
+import HeroInfo from "../blocks/hero/hero-info.astro";
 import HeroShowcase from "../blocks/hero/hero-showcase.astro";
 import HeroCover from "../blocks/hero/hero-cover.astro";
 import AboutMe from "../blocks/about/about-me.astro";
@@ -49,6 +50,7 @@ import { demoSlate } from "../config/demo-slate";
 import { effects, myths as slateMyths, booking as slateBooking, reviews as slateReviews } from "../data/demo-slate";
 import { hero as portfolioHero, services as portfolioServices, examples, examplesCount, pains, packages } from "../data/portfolio";
 import { slateThemeStyle } from "../themes/slate";
+import { hero as doctorHero } from "../data/demo-doctor";
 
 const ui = getUi(demoBeauty.locale);
 
@@ -87,6 +89,9 @@ const rules = {
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">hero-result</p>
 	<Hero {...hero} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">hero-info</p>
+	<HeroInfo {...doctorHero} />
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">hero-showcase</p>
 	<HeroShowcase {...portfolioHero} />
