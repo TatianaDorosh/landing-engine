@@ -29,6 +29,13 @@ export const hero = {
 	secondaryCta: { label: 'Дивитись ціни', href: '#prices' },
 	imageLabel: 'Фото: лікарка (демо)',
 	imageAlt: 'Лікарка-гінеколог',
+	image: {
+		src: '/images/demo-doctor/doctor-hero.webp',
+		alt: 'Лікарка-гінеколог',
+		width: 1000,
+		height: 1498,
+		position: 'center top',
+	},
 };
 
 export const trust = {
@@ -45,7 +52,12 @@ export const about = {
 	name: 'Наталія Коваль',
 	role: 'лікар-гінеколог',
 	experienceText: '14 років практики',
-	photo: { src: '', alt: 'Демо-лікарка', width: 720, height: 900 },
+	photo: {
+		src: '/images/demo-doctor/doctor-about.webp',
+		alt: 'Наталія Коваль, лікар-гінеколог (демо)',
+		width: 800,
+		height: 1000,
+	},
 	story: [
 		'Після університету працювала в міській лікарні, потім у приватній клініці. Три роки тому відкрила власну практику, щоб приймати без черг і без поспіху.',
 		'Бачу, що жінки відкладають візит через сором і страх. Тому на першому прийомі ми спершу просто розмовляємо, і я пояснюю, що буде далі.',
@@ -71,7 +83,12 @@ export const services = {
 			href: '#booking',
 			service: 'Консультація',
 			imageLabel: 'Фото: консультація',
-			imageAlt: 'Фото: консультація',
+			image: {
+				src: '/images/demo-doctor/doctor-service-consult.webp',
+				alt: 'Консультація: розмова лікарки з пацієнткою',
+				width: 1200,
+				height: 750,
+			},
 		},
 		{
 			title: 'УЗД органів малого таза',
@@ -81,7 +98,12 @@ export const services = {
 			href: '#booking',
 			service: 'УЗД органів малого таза',
 			imageLabel: 'Фото: УЗД',
-			imageAlt: 'Фото: УЗД',
+			image: {
+				src: '/images/demo-doctor/doctor-service-uzd.webp',
+				alt: 'УЗД: кабінет з апаратом',
+				width: 1200,
+				height: 750,
+			},
 		},
 		{
 			title: 'Контрацепція і планування вагітності',
@@ -91,7 +113,12 @@ export const services = {
 			href: '#booking',
 			service: 'Контрацепція і планування вагітності',
 			imageLabel: 'Фото: планування',
-			imageAlt: 'Фото: планування',
+			image: {
+				src: '/images/demo-doctor/doctor-service-plan.webp',
+				alt: 'Планування: усміхнена жінка',
+				width: 1200,
+				height: 750,
+			},
 		},
 	],
 };
