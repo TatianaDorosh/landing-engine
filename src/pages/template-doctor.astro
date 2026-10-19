@@ -1,0 +1,100 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import Hero from "../blocks/hero/hero-result.astro";
+import Trust from "../blocks/trust/trust-strip.astro";
+import DoctorAbout from "../blocks/doctor/doctor-about.astro";
+import Services from "../blocks/services/services-cards.astro";
+import Steps from "../blocks/steps/steps-visit.astro";
+import Prices from "../blocks/prices/prices-levels.astro";
+import Licenses from "../blocks/licenses/licenses-docs.astro";
+import Reviews from "../blocks/reviews/reviews-cards.astro";
+import Faq from "../blocks/faq/faq-accordion.astro";
+import BookingCta from "../blocks/booking/booking-cta.astro";
+import BookingDrawer from "../blocks/booking/booking-drawer.astro";
+import ContactsMap from "../blocks/contacts/contacts-map.astro";
+import Messengers from "../blocks/layout/layout-messengers.astro";
+import Footer from "../blocks/layout/layout-footer.astro";
+import { demoDoctor } from "../config/demo-doctor";
+import {
+	header,
+	hero,
+	trust,
+	about,
+	services,
+	steps,
+	prices,
+	licensesDocs,
+	reviews,
+	faq,
+	booking,
+	contacts,
+	footerNote,
+} from "../data/demo-doctor";
+---
+
+<Base config={demoDoctor}>
+	<Header
+		{...header}
+		overlayMenu
+		phone={{ label: demoDoctor.contacts.phoneDisplay, href: `tel:${demoDoctor.contacts.phone}` }}
+	/>
+	<main data-page="template-doctor">
+		<Hero {...hero} />
+		<Trust {...trust} />
+		<DoctorAbout {...about} />
+		<Services {...services} layout="fit" />
+		<Steps {...steps} />
+		<Prices {...prices} />
+		<Licenses {...licensesDocs} />
+		<Reviews {...reviews} />
+		<Faq {...faq} telegram="" />
+		<BookingCta
+			title={booking.ctaTitle}
+			text={booking.ctaText}
+			writeLabel={booking.writeLabel}
+			ctaLabel={booking.ctaLabel}
+			config={demoDoctor}
+		/>
+		<BookingDrawer
+			title={booking.title}
+			note={booking.note}
+			services={booking.services}
+			masters={booking.masters}
+			privacyHref={booking.privacyHref}
+			config={demoDoctor}
+		/>
+		<ContactsMap {...contacts} contacts={demoDoctor.contacts} />
+	</main>
+	<Messengers config={demoDoctor} />
+	<Footer config={demoDoctor} privacyHref="/template-doctor/privacy/" note={footerNote} />
+</Base>
+
+<style is:global>
+	html:has([data-page="template-doctor"]) .font-heading {
+		font-weight: 600;
+	}
+
+	html:has([data-page="template-doctor"]) h2 {
+		font-weight: 500;
+	}
+
+	html:has([data-page="template-doctor"]) [data-block="contacts-map"] dd,
+	html:has([data-page="template-doctor"]) [data-block="booking-cta"] .cta-soft {
+		white-space: pre-line;
+	}
+
+	html:has([data-page="template-doctor"]) [data-block="contacts-map"] dd span.block + span.block {
+		display: none;
+	}
+
+	@media (width < 64rem) {
+		html:has([data-page="template-doctor"]) [data-block="layout-header"] a.font-heading {
+			display: none;
+		}
+
+		html:has([data-page="template-doctor"]) [data-block="layout-header"] header > div > div:last-child {
+			margin-left: auto;
+		}
+	}
+</style>

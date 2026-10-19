@@ -84,7 +84,7 @@ const ui = getUi("uk");
 						</p>
 						<p class:list={["mt-3 leading-relaxed", open && "text-lg"]}>{item.text}</p>
 						<p class="mt-auto pt-4 text-sm text-muted">
-							{item.name} · {item.service}
+							{item.name}{item.service ? ` · ${item.service}` : ""}
 						</p>
 					</article>
 				))
