@@ -7,6 +7,8 @@ import { typograf } from "../../lib/typograf";
 interface DocumentImage {
 	src: string;
 	alt: string;
+	width: number;
+	height: number;
 }
 
 interface DocumentItem {
@@ -32,7 +34,14 @@ const dialogItems = documents.map((doc) => ({
 		{
 			label: doc.caption,
 			...(doc.image?.src && doc.image.alt
-				? { image: { src: doc.image.src, alt: doc.image.alt } }
+				? {
+						image: {
+							src: doc.image.src,
+							alt: doc.image.alt,
+							width: doc.image.width,
+							height: doc.image.height,
+						},
+					}
 				: {}),
 		},
 	],
@@ -62,6 +71,8 @@ const dialogItems = documents.map((doc) => ({
 										<img
 											src={photo.src}
 											alt={photo.alt}
+											width={photo.width}
+											height={photo.height}
 											loading="lazy"
 											decoding="async"
 											class="absolute inset-0 h-full w-full object-contain"

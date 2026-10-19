@@ -4,7 +4,7 @@ import { typograf } from "../lib/typograf";
 
 interface Certificate {
 	label: string;
-	image?: { src: string; alt: string };
+	image?: { src: string; alt: string; width?: number; height?: number };
 }
 
 interface Member {
@@ -48,19 +48,21 @@ const { items, view = "grid" } = Astro.props;
 							<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
 						</svg>
 					</button>
-					<div class="w-full max-w-3xl">
-						{shot.image ? (
+					{
+						shot.image ? (
 							<img
 								src={shot.image.src}
 								alt={shot.image.alt}
-								class="max-h-[80vh] w-full object-contain"
+								width={shot.image.width}
+								height={shot.image.height}
+								class="h-auto max-h-[85vh] w-auto max-w-[90vw] object-contain"
 							/>
 						) : (
-							<div aria-hidden="true">
+							<div class="w-full max-w-3xl" aria-hidden="true">
 								<PhotoPlaceholder label={item.name} class="min-h-[40vh] w-full" />
 							</div>
-						)}
-					</div>
+						)
+					}
 				</div>
 			);
 		}

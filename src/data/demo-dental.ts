@@ -49,16 +49,34 @@ export const licensesDocs = {
 			kind: "license" as const,
 			title: "Ліцензія МОЗ України",
 			caption: "№ 000000, демо",
+			image: {
+				src: "/images/demo-dental/dental-doc-license.webp",
+				width: 896,
+				height: 1200,
+				alt: "Зразок ліцензії (демо)",
+			},
 		},
 		{
 			kind: "diploma" as const,
 			title: "Диплом лікаря",
 			caption: "Університет, рік — демо",
+			image: {
+				src: "/images/demo-dental/dental-doc-diploma.webp",
+				width: 896,
+				height: 1200,
+				alt: "Зразок диплома (демо)",
+			},
 		},
 		{
 			kind: "certificate" as const,
 			title: "Сертифікат",
 			caption: "Курс, рік — демо",
+			image: {
+				src: "/images/demo-dental/dental-doc-certificate.webp",
+				width: 896,
+				height: 1200,
+				alt: "Зразок сертифіката (демо)",
+			},
 		},
 	],
 	sterilization: {
