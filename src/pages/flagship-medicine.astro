@@ -42,7 +42,12 @@ const ui = getUi(demoDental.locale);
 ---
 
 <Base config={demoDental}>
-	<Header {...header} />
+	<Header
+		{...header}
+		overlayMenu
+		menuName={demoDental.name}
+		phone={{ label: demoDental.contacts.phoneDisplay, href: `tel:${demoDental.contacts.phone}` }}
+	/>
 	<main data-page="flagship-medicine">
 		<Urgent {...urgentToday} />
 		<Hero {...hero} />

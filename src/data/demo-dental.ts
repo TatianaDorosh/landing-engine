@@ -72,7 +72,7 @@ export const licensesDocs = {
 };
 
 export const steps = {
-	title: "Як проходить візит",
+	title: "Як проходить перший візит",
 	items: [
 		{
 			title: "Запис",

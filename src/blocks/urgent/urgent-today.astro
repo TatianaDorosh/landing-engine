@@ -19,10 +19,10 @@ const bookHref = cta?.href || "#booking";
 ---
 
 <section id="urgent" data-block="urgent-today" class="bg-primary text-primary-contrast">
-	<div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-8 lg:py-5">
+	<div class="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:gap-4 sm:py-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-8 lg:py-5">
 		<div class="min-w-0">
 			<p class="font-body text-base font-semibold leading-snug">{typograf(text)}</p>
-			{note && <p class="mt-1 font-body text-[15px] leading-[1.5]">{typograf(note)}</p>}
+			{note && <p class="mt-1 hidden font-body text-[15px] leading-[1.5] sm:block">{typograf(note)}</p>}
 		</div>
 		<div class="flex w-full shrink-0 flex-col gap-2 lg:w-auto lg:flex-row lg:gap-3">
 			<a
@@ -35,7 +35,7 @@ const bookHref = cta?.href || "#booking";
 			</a>
 			<a
 				href={bookHref}
-				class="inline-flex min-h-11 w-full items-center justify-center rounded-theme border border-primary-contrast bg-transparent px-5 text-center font-body text-[15px] font-semibold text-primary-contrast lg:w-auto"
+				class="hidden min-h-11 w-full items-center justify-center rounded-theme border border-primary-contrast bg-transparent px-5 text-center font-body text-[15px] font-semibold text-primary-contrast sm:inline-flex lg:w-auto"
 			>
 				{bookLabel}
 			</a>

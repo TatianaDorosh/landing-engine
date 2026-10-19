@@ -22,8 +22,6 @@ const highlightIndex =
 	typeof highlightStep === "number" && highlightStep >= 1 && highlightStep <= items.length
 		? highlightStep - 1
 		: -1;
-const stepsColumns =
-	highlightIndex >= 0 ? items.map((_, index) => (index === highlightIndex ? "2fr" : "1fr")).join(" ") : "";
 const columnsFromXl = trackFrom === "xl";
 ---
 
@@ -34,10 +32,9 @@ const columnsFromXl = trackFrom === "xl";
 			class:list={[
 				"mt-8 flex list-none flex-col gap-6 p-0",
 				columnsFromXl ? "xl:grid xl:gap-6" : "lg:grid lg:gap-6",
-				!columnsFromXl && highlightIndex < 0 && (items.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4"),
-				columnsFromXl && highlightIndex < 0 && (items.length === 5 ? "xl:grid-cols-5" : "xl:grid-cols-4"),
+				!columnsFromXl && (items.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4"),
+				columnsFromXl && (items.length === 5 ? "xl:grid-cols-5" : "xl:grid-cols-4"),
 			]}
-			style={highlightIndex >= 0 ? `grid-template-columns: ${stepsColumns}` : undefined}
 		>
 			{
 				items.map((item, index) => {
@@ -60,21 +57,18 @@ const columnsFromXl = trackFrom === "xl";
 									aria-hidden="true"
 								></span>
 							)}
-							<span class="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-primary bg-bg font-body text-lg font-semibold text-primary">
-								{index + 1}
-							</span>
-							<div
+							<span
 								class:list={[
-									"min-w-0",
-									highlighted && "rounded-theme border-2 border-primary bg-surface p-4",
+									"relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-body text-lg font-semibold",
+									highlighted
+										? "bg-primary text-primary-contrast"
+										: "border-2 border-primary bg-bg text-primary",
 								]}
 							>
-								<h3
-									class:list={[
-										"font-body font-semibold text-text",
-										highlighted ? "text-2xl leading-snug" : "text-lg",
-									]}
-								>
+								{index + 1}
+							</span>
+							<div class="min-w-0">
+								<h3 class="font-body text-lg font-semibold text-text">
 									{typograf(item.title)}
 								</h3>
 								<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{item.text}</p>
