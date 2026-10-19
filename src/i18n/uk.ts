@@ -96,6 +96,11 @@ export interface UiStrings {
 		/** Початок доступної назви картки документа. */
 		open: string;
 	};
+	hero: {
+		hours: string;
+		address: string;
+		booking: string;
+	};
 }
 
 export const uk = {
@@ -181,5 +186,10 @@ export const uk = {
 	},
 	licenses: {
 		open: 'Відкрити документ',
+	},
+	hero: {
+		hours: 'Графік',
+		address: 'Адреса',
+		booking: 'Запис',
 	},
 } satisfies UiStrings;
