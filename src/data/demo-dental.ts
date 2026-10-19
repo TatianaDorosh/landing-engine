@@ -18,7 +18,7 @@ export const anesthesiaImage = {
 	alt: "Лікарі розмовляють із пацієнтом у стоматологічному кабінеті",
 	width: 666,
 	height: 1000,
-	position: "50% 14%",
+	position: "50% 30%",
 };
 
 export const anesthesiaComfort = {

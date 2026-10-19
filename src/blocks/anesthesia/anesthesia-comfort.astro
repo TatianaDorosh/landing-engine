@@ -43,7 +43,7 @@ const photo = image?.src && image.alt ? image : undefined;
 				}
 			</ul>
 		</div>
-		<div class="relative order-1 h-[200px] overflow-hidden rounded-theme lg:order-2 lg:col-span-5 lg:h-full lg:min-h-[280px]">
+		<div class="relative order-1 aspect-[4/3] w-full overflow-hidden rounded-theme sm:aspect-auto sm:h-[200px] lg:order-2 lg:col-span-5 lg:h-full lg:min-h-[280px]">
 			{
 				photo ? (
 					<img
