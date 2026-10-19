@@ -15,10 +15,10 @@ export const urgentToday = {
 
 export const anesthesiaImage = {
 	src: "/images/demo-dental/dental-anesthesia.webp",
-	alt: "Світлий кабінет стоматолога",
-	width: 667,
+	alt: "Лікарі розмовляють із пацієнтом у стоматологічному кабінеті",
+	width: 666,
 	height: 1000,
-	position: "50% 70%",
+	position: "50% 14%",
 };
 
 export const anesthesiaComfort = {
