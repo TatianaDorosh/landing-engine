@@ -21,22 +21,19 @@ export const header = {
 	ctaHref: '#booking',
 };
 
-const [addressStreet, addressPlace = ''] = demoDoctor.contacts.address.split('\n');
-const cardAddress = addressPlace
-	? `${addressStreet} · ${addressPlace.charAt(0).toLowerCase()}${addressPlace.slice(1)}`
-	: addressStreet;
-
 export const hero = {
 	title: 'Прийом без поспіху: пояснюю кожен крок',
 	text: 'Приймаю за записом, одну пацієнтку за раз. Запишіться в Telegram або Viber, телефонувати не обов’язково.',
 	points: ['Спокійно й без осуду', 'Конфіденційно', 'Запис у месенджері'],
 	primaryCta: { label: ui.buttons.book, href: '#booking' },
 	secondaryCta: { label: 'Дивитись ціни', href: '#prices' },
-	card: {
-		title: 'Прийом за записом',
-		hours: demoDoctor.contacts.hours.split('\n')[0],
-		address: cardAddress,
-		note: 'Запис у Telegram або Viber, телефонувати не обов’язково.',
+	imageLabel: '',
+	image: {
+		src: '/images/demo-doctor/doctor-hero.webp',
+		alt: 'Розмова на прийомі (демо)',
+		width: 1200,
+		height: 1013,
+		position: 'center',
 	},
 };
 
@@ -87,7 +84,7 @@ export const services = {
 			imageLabel: 'Фото: консультація',
 			image: {
 				src: '/images/demo-doctor/doctor-service-consult.webp',
-				alt: 'Консультація: розмова лікарки з пацієнткою',
+				alt: 'Світлий кабінет прийому',
 				width: 1200,
 				height: 750,
 			},
