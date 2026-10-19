@@ -5,6 +5,7 @@ import Hero from "../blocks/hero/hero-result.astro";
 import HeroShowcase from "../blocks/hero/hero-showcase.astro";
 import HeroCover from "../blocks/hero/hero-cover.astro";
 import AboutMe from "../blocks/about/about-me.astro";
+import DoctorAbout from "../blocks/doctor/doctor-about.astro";
 import PricesSimple from "../blocks/prices/prices-simple.astro";
 import BookingMessengers from "../blocks/booking/booking-messengers.astro";
 import Trust from "../blocks/trust/trust-strip.astro";
@@ -47,6 +48,7 @@ import { hero as mokkaHero, about as mokkaAbout, prices as mokkaPrices, booking 
 import { demoSlate } from "../config/demo-slate";
 import { effects, myths as slateMyths, booking as slateBooking, reviews as slateReviews } from "../data/demo-slate";
 import { hero as portfolioHero, services as portfolioServices, examples, examplesCount, pains, packages } from "../data/portfolio";
+import { slateThemeStyle } from "../themes/slate";
 
 const ui = getUi(demoBeauty.locale);
 
@@ -94,6 +96,28 @@ const rules = {
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">about-me</p>
 	<AboutMe {...mokkaAbout} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">doctor-about</p>
+	<div style={slateThemeStyle()} class="bg-bg font-body text-text">
+		<DoctorAbout
+			sectionId="doctor-about"
+			heading="Про лікарку"
+			name="Демо-лікарка"
+			role="гінеколог"
+			experienceText="12 років практики"
+			photo={{ src: "", alt: "Демо-лікарка", width: 720, height: 900 }}
+			story={[
+				"Приймаю без поспіху: спершу пояснюю, що перевіряю і навіщо, і лише потім переходжу до огляду.",
+				"План і вартість проговорюю до початку. Якщо щось можна відкласти, так і кажу.",
+			]}
+			principles={[
+				"Пояснюю простими словами",
+				"Нічого не роблю без вашої згоди",
+				"Пишу план і ціну до початку",
+			]}
+			cta={{ label: ui.buttons.book, href: "#booking" }}
+		/>
+	</div>
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">prices-simple</p>
 	<PricesSimple {...mokkaPrices} />

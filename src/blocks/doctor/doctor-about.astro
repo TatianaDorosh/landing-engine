@@ -1,0 +1,92 @@
+---
+import PhotoPlaceholder from "../../components/PhotoPlaceholder.astro";
+import { typograf } from "../../lib/typograf";
+
+interface Photo {
+	src: string;
+	alt: string;
+	width: number;
+	height: number;
+}
+
+interface Props {
+	sectionId: string;
+	heading: string;
+	name: string;
+	role: string;
+	experienceText: string;
+	photo: Photo;
+	story: string[];
+	principles: string[];
+	cta?: { label: string; href: string };
+}
+
+const { sectionId, heading, name, role, experienceText, photo, story, principles, cta } = Astro.props;
+const hasPhoto = photo.src.trim() !== "";
+---
+
+<section id={sectionId} data-block="doctor-about" class="bg-bg">
+	<div
+		class="mx-auto grid max-w-6xl items-stretch gap-8 px-4 py-12 sm:grid-cols-[minmax(0,280px)_minmax(0,1fr)] sm:gap-x-8 lg:grid-cols-[minmax(0,360px)_minmax(0,1fr)] lg:gap-x-10 lg:px-8"
+	>
+		<div class="min-w-0">
+			<div class="relative aspect-[4/3] w-full overflow-hidden rounded-theme sm:aspect-[4/5]">
+				{
+					hasPhoto ? (
+						<img
+							src={photo.src}
+							alt={photo.alt}
+							width={photo.width}
+							height={photo.height}
+							loading="lazy"
+							decoding="async"
+							class="absolute inset-0 h-full w-full object-cover object-[50%_20%] sm:object-top"
+						/>
+					) : (
+						<PhotoPlaceholder label={name} alt={photo.alt} class="absolute inset-0 h-full" />
+					)
+				}
+			</div>
+		</div>
+		<div class="flex h-full min-w-0 flex-col">
+			<h2 class="text-3xl">{typograf(heading)}</h2>
+			<p class="mt-4 font-heading text-[36px] leading-[1.15] text-text">{typograf(name)}</p>
+			<p class="mt-2 font-body text-[15px] leading-[1.5] text-muted">
+				{typograf(role)}
+				<span aria-hidden="true"> · </span>
+				{typograf(experienceText)}
+			</p>
+			<div class="mt-4 space-y-4">
+				{
+					story.map((paragraph) => (
+						<p class="font-body text-base leading-relaxed">{typograf(paragraph)}</p>
+					))
+				}
+			</div>
+			<ul class="mt-6 flex list-none flex-col gap-3 p-0">
+				{
+					principles.map((point) => (
+						<li class="flex min-w-0 items-start gap-3">
+							<span class="mt-0.5 shrink-0 font-body text-[15px] font-semibold text-primary" aria-hidden="true">
+								✓
+							</span>
+							<span class="min-w-0 font-body text-[15px] leading-[1.5]">{typograf(point)}</span>
+						</li>
+					))
+				}
+			</ul>
+			{
+				cta && (
+					<div class="mt-8 sm:mt-auto sm:pt-8">
+						<a
+							href={cta.href}
+							class="inline-flex min-h-11 w-full items-center justify-center rounded-theme bg-primary px-5 text-primary-contrast sm:w-auto"
+						>
+							{cta.label}
+						</a>
+					</div>
+				)
+			}
+		</div>
+	</div>
+</section>
