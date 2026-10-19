@@ -9,15 +9,28 @@ interface Props {
 }
 
 const { items } = Astro.props;
+const three = items.length === 3;
 ---
 
 <section id="trust" data-block="trust-strip">
-	<div class="mx-auto max-w-6xl px-4 py-10 xl:px-8">
-		<ul class="grid list-none grid-cols-2 gap-6 p-0 xl:grid-cols-4">
+	<div class:list={["mx-auto max-w-6xl px-4 py-10 xl:px-8", three && "max-md:pb-0"]}>
+		<ul
+			class:list={[
+				"grid list-none grid-cols-2 gap-6 p-0 xl:grid-cols-4",
+				three && "max-md:grid-cols-3 max-md:gap-x-2",
+			]}
+		>
 			{
 				items.map((item) => (
-					<li>
-						<p class="font-heading text-3xl text-primary">{item.value}</p>
+					<li class="min-w-0">
+						<p
+							class:list={[
+								"font-heading text-3xl text-primary",
+								three && "max-md:text-[20px] max-md:leading-none max-md:whitespace-nowrap",
+							]}
+						>
+							{item.value}
+						</p>
 						<p class="mt-1 text-sm text-muted">{item.label}</p>
 					</li>
 				))

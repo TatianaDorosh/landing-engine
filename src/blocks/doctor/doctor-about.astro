@@ -27,10 +27,12 @@ const hasPhoto = photo.src.trim() !== "";
 
 <section id={sectionId} data-block="doctor-about" class="bg-bg">
 	<div
-		class="mx-auto grid max-w-6xl items-stretch gap-8 px-4 py-12 sm:grid-cols-[minmax(0,280px)_minmax(0,1fr)] sm:gap-x-8 lg:grid-cols-[minmax(0,360px)_minmax(0,1fr)] lg:gap-x-10 lg:px-8"
+		class="mx-auto grid max-w-6xl items-stretch gap-8 px-4 py-12 max-md:pt-8 sm:grid-cols-[minmax(0,280px)_minmax(0,1fr)] sm:gap-x-8 lg:grid-cols-[minmax(0,360px)_minmax(0,1fr)] lg:gap-x-10 lg:px-8"
 	>
 		<div class="min-w-0">
-			<div class="relative aspect-[4/3] w-full overflow-hidden rounded-theme sm:aspect-[4/5]">
+			<div
+				class="relative mx-auto aspect-[4/5] w-full max-w-[20rem] overflow-hidden rounded-theme sm:mx-0 sm:w-full sm:max-w-none"
+			>
 				{
 					hasPhoto ? (
 						<img
@@ -40,7 +42,7 @@ const hasPhoto = photo.src.trim() !== "";
 							height={photo.height}
 							loading="lazy"
 							decoding="async"
-							class="absolute inset-0 h-full w-full object-cover object-[50%_20%] sm:object-top"
+							class="absolute inset-0 h-full w-full object-cover object-top"
 						/>
 					) : (
 						<PhotoPlaceholder label={name} alt={photo.alt} class="absolute inset-0 h-full" />

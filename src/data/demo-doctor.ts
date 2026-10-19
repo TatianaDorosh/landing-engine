@@ -41,7 +41,7 @@ export const trust = {
 	items: [
 		{ value: '14 років', label: 'досвіду' },
 		{ value: '4,9 ★', label: 'рейтинг у Google (демо)' },
-		{ value: 'Ліцензія МОЗ', label: '№ 000000 (демо)' },
+		{ value: 'Ліцензія', label: 'МОЗ · № 000000 (демо)' },
 	],
 };
 

@@ -63,10 +63,10 @@ const dialogItems = documents.map((doc) => ({
 								data-certs-open={index}
 								data-kind={doc.kind}
 								aria-haspopup="dialog"
-								class="flex h-full w-full min-h-24 flex-row items-center gap-3 overflow-hidden rounded-theme border border-border bg-surface p-3 text-left sm:min-h-11 sm:flex-col sm:items-stretch sm:gap-0 sm:p-0"
+								class="flex h-full w-full flex-row items-center gap-3 overflow-hidden rounded-theme border border-border bg-surface p-2 text-left sm:min-h-11 sm:flex-col sm:items-stretch sm:gap-0 sm:p-0"
 							>
 								<span class="sr-only">{ui.licenses.open}: </span>
-								<div class="relative h-24 w-[72px] shrink-0 overflow-hidden rounded-theme border border-border bg-bg sm:h-[340px] sm:w-full sm:rounded-none sm:border-0">
+								<div class="relative h-[106px] w-20 shrink-0 overflow-hidden rounded-theme border border-border bg-bg sm:h-[340px] sm:w-full sm:rounded-none sm:border-0">
 									{photo ? (
 										<img
 											src={photo.src}
@@ -75,7 +75,7 @@ const dialogItems = documents.map((doc) => ({
 											height={photo.height}
 											loading="lazy"
 											decoding="async"
-											class="absolute inset-0 h-full w-full object-contain object-center"
+											class="absolute inset-1 h-[calc(100%-8px)] w-[calc(100%-8px)] object-contain object-center sm:inset-0 sm:h-full sm:w-full"
 										/>
 									) : (
 										<PhotoPlaceholder
