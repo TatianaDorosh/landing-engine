@@ -1,0 +1,103 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import Urgent from "../blocks/urgent/urgent-today.astro";
+import Hero from "../blocks/hero/hero-result.astro";
+import Trust from "../blocks/trust/trust-strip.astro";
+import ContactsMap from "../blocks/contacts/contacts-map.astro";
+import Services from "../blocks/services/services-cards.astro";
+import Steps from "../blocks/steps/steps-visit.astro";
+import Prices from "../blocks/prices/prices-levels.astro";
+import Team from "../blocks/team/team-cards.astro";
+import Reviews from "../blocks/reviews/reviews-cards.astro";
+import Faq from "../blocks/faq/faq-accordion.astro";
+import BookingCta from "../blocks/booking/booking-cta.astro";
+import BookingDrawer from "../blocks/booking/booking-drawer.astro";
+import Messengers from "../blocks/layout/layout-messengers.astro";
+import Footer from "../blocks/layout/layout-footer.astro";
+import { demoUrgent } from "../config/demo-urgent";
+import { getUi } from "../i18n";
+import {
+	urgentToday,
+	header,
+	hero,
+	trust,
+	services,
+	steps,
+	prices,
+	team,
+	reviews,
+	faq,
+	booking,
+	contacts,
+	footerNote,
+} from "../data/demo-urgent";
+
+const ui = getUi(demoUrgent.locale);
+---
+
+<Base config={demoUrgent}>
+	<Header
+		{...header}
+		overlayMenu
+		phone={{ label: demoUrgent.contacts.phoneDisplay, href: `tel:${demoUrgent.contacts.phone}` }}
+	/>
+	<main data-page="template-urgent">
+		<Urgent {...urgentToday} showBook={false} />
+		<Hero {...hero} />
+		<Trust {...trust} />
+		<ContactsMap {...contacts} contacts={demoUrgent.contacts} />
+		<Services {...services} layout="fit" />
+		<Steps {...steps} />
+		<Prices {...prices} />
+		<Team {...team} bookLabel={ui.buttons.book} layout="fit" />
+		<Reviews {...reviews} />
+		<Faq {...faq} telegram="" />
+		<BookingCta
+			title={booking.ctaTitle}
+			text={booking.ctaText}
+			writeLabel={booking.writeLabel}
+			ctaLabel={booking.ctaLabel}
+			config={demoUrgent}
+		/>
+		<BookingDrawer
+			title={booking.title}
+			note={booking.note}
+			services={booking.services}
+			masters={booking.masters}
+			privacyHref={booking.privacyHref}
+			config={demoUrgent}
+		/>
+	</main>
+	<Footer config={demoUrgent} privacyHref="/template-urgent/privacy/" note={footerNote} />
+	<Messengers config={demoUrgent} />
+</Base>
+
+<style is:global>
+	html:has([data-page="template-urgent"]) .font-heading {
+		font-weight: 600;
+	}
+
+	html:has([data-page="template-urgent"]) h2 {
+		font-weight: 500;
+	}
+
+	html:has([data-page="template-urgent"]) [data-block="layout-header"] a.font-heading {
+		white-space: pre-line;
+		line-height: 1.05;
+	}
+
+	html:has([data-page="template-urgent"]) [data-block="contacts-map"] dd span.block + span.block {
+		display: none;
+	}
+
+	@media (width < 64rem) {
+		html:has([data-page="template-urgent"]) [data-block="layout-header"] a.font-heading {
+			display: none;
+		}
+
+		html:has([data-page="template-urgent"]) [data-block="layout-header"] header > div > div:last-child {
+			margin-left: auto;
+		}
+	}
+</style>

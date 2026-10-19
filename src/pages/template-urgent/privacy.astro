@@ -1,0 +1,83 @@
+---
+import Base from "../../layouts/Base.astro";
+import Header from "../../blocks/layout/layout-header.astro";
+import Footer from "../../blocks/layout/layout-footer.astro";
+import { demoUrgent } from "../../config/demo-urgent";
+import { header, footerNote } from "../../data/demo-urgent";
+import { typograf } from "../../lib/typograf";
+
+const { contacts } = demoUrgent;
+const phone = contacts.phoneDisplay ?? contacts.phone;
+const address = (contacts.address ?? "").replaceAll("\n", ", ");
+---
+
+<Base config={demoUrgent} noindex={true} title={`Політика приватності — ${demoUrgent.name}`}>
+	<Header
+		{...header}
+		overlayMenu
+		phone={{ label: phone, href: `tel:${contacts.phone}` }}
+		nameHref="/template-urgent/"
+		anchorBase="/template-urgent/"
+	/>
+	<main data-page="template-urgent">
+		<article class="mx-auto max-w-[720px] px-4 py-12 font-body text-base leading-relaxed xl:px-8">
+			<h1 class="text-3xl">{typograf("Політика приватності")}</h1>
+			<p class="mt-4">
+				Цей текст пояснює, які дані збирає клініка і навіщо вони потрібні. Це демо: клініка вигадана, заявки нікуди не надсилаються.
+			</p>
+
+			<h2 class="mt-8 text-2xl">{typograf("Хто збирає дані")}</h2>
+			<p class="mt-3">
+				Дані збирає {demoUrgent.name}.
+				{address && <> Адреса: {address}.</>}
+				{" "}Телефон: <a href={`tel:${contacts.phone}`} class="text-primary">{phone}</a>.
+			</p>
+
+			<h2 class="mt-8 text-2xl">{typograf("Які дані")}</h2>
+			<p class="mt-3">Ім'я, телефон, послуга, дата і час, коментар і спосіб зв'язку.</p>
+
+			<h2 class="mt-8 text-2xl">{typograf("Навіщо")}</h2>
+			<p class="mt-3">Лише для запису і зв'язку щодо візиту.</p>
+
+			<h2 class="mt-8 text-2xl">{typograf("Як передаються")}</h2>
+			<p class="mt-3">Заявка з форми надходить на пошту клініки через сервіс Web3Forms.</p>
+
+			<h2 class="mt-8 text-2xl">{typograf("Скільки зберігаються")}</h2>
+			<p class="mt-3">12 місяців, потім видаляються.</p>
+
+			<h2 class="mt-8 text-2xl">{typograf("Ваші права")}</h2>
+			<p class="mt-3">
+				Ви можете дізнатися, виправити або видалити свої дані. Для цього напишіть на контакти клініки.
+			</p>
+
+			<h2 class="mt-8 text-2xl">{typograf("Дата оновлення")}</h2>
+			<p class="mt-3">19 жовтня 2026</p>
+		</article>
+	</main>
+	<Footer config={demoUrgent} privacyHref="/template-urgent/privacy/" note={footerNote} />
+</Base>
+
+<style is:global>
+	html:has([data-page="template-urgent"]) .font-heading {
+		font-weight: 600;
+	}
+
+	html:has([data-page="template-urgent"]) h2 {
+		font-weight: 500;
+	}
+
+	html:has([data-page="template-urgent"]) [data-block="layout-header"] a.font-heading {
+		white-space: pre-line;
+		line-height: 1.05;
+	}
+
+	@media (width < 64rem) {
+		html:has([data-page="template-urgent"]) [data-block="layout-header"] a.font-heading {
+			display: none;
+		}
+
+		html:has([data-page="template-urgent"]) [data-block="layout-header"] header > div > div:last-child {
+			margin-left: auto;
+		}
+	}
+</style>
