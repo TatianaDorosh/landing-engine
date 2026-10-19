@@ -48,12 +48,12 @@ const ui = getUi(demoDental.locale);
 		phone={{ label: demoDental.contacts.phoneDisplay, href: `tel:${demoDental.contacts.phone}` }}
 	/>
 	<main data-page="flagship-medicine">
-		<Urgent {...urgentToday} />
+		<Urgent {...urgentToday} showBook={false} />
 		<Hero {...hero} />
 		<Trust {...trust} />
-		<Services {...services} />
+		<Services {...services} layout="fit" />
 		<Comfort {...anesthesiaComfort} imageLabel="Фото: кабінет стоматолога" image={anesthesiaImage} />
-		<Team {...team} bookLabel={ui.buttons.book} />
+		<Team {...team} bookLabel={ui.buttons.book} layout="fit" />
 		<Licenses {...licensesDocs} />
 		<Prices {...prices} />
 		<Steps {...steps} highlightStep={4} />

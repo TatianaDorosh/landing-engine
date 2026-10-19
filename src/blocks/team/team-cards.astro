@@ -23,9 +23,12 @@ interface Props {
 	title: string;
 	items: Member[];
 	bookLabel?: string;
+	/** fit — три картки в ряд від 640px. Без пропса лишається карусель. */
+	layout?: "carousel" | "fit";
 }
 
-const { title, items, bookLabel = getUi("uk").buttons.book } = Astro.props;
+const { title, items, bookLabel = getUi("uk").buttons.book, layout = "carousel" } = Astro.props;
+const fit = layout === "fit";
 ---
 
 <section id="team" data-block="team-cards">
@@ -36,15 +39,24 @@ const { title, items, bookLabel = getUi("uk").buttons.book } = Astro.props;
 			tabindex="0"
 			role="region"
 			aria-label="Майстри"
-			class="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto xl:grid xl:grid-cols-3 xl:overflow-visible"
+			class:list={[
+				fit
+					? "mt-6 flex w-full min-w-0 snap-x snap-mandatory gap-6 overflow-x-auto overflow-y-hidden sm:grid sm:snap-none sm:justify-start sm:overflow-x-visible sm:overflow-y-visible sm:[grid-template-columns:repeat(3,minmax(0,320px))]"
+					: "mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto xl:grid xl:grid-cols-3 xl:overflow-visible",
+			]}
 		>
 			{
 				items.map((item, index) => (
 					<article
 						data-slide
-						class="flex w-[85%] shrink-0 snap-center flex-col overflow-hidden rounded-theme border border-border bg-surface xl:w-auto"
+						class:list={[
+							"flex shrink-0 flex-col overflow-hidden rounded-theme border border-border bg-surface",
+							fit
+								? "w-60 snap-start sm:w-auto sm:min-w-0 sm:max-w-[320px]"
+								: "w-[85%] snap-center xl:w-auto",
+						]}
 					>
-						<div class="aspect-[4/5] w-full overflow-hidden xl:max-h-[360px]">
+						<div class:list={["aspect-[4/5] w-full overflow-hidden", !fit && "xl:max-h-[360px]"]}>
 							{item.image ? (
 								<img
 									src={item.image.src}
@@ -53,7 +65,10 @@ const { title, items, bookLabel = getUi("uk").buttons.book } = Astro.props;
 									height={item.image.height}
 									loading="lazy"
 									decoding="async"
-									class="h-full w-full object-cover object-[center_20%]"
+									class:list={[
+										"h-full w-full object-cover",
+										fit ? "object-[50%_15%]" : "object-[center_20%]",
+									]}
 								/>
 							) : (
 								<PhotoPlaceholder label={item.imageLabel ?? item.name} class="h-full" />
@@ -87,7 +102,7 @@ const { title, items, bookLabel = getUi("uk").buttons.book } = Astro.props;
 				))
 			}
 		</div>
-		<div data-dots class="mt-2 flex justify-center xl:hidden" aria-label="Майстри"></div>
+		{!fit && <div data-dots class="mt-2 flex justify-center xl:hidden" aria-label="Майстри"></div>}
 	</div>
 	<CertificatesDialog items={items} />
 </section>

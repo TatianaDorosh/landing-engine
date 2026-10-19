@@ -22,9 +22,12 @@ interface Props {
 	items: ServiceItem[];
 	/** Пробіл у тисячах. Без цього пропса ціна як раніше, числом. */
 	groupThousands?: boolean;
+	/** fit — три картки від 768px, фото 16:10. Без пропса сітка як раніше. */
+	layout?: "default" | "fit";
 }
 
-const { title, currency, items, groupThousands = false } = Astro.props;
+const { title, currency, items, groupThousands = false, layout = "default" } = Astro.props;
+const fit = layout === "fit";
 
 function grouped(value: number) {
 	return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
@@ -34,13 +37,18 @@ function grouped(value: number) {
 <section id="services" data-block="services-cards">
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8 xl:py-16">
 		<h2 class="text-3xl">{typograf(title)}</h2>
-		<ul class="mt-6 grid list-none grid-cols-1 gap-4 p-0 xl:grid-cols-3">
+		<ul
+			class:list={[
+				"mt-6 grid list-none grid-cols-1 p-0",
+				fit ? "gap-6 md:grid-cols-3" : "gap-4 xl:grid-cols-3",
+			]}
+		>
 			{
 				items.map((item) => (
 					<li class="h-full">
 						<article class="flex h-full flex-col overflow-hidden rounded-theme border border-border bg-surface">
 							{item.image ? (
-								<div class="relative aspect-[4/3] w-full overflow-hidden">
+								<div class:list={["relative w-full overflow-hidden", fit ? "aspect-[16/10]" : "aspect-[4/3]"]}>
 									<img
 										src={item.image.src}
 										alt={item.image.alt}
@@ -48,11 +56,14 @@ function grouped(value: number) {
 										height={item.image.height}
 										loading="lazy"
 										decoding="async"
-										class="absolute inset-0 h-full w-full object-cover"
+										class:list={[
+											"absolute inset-0 h-full w-full object-cover",
+											fit && "object-[50%_40%]",
+										]}
 									/>
 								</div>
 							) : (
-								<PhotoPlaceholder label={item.imageLabel} alt={item.imageAlt} ratio="4/3" />
+								<PhotoPlaceholder label={item.imageLabel} alt={item.imageAlt} ratio={fit ? "16/10" : "4/3"} />
 							)}
 							<div class="flex flex-1 flex-col p-5">
 								<h3 class="font-body text-2xl font-semibold">{typograf(item.title)}</h3>
