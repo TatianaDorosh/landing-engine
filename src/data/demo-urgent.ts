@@ -66,8 +66,7 @@ export const services = {
 			linkLabel: ui.buttons.book,
 			href: '#booking',
 			service: 'Температура й застуда',
-			imageLabel: 'Фото: терапевт',
-			imageAlt: 'Фото: терапевт',
+			icon: 'thermometer',
 		},
 		{
 			title: 'Травми й забої',
@@ -76,8 +75,7 @@ export const services = {
 			linkLabel: ui.buttons.book,
 			href: '#booking',
 			service: 'Травми й забої',
-			imageLabel: 'Фото: травматолог',
-			imageAlt: 'Фото: травматолог',
+			icon: 'bandage',
 		},
 		{
 			title: 'Отруєння та біль у животі',
@@ -86,8 +84,7 @@ export const services = {
 			linkLabel: ui.buttons.book,
 			href: '#booking',
 			service: 'Отруєння та біль у животі',
-			imageLabel: 'Фото: огляд',
-			imageAlt: 'Фото: огляд',
+			icon: 'stomach',
 		},
 	],
 };

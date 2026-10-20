@@ -6,14 +6,22 @@ interface Item {
 
 interface Props {
 	items: Item[];
+	/** roomy — більші відступи зверху й знизу. Без пропса вигляд як раніше. */
+	spacing?: "roomy";
 }
 
-const { items } = Astro.props;
+const { items, spacing } = Astro.props;
 const three = items.length === 3;
+const roomy = spacing === "roomy";
 ---
 
-<section id="trust" data-block="trust-strip">
-	<div class:list={["mx-auto max-w-6xl px-4 py-10 xl:px-8", three && "max-md:pb-0"]}>
+<section id="trust" data-block="trust-strip" data-spacing={roomy ? "roomy" : undefined}>
+	<div
+		class:list={[
+			"mx-auto max-w-6xl px-4 xl:px-8",
+			roomy ? "py-10 md:py-14" : ["py-10", three && "max-md:pb-0"],
+		]}
+	>
 		<ul
 			class:list={[
 				"grid list-none grid-cols-2 gap-6 p-0 xl:grid-cols-4",

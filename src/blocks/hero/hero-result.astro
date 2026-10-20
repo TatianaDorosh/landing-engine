@@ -15,20 +15,29 @@ interface Props {
 	imageAlt?: string;
 	/** Короткі пункти під текстом. Якщо не передано — блок як раніше. */
 	points?: string[];
+	/** roomy — більші вертикальні відступи. Без пропса вигляд як раніше. */
+	spacing?: "roomy";
 }
 
-const { eyebrow = "", title, text, primaryCta, secondaryCta, image, imageLabel, imageAlt = "", points = [] } = Astro.props;
+const { eyebrow = "", title, text, primaryCta, secondaryCta, image, imageLabel, imageAlt = "", points = [], spacing } =
+	Astro.props;
+const roomy = spacing === "roomy";
 ---
 
-<section id="hero" data-block="hero-result">
-	<div class="mx-auto grid max-w-6xl items-center gap-6 px-4 py-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-stretch lg:gap-x-10 lg:gap-y-6 lg:px-8 lg:py-12">
+<section id="hero" data-block="hero-result" data-spacing={roomy ? "roomy" : undefined}>
+	<div
+		class:list={[
+			"mx-auto grid max-w-6xl items-center gap-6 px-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-stretch lg:gap-x-10 lg:gap-y-6 lg:px-8",
+			roomy ? "py-10 md:py-14 lg:py-20" : "py-8 lg:py-12",
+		]}
+	>
 		<div class="order-1 lg:col-start-1 lg:row-start-1">
 			{eyebrow && <p class="text-sm text-muted">{eyebrow}</p>}
-			<h1 class:list={["font-heading text-[36px] leading-[1.15] lg:text-[56px]", eyebrow && "mt-3"]}>{typograf(title)}</h1>
-			<p class="mt-4 max-w-xl font-body text-base leading-relaxed">{text}</p>
+			<h1 class:list={["font-heading text-[36px] leading-[1.15] lg:text-[56px]", eyebrow && (roomy ? "mt-6" : "mt-3")]}>{typograf(title)}</h1>
+			<p class:list={["max-w-xl font-body text-base leading-relaxed", roomy ? "mt-6" : "mt-4"]}>{text}</p>
 			{
 				points.length > 0 && (
-					<ul class="mt-4 flex list-none flex-col gap-2 p-0">
+					<ul class:list={["flex list-none flex-col gap-2 p-0", roomy ? "mt-6" : "mt-4"]}>
 						{points.map((point) => (
 							<li class="flex items-start gap-2 font-body text-base">
 								<span class="text-primary" aria-hidden="true">

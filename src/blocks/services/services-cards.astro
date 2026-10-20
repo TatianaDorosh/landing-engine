@@ -10,10 +10,12 @@ interface ServiceItem {
 	href: string;
 	/** Якщо задано, кнопка передає послугу в панель запису. */
 	service?: string;
-	imageLabel: string;
+	imageLabel?: string;
 	/** Доступна назва заглушки. Якщо не передано — розмітка як раніше. */
 	imageAlt?: string;
 	image?: { src: string; alt: string; width: number; height: number };
+	/** Іконка замість фото, коли на блоці media="icon". */
+	icon?: "thermometer" | "bandage" | "stomach";
 }
 
 interface Props {
@@ -24,17 +26,20 @@ interface Props {
 	groupThousands?: boolean;
 	/** fit — три картки від 768px, фото 16:10. Без пропса сітка як раніше. */
 	layout?: "default" | "fit";
+	/** icon — плитка з іконкою замість фото. Без пропса картка з фото, як раніше. */
+	media?: "icon";
 }
 
-const { title, currency, items, groupThousands = false, layout = "default" } = Astro.props;
+const { title, currency, items, groupThousands = false, layout = "default", media } = Astro.props;
 const fit = layout === "fit";
+const icons = media === "icon";
 
 function grouped(value: number) {
 	return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
 }
 ---
 
-<section id="services" data-block="services-cards">
+<section id="services" data-block="services-cards" data-media={icons ? "icon" : undefined}>
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8 xl:py-16">
 		<h2 class="text-3xl">{typograf(title)}</h2>
 		<ul
@@ -46,6 +51,44 @@ function grouped(value: number) {
 			{
 				items.map((item) => (
 					<li class="h-full">
+						{icons ? (
+							<article class="flex h-full flex-col rounded-theme border border-border bg-surface p-5">
+								<span class="service-icon inline-flex h-14 w-14 items-center justify-center rounded-theme text-primary" aria-hidden="true">
+									{item.icon === "bandage" ? (
+										<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+											<g transform="rotate(-45 12 12)">
+												<rect x="3" y="8" width="18" height="8" rx="2.5" />
+												<path d="M9 8v8M15 8v8" />
+											</g>
+										</svg>
+									) : item.icon === "stomach" ? (
+										<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+											<circle cx="12" cy="12" r="8" />
+											<path d="M12 8v8M8 12h8" />
+										</svg>
+									) : (
+										<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+											<path d="M14 14.76V4.5a2 2 0 0 0-4 0v10.26a4.5 4.5 0 1 0 4 0Z" />
+											<path d="M12 9.2v5" />
+										</svg>
+									)}
+								</span>
+								<h3 class="mt-3 font-body text-2xl font-semibold">{typograf(item.title)}</h3>
+								<p class="mt-3 font-body leading-relaxed">{item.text}</p>
+								<div class="mt-auto pt-3">
+									<p class="font-heading text-[28px] text-primary">
+										від {groupThousands ? grouped(item.priceFrom) : item.priceFrom} {currency}
+									</p>
+									<a
+										href={item.href}
+										data-service={item.service}
+										class="inline-flex min-h-11 items-center pt-3 text-primary"
+									>
+										{item.linkLabel}
+									</a>
+								</div>
+							</article>
+						) : (
 						<article class="flex h-full flex-col overflow-hidden rounded-theme border border-border bg-surface">
 							{item.image ? (
 								<div class:list={["relative w-full overflow-hidden", fit ? "aspect-[16/10]" : "aspect-[4/3]"]}>
@@ -63,7 +106,7 @@ function grouped(value: number) {
 									/>
 								</div>
 							) : (
-								<PhotoPlaceholder label={item.imageLabel} alt={item.imageAlt} ratio={fit ? "16/10" : "4/3"} />
+								<PhotoPlaceholder label={item.imageLabel ?? ""} alt={item.imageAlt} ratio={fit ? "16/10" : "4/3"} />
 							)}
 							<div class="flex flex-1 flex-col p-5">
 								<h3 class="font-body text-2xl font-semibold">{typograf(item.title)}</h3>
@@ -82,9 +125,16 @@ function grouped(value: number) {
 								</div>
 							</div>
 						</article>
+						)}
 					</li>
 				))
 			}
 		</ul>
 	</div>
 </section>
+
+<style is:global>
+	[data-block="services-cards"][data-media="icon"] .service-icon {
+		background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+	}
+</style>
