@@ -36,8 +36,14 @@ export const hero = {
 	points: ['Приймаємо в день звернення', 'Терапевт, педіатр і травматолог', 'Ціну називаємо до початку'],
 	primaryCta: { label: ui.buttons.book, href: '#booking' },
 	secondaryCta: { label: 'Дивитись ціни', href: '#prices' },
-	imageLabel: 'Фото: прийом лікаря (демо)',
-	imageAlt: 'Лікар оглядає пацієнта',
+	imageLabel: '',
+	image: {
+		src: '/images/demo-urgent/urgent-hero.webp',
+		alt: 'Лікар оглядає пацієнта (демо)',
+		width: 1200,
+		height: 1013,
+		position: 'center',
+	},
 };
 
 export const trust = {
@@ -165,13 +171,23 @@ export const team = {
 			name: 'Андрій Гнатюк',
 			role: 'терапевт',
 			details: '12 років досвіду',
-			imageLabel: 'Фото: лікар',
+			image: {
+				src: '/images/demo-urgent/urgent-doctor-gnatyuk.webp',
+				alt: 'Андрій Гнатюк, терапевт (демо)',
+				width: 800,
+				height: 1000,
+			},
 		},
 		{
 			name: 'Софія Лисенко',
 			role: 'педіатр',
 			details: '9 років досвіду',
-			imageLabel: 'Фото: лікар',
+			image: {
+				src: '/images/demo-urgent/urgent-doctor-lysenko.webp',
+				alt: 'Софія Лисенко, педіатр (демо)',
+				width: 800,
+				height: 1000,
+			},
 		},
 		{
 			name: 'Олег Бондар',
