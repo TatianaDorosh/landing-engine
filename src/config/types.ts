@@ -7,6 +7,13 @@ export interface OpeningHours {
 	closes: string;
 }
 
+/** Набір іконок: svg, png 48×48 і apple-touch 180×180. Шляхи від кореня сайту. */
+export interface FaviconIcons {
+	svg: string;
+	png: string;
+	apple: string;
+}
+
 export interface SiteConfig {
 	id: string;
 	locale: Locale;
@@ -45,8 +52,8 @@ export interface SiteConfig {
 		description: string;
 		/** Шлях від кореня сайту, наприклад /og/demo-beauty.jpg. */
 		ogImage: string;
-		/** Якщо не задано, сторінка бере спільний /favicon.svg. */
-		favicon?: string;
+		/** Якщо не задано, сторінка бере спільний /favicon.svg. Рядок — один SVG. */
+		favicon?: string | FaviconIcons;
 	};
 	rating: { value: number; count: number } | null;
 	theme: {

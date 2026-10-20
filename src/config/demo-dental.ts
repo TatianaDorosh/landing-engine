@@ -44,7 +44,11 @@ export const demoDental = {
 		description:
 			'Стоматологія «Спокій» в Києві: огляд, письмовий план і кошторис ще до початку лікування. Анестезія, запис на сьогодні. вул. Прикладна, 12. Пн–Сб 09:00–20:00.',
 		ogImage: '/og/demo-dental.jpg',
-		favicon: '/favicon-dental.svg',
+		favicon: {
+			svg: '/favicons/flagship-medicine/favicon.svg',
+			png: '/favicons/flagship-medicine/favicon-48.png',
+			apple: '/favicons/flagship-medicine/apple-touch-icon.png',
+		},
 	},
 	rating: { value: 4.9, count: 120 },
 	theme: {

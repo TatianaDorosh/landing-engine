@@ -58,7 +58,11 @@ export const demoUrgent = {
 		description:
 			'Терапевт, педіатр і травматолог у день звернення. Щодня з 8:00 до 21:00. Подзвоніть або запишіться в Telegram чи Viber.',
 		ogImage: '/og/demo-urgent.jpg',
-		favicon: '/favicon-urgent.svg',
+		favicon: {
+			svg: '/favicons/template-urgent/favicon.svg',
+			png: '/favicons/template-urgent/favicon-48.png',
+			apple: '/favicons/template-urgent/apple-touch-icon.png',
+		},
 	},
 	rating: null,
 	theme: blueTheme,

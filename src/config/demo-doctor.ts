@@ -45,7 +45,11 @@ export const demoDoctor = {
 		description:
 			'Приймаю за записом у Києві. Спокійно, без поспіху й осуду: пояснюю кожен крок, ціну називаю до початку. Запис у Telegram або Viber.',
 		ogImage: '/og/demo-doctor.jpg',
-		favicon: '/favicon-doctor.svg',
+		favicon: {
+			svg: '/favicons/template-doctor/favicon.svg',
+			png: '/favicons/template-doctor/favicon-48.png',
+			apple: '/favicons/template-doctor/apple-touch-icon.png',
+		},
 	},
 	rating: null,
 	theme: slateTheme,
