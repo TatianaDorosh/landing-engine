@@ -52,21 +52,24 @@ const dialogItems = documents.map((doc) => ({
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
 		<h2 class="text-3xl">{typograf(title)}</h2>
 		<p class="mt-4 max-w-[760px] font-body text-base leading-relaxed">{typograf(intro)}</p>
-		<ul class="mt-6 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-3 sm:gap-6">
+		<ul
+			data-docs-track
+			class="mt-6 flex w-full min-w-0 list-none snap-x snap-mandatory gap-3 overflow-x-auto overflow-y-hidden overscroll-x-contain p-0 sm:grid sm:snap-none sm:grid-cols-3 sm:gap-6 sm:overflow-visible"
+		>
 			{
 				documents.map((doc, index) => {
 					const photo = doc.image?.src && doc.image.alt ? doc.image : undefined;
 					return (
-						<li class="h-full min-w-0">
+						<li class="h-full min-w-0 w-[min(72vw,280px)] shrink-0 snap-start sm:w-auto">
 							<button
 								type="button"
 								data-certs-open={index}
 								data-kind={doc.kind}
 								aria-haspopup="dialog"
-								class="flex h-full w-full flex-row items-center gap-3 overflow-hidden rounded-theme border border-border bg-surface p-2 text-left sm:min-h-11 sm:flex-col sm:items-stretch sm:gap-0 sm:p-0"
+								aria-label={`${ui.licenses.open}: ${doc.title}. ${doc.caption}`}
+								class="flex h-full w-full flex-col items-stretch overflow-hidden rounded-theme border border-border bg-surface p-0 text-left sm:min-h-11"
 							>
-								<span class="sr-only">{ui.licenses.open}: </span>
-								<div class="relative h-[106px] w-20 shrink-0 overflow-hidden rounded-theme border border-border bg-bg sm:h-[340px] sm:w-full sm:rounded-none sm:border-0">
+								<div class="relative aspect-[3/4] w-full overflow-hidden bg-bg sm:aspect-auto sm:h-[340px] sm:rounded-none">
 									{photo ? (
 										<img
 											src={photo.src}
@@ -75,23 +78,20 @@ const dialogItems = documents.map((doc) => ({
 											height={photo.height}
 											loading="lazy"
 											decoding="async"
-											class="absolute inset-1 h-[calc(100%-8px)] w-[calc(100%-8px)] object-contain object-center sm:inset-0 sm:h-full sm:w-full"
+											class="absolute inset-2 h-[calc(100%-16px)] w-[calc(100%-16px)] object-contain object-center sm:inset-0 sm:h-full sm:w-full"
 										/>
 									) : (
 										<PhotoPlaceholder
 											label={doc.caption}
 											ratio="3/4"
-											class="absolute inset-0 h-full !px-1 !text-[11px] !leading-tight sm:!px-4 sm:!text-sm sm:!leading-normal"
+											class="absolute inset-0 h-full sm:!px-4 sm:!text-sm sm:!leading-normal"
 										/>
 									)}
 								</div>
-								<div class="flex min-w-0 flex-1 flex-col sm:p-5">
+								<div class="flex min-w-0 flex-1 flex-col p-4 sm:p-5">
 									<h3 class="font-body text-[17px] font-semibold leading-snug">{typograf(doc.title)}</h3>
 									<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted sm:mt-auto sm:pt-2">{typograf(doc.caption)}</p>
 								</div>
-								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 shrink-0 text-muted sm:hidden" aria-hidden="true">
-									<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-								</svg>
 							</button>
 						</li>
 					);
@@ -116,3 +116,17 @@ const dialogItems = documents.map((doc) => ({
 	</div>
 	<CertificatesDialog view="single" items={dialogItems} />
 </section>
+
+<style>
+	[data-docs-track] {
+		scrollbar-width: none;
+	}
+	[data-docs-track]::-webkit-scrollbar {
+		display: none;
+	}
+	@media (min-width: 640px) {
+		[data-docs-track] {
+			scrollbar-width: auto;
+		}
+	}
+</style>
