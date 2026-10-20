@@ -256,7 +256,7 @@ export const booking = {
 	ctaTitle: 'Запишіться на сьогодні',
 	ctaLabel: ui.buttons.book,
 	ctaText: 'Залиште номер, і ми підкажемо найближчий вільний час.',
-	writeLabel: '',
+	writeLabel: 'Або напишіть нам:',
 	note: 'Залиште контакти, і ми підтвердимо час.',
 	privacyHref: '/template-urgent/privacy/',
 	services: [

@@ -9,15 +9,66 @@ interface Props {
 	ctaLabel: string;
 	ctaHref?: string;
 	config: SiteConfig;
+	/** centered — усе по центру, графік у тексті, месенджери тихим рядком. Без пропса вигляд як раніше. */
+	layout?: "centered";
 }
 
-const { title, text, writeLabel, ctaLabel, ctaHref = "#booking", config } = Astro.props;
+const { title, text, writeLabel, ctaLabel, ctaHref = "#booking", config, layout } = Astro.props;
 const telegramHandle = config.contacts.telegram?.replace(/^@/, "") ?? "";
 const viberNumber = config.contacts.viber?.replace(/\D/g, "") ?? "";
 const linkClass =
 	"cta-soft inline-flex min-h-11 items-center underline decoration-1 underline-offset-2";
+const centered = layout === "centered";
+const hours = config.contacts.hours?.trim() ?? "";
+const centeredText = hours
+	? `${typograf(`${text.replace(/[.\s]+$/, "")}.`)} ${`Приймаємо ${hours}.`.replace(/ /g, "\u00A0")}`
+	: typograf(text);
 ---
 
+{
+	centered ? (
+		<section id="booking" data-block="booking-cta" data-layout="centered" class="scroll-mt-24">
+			<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+				<div class="rounded-theme bg-primary px-6 py-12 text-center text-primary-contrast">
+					<h2 class="font-heading text-3xl text-primary-contrast">{typograf(title)}</h2>
+					<p class="mx-auto mt-4 max-w-[560px] font-body text-base leading-relaxed">{centeredText}</p>
+					<a
+						href={ctaHref}
+						class="mx-auto mt-6 flex min-h-[52px] w-full max-w-[320px] items-center justify-center rounded-theme bg-primary-contrast px-6 font-body text-base font-semibold text-primary sm:w-fit sm:min-w-[240px] sm:max-w-none"
+					>
+						{ctaLabel}
+					</a>
+					{
+						(telegramHandle || viberNumber) && (
+							<p class="cta-quiet mt-4 font-body text-[15px] leading-relaxed">
+								{writeLabel}
+								{writeLabel ? " " : ""}
+								{telegramHandle && (
+									<a
+										href={`https://t.me/${telegramHandle}`}
+										data-messenger="telegram"
+										class="underline-offset-2 hover:underline"
+									>
+										Telegram
+									</a>
+								)}
+								{telegramHandle && viberNumber && <span aria-hidden="true"> · </span>}
+								{viberNumber && (
+									<a
+										href={`viber://chat?number=%2B${viberNumber}`}
+										data-messenger="viber"
+										class="underline-offset-2 hover:underline"
+									>
+										Viber
+									</a>
+								)}
+							</p>
+						)
+					}
+				</div>
+			</div>
+		</section>
+	) : (
 <section id="booking" data-block="booking-cta" class="scroll-mt-24">
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
 		<div class="grid gap-6 rounded-theme bg-primary p-7 text-primary-contrast lg:grid-cols-12 lg:items-center lg:gap-8 lg:p-12">
@@ -59,10 +110,16 @@ const linkClass =
 		</div>
 	</div>
 </section>
+	)
+}
 
 <style is:global>
 	[data-block="booking-cta"] .cta-soft {
 		color: color-mix(in srgb, var(--color-primary-contrast) 90%, transparent);
+	}
+
+	[data-block="booking-cta"][data-layout="centered"] .cta-quiet {
+		color: color-mix(in srgb, var(--color-primary-contrast) 85%, transparent);
 	}
 
 	[data-block="booking-cta"] :focus-visible {
