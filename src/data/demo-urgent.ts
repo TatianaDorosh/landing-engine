@@ -188,10 +188,15 @@ export const team = {
 			},
 		},
 		{
-			name: 'Олег Бондар',
+			name: 'Олена Бондар',
 			role: 'хірург-травматолог',
 			details: '15 років досвіду',
-			imageLabel: 'Фото: лікар',
+			image: {
+				src: '/images/demo-urgent/urgent-doctor-bondar.webp',
+				alt: 'Олена Бондар, хірург-травматолог (демо)',
+				width: 800,
+				height: 1000,
+			},
 		},
 	],
 };
