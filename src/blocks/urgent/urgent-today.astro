@@ -33,44 +33,25 @@ const lineNote = note ? typograf(note) : "";
 			data-layout="centered"
 			class="bg-primary text-primary-contrast"
 		>
-			<div class="mx-auto flex max-w-6xl flex-col items-center justify-center px-4 py-2 text-center sm:h-12 sm:py-0">
-				<p class="font-body text-[15px] leading-snug sm:hidden">
-					{lineText}
-					{lineNote && (
-						<>
-							<span class="urgent-dot" aria-hidden="true">
-								{" · "}
-							</span>
-							{lineNote}
-						</>
-					)}
+			<div class="mx-auto flex max-w-6xl flex-col items-center justify-center gap-1.5 px-4 py-3.5 text-center sm:min-h-[58px] sm:flex-row sm:gap-0 sm:py-4">
+				<p class="flex max-w-full flex-col items-center justify-center font-body text-[15px] font-medium leading-snug sm:flex-row sm:flex-nowrap sm:text-base sm:leading-6">
+					<span>{lineText}</span>
+					{
+						lineNote && (
+							<>
+								<span class="urgent-rule" aria-hidden="true"></span>
+								<span>{lineNote}</span>
+							</>
+						)
+					}
 				</p>
+				<span class="urgent-rule urgent-rule-phone" aria-hidden="true"></span>
 				<a
 					href={phone.href}
-					class="mt-0.5 font-body text-[15px] leading-snug text-primary-contrast underline-offset-2 hover:underline sm:hidden"
+					class="font-body text-[15px] font-semibold text-primary-contrast underline-offset-2 hover:underline sm:text-base"
 				>
 					{phone.label}
 				</a>
-				<p class="hidden whitespace-nowrap font-body text-[15px] leading-none sm:block">
-					{lineText}
-					{lineNote && (
-						<>
-							<span class="urgent-dot" aria-hidden="true">
-								{" · "}
-							</span>
-							{lineNote}
-						</>
-					)}
-					<span class="urgent-dot" aria-hidden="true">
-						{" · "}
-					</span>
-					<a
-						href={phone.href}
-						class="text-primary-contrast underline-offset-2 hover:underline"
-					>
-						{phone.label}
-					</a>
-				</p>
 			</div>
 		</section>
 	) : (
@@ -127,7 +108,18 @@ const lineNote = note ? typograf(note) : "";
 		outline-offset: 2px;
 	}
 
-	[data-block="urgent-today"][data-layout="centered"] .urgent-dot {
-		color: color-mix(in srgb, var(--color-primary-contrast) 55%, transparent);
+	[data-block="urgent-today"][data-layout="centered"] .urgent-rule {
+		display: none;
+		width: 1px;
+		height: 16px;
+		flex: none;
+		background: color-mix(in srgb, var(--color-primary-contrast) 35%, transparent);
+	}
+
+	@media (width >= 640px) {
+		[data-block="urgent-today"][data-layout="centered"] .urgent-rule {
+			display: inline-block;
+			margin-inline: 24px;
+		}
 	}
 </style>

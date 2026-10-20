@@ -9,8 +9,8 @@ interface Props {
 	ctaLabel: string;
 	ctaHref?: string;
 	config: SiteConfig;
-	/** centered — усе по центру, графік у тексті, месенджери тихим рядком. Без пропса вигляд як раніше. */
-	layout?: "centered";
+	/** split — дві колонки: текст і кнопка. Без пропса вигляд як раніше. */
+	layout?: "split";
 }
 
 const { title, text, writeLabel, ctaLabel, ctaHref = "#booking", config, layout } = Astro.props;
@@ -18,53 +18,57 @@ const telegramHandle = config.contacts.telegram?.replace(/^@/, "") ?? "";
 const viberNumber = config.contacts.viber?.replace(/\D/g, "") ?? "";
 const linkClass =
 	"cta-soft inline-flex min-h-11 items-center underline decoration-1 underline-offset-2";
-const centered = layout === "centered";
+const split = layout === "split";
 const hours = config.contacts.hours?.trim() ?? "";
-const centeredText = hours
+const splitText = hours
 	? `${typograf(`${text.replace(/[.\s]+$/, "")}.`)} ${`Приймаємо ${hours}.`.replace(/ /g, "\u00A0")}`
 	: typograf(text);
 ---
 
 {
-	centered ? (
-		<section id="booking" data-block="booking-cta" data-layout="centered" class="scroll-mt-24">
+	split ? (
+		<section id="booking" data-block="booking-cta" data-layout="split" class="scroll-mt-24">
 			<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
-				<div class="rounded-theme bg-primary px-6 py-12 text-center text-primary-contrast">
-					<h2 class="font-heading text-3xl text-primary-contrast">{typograf(title)}</h2>
-					<p class="mx-auto mt-4 max-w-[560px] font-body text-base leading-relaxed">{centeredText}</p>
-					<a
-						href={ctaHref}
-						class="mx-auto mt-6 flex min-h-[52px] w-full max-w-[320px] items-center justify-center rounded-theme bg-primary-contrast px-6 font-body text-base font-semibold text-primary sm:w-fit sm:min-w-[240px] sm:max-w-none"
-					>
-						{ctaLabel}
-					</a>
-					{
-						(telegramHandle || viberNumber) && (
-							<p class="cta-quiet mt-4 font-body text-[15px] leading-relaxed">
-								{writeLabel}
-								{writeLabel ? " " : ""}
-								{telegramHandle && (
-									<a
-										href={`https://t.me/${telegramHandle}`}
-										data-messenger="telegram"
-										class="underline-offset-2 hover:underline"
-									>
-										Telegram
-									</a>
-								)}
-								{telegramHandle && viberNumber && <span aria-hidden="true"> · </span>}
-								{viberNumber && (
-									<a
-										href={`viber://chat?number=%2B${viberNumber}`}
-										data-messenger="viber"
-										class="underline-offset-2 hover:underline"
-									>
-										Viber
-									</a>
-								)}
-							</p>
-						)
-					}
+				<div class="grid items-center gap-6 rounded-theme bg-primary px-7 py-8 text-primary-contrast md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:gap-12 md:px-12 md:py-10">
+					<div class="min-w-0 text-center md:text-left">
+						<h2 class="font-heading text-[28px] leading-tight text-primary-contrast md:text-[30px] md:leading-none">{typograf(title)}</h2>
+						<p class="mt-3 font-body text-base leading-[1.6] md:text-[17px]">{splitText}</p>
+					</div>
+					<div class="flex flex-col items-center">
+						<a
+							href={ctaHref}
+							class="flex min-h-[52px] w-full max-w-[320px] items-center justify-center rounded-theme bg-primary-contrast px-6 font-body text-base font-semibold text-primary md:w-auto md:min-w-[220px] md:max-w-none"
+						>
+							{ctaLabel}
+						</a>
+						{
+							(telegramHandle || viberNumber) && (
+								<p class="cta-quiet mt-4 text-center font-body text-[15px] leading-relaxed">
+									{writeLabel}
+									{writeLabel ? " " : ""}
+									{telegramHandle && (
+										<a
+											href={`https://t.me/${telegramHandle}`}
+											data-messenger="telegram"
+											class="underline-offset-2 hover:underline"
+										>
+											Telegram
+										</a>
+									)}
+									{telegramHandle && viberNumber && <span aria-hidden="true"> · </span>}
+									{viberNumber && (
+										<a
+											href={`viber://chat?number=%2B${viberNumber}`}
+											data-messenger="viber"
+											class="underline-offset-2 hover:underline"
+										>
+											Viber
+										</a>
+									)}
+								</p>
+							)
+						}
+					</div>
 				</div>
 			</div>
 		</section>
@@ -118,7 +122,7 @@ const centeredText = hours
 		color: color-mix(in srgb, var(--color-primary-contrast) 90%, transparent);
 	}
 
-	[data-block="booking-cta"][data-layout="centered"] .cta-quiet {
+	[data-block="booking-cta"][data-layout="split"] .cta-quiet {
 		color: color-mix(in srgb, var(--color-primary-contrast) 85%, transparent);
 	}
 
