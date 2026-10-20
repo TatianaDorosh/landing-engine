@@ -9,17 +9,71 @@ interface Props {
 	cta?: { label?: string; href?: string };
 	/** false — без кнопки запису. Без пропса кнопка є, як раніше. */
 	showBook?: boolean;
+	/** centered — один рядок по центру, номер як посилання. Без пропса вигляд як раніше. */
+	layout?: "centered";
 }
 
 // Текст про вільні місця задає власник у props (text).
 // Блок не перевіряє розклад і не показує живу доступність.
-const { text, note, phone, cta, showBook = true } = Astro.props;
+const { text, note, phone, cta, showBook = true, layout } = Astro.props;
 const ui = getUi("uk");
 const callLabel = ui.urgent.call;
 const bookLabel = cta?.label || ui.urgent.book;
 const bookHref = cta?.href || "#booking";
+const centered = layout === "centered";
+const lineText = typograf(text);
+const lineNote = note ? typograf(note) : "";
 ---
 
+{
+	centered ? (
+		<section
+			id="urgent"
+			data-block="urgent-today"
+			data-layout="centered"
+			class="bg-primary text-primary-contrast"
+		>
+			<div class="mx-auto flex max-w-6xl flex-col items-center justify-center px-4 py-2 text-center sm:h-12 sm:py-0">
+				<p class="font-body text-[15px] leading-snug sm:hidden">
+					{lineText}
+					{lineNote && (
+						<>
+							<span class="urgent-dot" aria-hidden="true">
+								{" · "}
+							</span>
+							{lineNote}
+						</>
+					)}
+				</p>
+				<a
+					href={phone.href}
+					class="mt-0.5 font-body text-[15px] leading-snug text-primary-contrast underline-offset-2 hover:underline sm:hidden"
+				>
+					{phone.label}
+				</a>
+				<p class="hidden whitespace-nowrap font-body text-[15px] leading-none sm:block">
+					{lineText}
+					{lineNote && (
+						<>
+							<span class="urgent-dot" aria-hidden="true">
+								{" · "}
+							</span>
+							{lineNote}
+						</>
+					)}
+					<span class="urgent-dot" aria-hidden="true">
+						{" · "}
+					</span>
+					<a
+						href={phone.href}
+						class="text-primary-contrast underline-offset-2 hover:underline"
+					>
+						{phone.label}
+					</a>
+				</p>
+			</div>
+		</section>
+	) : (
 <section id="urgent" data-block="urgent-today" class="bg-primary text-primary-contrast">
 	<div
 		class:list={[
@@ -63,11 +117,17 @@ const bookHref = cta?.href || "#booking";
 		</div>
 	</div>
 </section>
+	)
+}
 
 <style is:global>
 	[data-block="urgent-today"] a:focus-visible,
 	[data-block="urgent-today"] button:focus-visible {
 		outline: 2px solid var(--color-primary-contrast);
 		outline-offset: 2px;
+	}
+
+	[data-block="urgent-today"][data-layout="centered"] .urgent-dot {
+		color: color-mix(in srgb, var(--color-primary-contrast) 55%, transparent);
 	}
 </style>

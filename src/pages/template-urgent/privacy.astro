@@ -67,17 +67,6 @@ const address = (contacts.address ?? "").replaceAll("\n", ", ");
 	}
 
 	html:has([data-page="template-urgent"]) [data-block="layout-header"] a.font-heading {
-		white-space: pre-line;
-		line-height: 1.05;
-	}
-
-	@media (width < 64rem) {
-		html:has([data-page="template-urgent"]) [data-block="layout-header"] a.font-heading {
-			display: none;
-		}
-
-		html:has([data-page="template-urgent"]) [data-block="layout-header"] header > div > div:last-child {
-			margin-left: auto;
-		}
+		white-space: nowrap;
 	}
 </style>

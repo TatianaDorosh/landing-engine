@@ -24,8 +24,8 @@ export const demoUrgent = {
 	id: 'demo-urgent',
 	locale: 'uk',
 	siteUrl: 'https://landing-engine-gamma.vercel.app',
-	name: 'Медичний центр «Поруч»',
-	tagline: 'медичний центр',
+	name: '«Лікар Поруч»',
+	tagline: 'Лікар Поруч',
 	businessType: 'MedicalClinic',
 	staffLabel: 'Лікар',
 	contacts: {

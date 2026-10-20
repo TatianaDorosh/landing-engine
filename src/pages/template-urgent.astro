@@ -43,7 +43,7 @@ const ui = getUi(demoUrgent.locale);
 		phone={{ label: demoUrgent.contacts.phoneDisplay, href: `tel:${demoUrgent.contacts.phone}` }}
 	/>
 	<main data-page="template-urgent">
-		<Urgent {...urgentToday} showBook={false} />
+		<Urgent {...urgentToday} layout="centered" />
 		<Hero {...hero} />
 		<Trust {...trust} />
 		<ContactsMap {...contacts} contacts={demoUrgent.contacts} />
@@ -83,21 +83,10 @@ const ui = getUi(demoUrgent.locale);
 	}
 
 	html:has([data-page="template-urgent"]) [data-block="layout-header"] a.font-heading {
-		white-space: pre-line;
-		line-height: 1.05;
+		white-space: nowrap;
 	}
 
 	html:has([data-page="template-urgent"]) [data-block="contacts-map"] dd span.block + span.block {
 		display: none;
-	}
-
-	@media (width < 64rem) {
-		html:has([data-page="template-urgent"]) [data-block="layout-header"] a.font-heading {
-			display: none;
-		}
-
-		html:has([data-page="template-urgent"]) [data-block="layout-header"] header > div > div:last-child {
-			margin-left: auto;
-		}
 	}
 </style>
