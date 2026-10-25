@@ -24,8 +24,8 @@ const roomy = spacing === "roomy";
 	>
 		<ul
 			class:list={[
-				"grid list-none grid-cols-2 gap-6 p-0 xl:grid-cols-4",
-				three && "max-md:grid-cols-3 max-md:gap-x-2",
+				"grid list-none p-0",
+				three ? "grid-cols-3 gap-6 max-md:gap-x-2" : "grid-cols-2 gap-6 xl:grid-cols-4",
 			]}
 		>
 			{
