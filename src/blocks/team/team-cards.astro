@@ -25,10 +25,19 @@ interface Props {
 	bookLabel?: string;
 	/** fit — три картки в ряд від 640px. Без пропса лишається карусель. */
 	layout?: "carousel" | "fit";
+	/** dots — крапки замість смуги прокрутки, лише коли стрічка гортається. */
+	indicator?: "dots";
 }
 
-const { title, items, bookLabel = getUi("uk").buttons.book, layout = "carousel" } = Astro.props;
+const {
+	title,
+	items,
+	bookLabel = getUi("uk").buttons.book,
+	layout = "carousel",
+	indicator,
+} = Astro.props;
 const fit = layout === "fit";
+const dotNav = indicator === "dots";
 ---
 
 <section id="team" data-block="team-cards">
@@ -36,6 +45,7 @@ const fit = layout === "fit";
 		<h2 class="text-3xl">{typograf(title)}</h2>
 		<div
 			data-track
+			data-indicator={dotNav ? "dots" : undefined}
 			tabindex="0"
 			role="region"
 			aria-label="Майстри"
@@ -102,7 +112,27 @@ const fit = layout === "fit";
 				))
 			}
 		</div>
-		{!fit && <div data-dots class="mt-2 flex justify-center xl:hidden" aria-label="Майстри"></div>}
+		{
+			!fit && !dotNav && (
+				<div data-dots class="mt-2 flex justify-center xl:hidden" aria-label="Майстри"></div>
+			)
+		}
+		{
+			dotNav && (
+				<div data-dotnav>
+					{items.map((_, index) => (
+						<button
+							type="button"
+							data-dot={index}
+							aria-label={`Лікар ${index + 1} з ${items.length}`}
+							aria-current={index === 0 ? "true" : undefined}
+						>
+							<span></span>
+						</button>
+					))}
+				</div>
+			)
+		}
 	</div>
 	<CertificatesDialog items={items} />
 </section>
@@ -165,4 +195,112 @@ const fit = layout === "fit";
 			});
 		});
 	});
+
+	document.querySelectorAll("[data-block='team-cards']").forEach((root) => {
+		const track = root.querySelector("[data-track][data-indicator='dots']");
+		const nav = root.querySelector("[data-dotnav]");
+		if (!track || !nav) return;
+
+		const slides = () => [...track.querySelectorAll("[data-slide]")];
+		const buttons = () => [...nav.querySelectorAll("[data-dot]")];
+
+		function canScroll() {
+			const overflow = getComputedStyle(track).overflowX;
+			if (overflow !== "auto" && overflow !== "scroll") return false;
+			return track.scrollWidth - track.clientWidth > 1;
+		}
+
+		function nearest() {
+			const edge = track.getBoundingClientRect().left;
+			let index = 0;
+			let best = Infinity;
+			slides().forEach((slide, i) => {
+				const dist = Math.abs(slide.getBoundingClientRect().left - edge);
+				if (dist < best) {
+					best = dist;
+					index = i;
+				}
+			});
+			return index;
+		}
+
+		function setActive(index) {
+			buttons().forEach((button, i) => {
+				if (i === index) button.setAttribute("aria-current", "true");
+				else button.removeAttribute("aria-current");
+			});
+		}
+
+		function refresh() {
+			if (canScroll()) {
+				nav.setAttribute("data-on", "");
+				setActive(nearest());
+			} else {
+				nav.removeAttribute("data-on");
+			}
+		}
+
+		nav.addEventListener("click", (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			const button = target.closest("[data-dot]");
+			if (!button || !nav.contains(button)) return;
+			slides()[Number(button.getAttribute("data-dot"))]?.scrollIntoView({
+				behavior: "smooth",
+				inline: "start",
+				block: "nearest",
+			});
+		});
+
+		track.addEventListener(
+			"scroll",
+			() => {
+				if (nav.hasAttribute("data-on")) setActive(nearest());
+			},
+			{ passive: true },
+		);
+
+		refresh();
+		if ("ResizeObserver" in window) new ResizeObserver(refresh).observe(track);
+	});
 </script>
+
+<style>
+	[data-track][data-indicator="dots"] {
+		scrollbar-width: none;
+	}
+	[data-track][data-indicator="dots"]::-webkit-scrollbar {
+		display: none;
+		height: 0;
+	}
+	[data-dotnav] {
+		display: none;
+		justify-content: center;
+		margin-top: 8px;
+	}
+	[data-dotnav][data-on] {
+		display: flex;
+	}
+	[data-dotnav] [data-dot] {
+		display: inline-flex;
+		flex-shrink: 0;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		margin-inline: -4px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		cursor: pointer;
+	}
+	[data-dotnav] [data-dot] span {
+		width: 8px;
+		height: 8px;
+		border-radius: 999px;
+		background: color-mix(in srgb, var(--color-primary) 35%, transparent);
+	}
+	[data-dotnav] [data-dot][aria-current="true"] span {
+		background: var(--color-primary);
+	}
+</style>
