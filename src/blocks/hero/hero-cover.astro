@@ -9,7 +9,16 @@ interface Props {
 	cta: { label: string; href: string };
 	/** Короткий рядок під кнопкою. Якщо не передано — кнопка як раніше. */
 	note?: string;
-	image?: { src: string; alt: string; position?: string; positionDesktop?: string };
+	image?: {
+		src: string;
+		alt: string;
+		position?: string;
+		positionDesktop?: string;
+		/** Наприклад «4 / 5». Працює разом із кадром на комп'ютері. */
+		aspect?: string;
+		/** Наприклад «1 / 1». Якщо задано, на комп'ютері фото цього формату, а не на всю висоту екрана. */
+		aspectDesktop?: string;
+	};
 	/** Нижчий hero, щоб під ним на першому екрані було видно наступний блок. */
 	compact?: boolean;
 	/** На телефоні текст зверху, фото 4:5 під кнопкою. Без пропса вигляд як раніше. */
@@ -17,6 +26,7 @@ interface Props {
 }
 
 const { eyebrow, title, text, cta, note, image, compact = false, mobileStack = false } = Astro.props;
+const framed = Boolean(image?.aspectDesktop);
 const positionDesktop = image?.positionDesktop || "50% 20%";
 ---
 
@@ -25,27 +35,40 @@ const positionDesktop = image?.positionDesktop || "50% 20%";
 	data-block="hero-cover"
 	class:list={[
 		"relative overflow-hidden bg-bg",
-		!mobileStack &&
+		framed && "min-[641px]:py-12",
+		!framed &&
+			!mobileStack &&
 			(compact
 				? "h-[min(62svh,500px)] lg:h-[408px]"
 				: "h-[min(calc(100svh-4.25rem),880px)] lg:h-[max(560px,min(760px,90vh,calc(100svh-4.25rem)))]"),
-		mobileStack && (compact ? "lg:h-[408px]" : "lg:h-[max(560px,min(760px,90vh,calc(100svh-4.25rem)))]"),
+		!framed && mobileStack && (compact ? "lg:h-[408px]" : "lg:h-[max(560px,min(760px,90vh,calc(100svh-4.25rem)))]"),
 	]}
 >
 	<div
 		class:list={[
-			"flex min-w-0 lg:mx-auto lg:grid lg:h-full lg:w-full lg:max-w-6xl lg:grid-cols-12 lg:items-stretch lg:px-4 xl:px-8",
-			mobileStack ? "flex-col" : "h-full items-end",
+			framed
+				? "flex min-w-0 flex-col min-[641px]:mx-auto min-[641px]:grid min-[641px]:w-full min-[641px]:max-w-6xl min-[641px]:grid-cols-12 min-[641px]:items-center min-[641px]:px-4 xl:px-8"
+				: "flex min-w-0 lg:mx-auto lg:grid lg:h-full lg:w-full lg:max-w-6xl lg:grid-cols-12 lg:items-stretch lg:px-4 xl:px-8",
+			!framed && (mobileStack ? "flex-col" : "h-full items-end"),
 		]}
 	>
 		<div
 			class:list={[
-				"min-w-0 lg:relative lg:inset-auto lg:row-start-1 lg:h-full lg:overflow-hidden",
-				mobileStack
-					? "relative max-lg:order-2 aspect-[4/5] w-full overflow-hidden lg:aspect-auto lg:w-auto"
-					: "absolute inset-0",
-				compact ? "lg:col-span-5 lg:col-start-8" : "lg:col-span-7 lg:col-start-6",
+				framed
+					? "hero-frame relative w-full min-w-0 overflow-hidden max-[641px]:order-2 min-[641px]:col-span-7 min-[641px]:col-start-6"
+					: [
+							"min-w-0 lg:relative lg:inset-auto lg:row-start-1 lg:h-full lg:overflow-hidden",
+							mobileStack
+								? "relative max-lg:order-2 aspect-[4/5] w-full overflow-hidden lg:aspect-auto lg:w-auto"
+								: "absolute inset-0",
+							compact ? "lg:col-span-5 lg:col-start-8" : "lg:col-span-7 lg:col-start-6",
+						],
 			]}
+			style={
+				framed
+					? `--hero-aspect: ${image?.aspect || "4 / 5"}; --hero-aspect-desktop: ${image?.aspectDesktop};`
+					: undefined
+			}
 		>
 			{
 				image ? (
@@ -91,19 +114,27 @@ const positionDesktop = image?.positionDesktop || "50% 20%";
 				)
 			}
 			<div
-				class="pointer-events-none absolute inset-y-0 left-0 hidden w-1/4 bg-gradient-to-r from-bg to-transparent lg:block"
+				class:list={[
+					"pointer-events-none absolute inset-y-0 left-0 hidden w-1/4 bg-gradient-to-r from-bg to-transparent",
+					framed ? "min-[641px]:block" : "lg:block",
+				]}
 				aria-hidden="true"
 			>
 			</div>
 		</div>
 		<div
 			class:list={[
-				"relative z-10 mx-auto w-full min-w-0 max-w-6xl lg:col-start-1 lg:row-start-1 lg:mx-0 lg:flex lg:h-full lg:max-w-none lg:flex-col lg:items-start lg:justify-center lg:pl-0",
-				mobileStack && "max-lg:order-1",
-				compact
-					? "px-4 pb-5 lg:col-span-7 lg:py-5 lg:pr-8"
-					: "px-4 pb-8 lg:col-span-5 lg:py-8 lg:pr-8",
-				mobileStack && "max-lg:pt-8",
+				"relative z-10 w-full min-w-0",
+				framed
+					? "max-[641px]:order-1 max-[641px]:px-4 max-[641px]:pt-8 max-[641px]:pb-8 min-[641px]:col-span-5 min-[641px]:col-start-1 min-[641px]:row-start-1 min-[641px]:pr-8"
+					: [
+							"mx-auto max-w-6xl lg:col-start-1 lg:row-start-1 lg:mx-0 lg:flex lg:h-full lg:max-w-none lg:flex-col lg:items-start lg:justify-center lg:pl-0",
+							mobileStack && "max-lg:order-1",
+							compact
+								? "px-4 pb-5 lg:col-span-7 lg:py-5 lg:pr-8"
+								: "px-4 pb-8 lg:col-span-5 lg:py-8 lg:pr-8",
+							mobileStack && "max-lg:pt-8",
+						],
 			]}
 		>
 			<p class="font-body text-[15px]">{eyebrow}</p>
@@ -137,3 +168,15 @@ const positionDesktop = image?.positionDesktop || "50% 20%";
 		</div>
 	</div>
 </section>
+
+<style>
+	.hero-frame {
+		aspect-ratio: var(--hero-aspect);
+	}
+
+	@media (min-width: 641px) {
+		.hero-frame {
+			aspect-ratio: var(--hero-aspect-desktop);
+		}
+	}
+</style>

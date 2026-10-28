@@ -27,8 +27,10 @@ export const hero = {
 	image: {
 		src: "/images/demo-psycholog/hero.webp",
 		alt: "Психолог з блокнотом під час розмови (демо)",
-		position: "50% 36%",
-		positionDesktop: "50% 30%",
+		position: "50% 32%",
+		positionDesktop: "50% 32%",
+		aspect: "4 / 5",
+		aspectDesktop: "1 / 1",
 	},
 };
 
