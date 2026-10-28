@@ -10,11 +10,14 @@ interface Props {
 	spacing?: "roomy";
 	/** До 640px один стовпець і заголовок 20px. Від 641px вигляд як раніше. */
 	mobileStack?: boolean;
+	/** quiet — Onest 18–20px, колір тексту, без зелених serif-заголовків. Без пропса вигляд як раніше. */
+	variant?: "quiet";
 }
 
-const { items, spacing, mobileStack = false } = Astro.props;
+const { items, spacing, mobileStack = false, variant } = Astro.props;
 const three = items.length === 3;
 const roomy = spacing === "roomy";
+const quiet = variant === "quiet";
 ---
 
 <section id="trust" data-block="trust-strip" data-spacing={roomy ? "roomy" : undefined}>
@@ -29,9 +32,11 @@ const roomy = spacing === "roomy";
 				"grid list-none p-0",
 				three
 					? "grid-cols-3 gap-6 max-md:gap-x-2"
-					: mobileStack
-						? "grid-cols-1 gap-6 min-[641px]:grid-cols-2 xl:grid-cols-4"
-						: "grid-cols-2 gap-6 xl:grid-cols-4",
+					: quiet
+						? "grid-cols-2 gap-6 md:grid-cols-4"
+						: mobileStack
+							? "grid-cols-1 gap-6 min-[641px]:grid-cols-2 xl:grid-cols-4"
+							: "grid-cols-2 gap-6 xl:grid-cols-4",
 			]}
 		>
 			{
@@ -39,14 +44,23 @@ const roomy = spacing === "roomy";
 					<li class="min-w-0">
 						<p
 							class:list={[
-								"font-heading text-3xl text-primary",
-								three && "max-md:text-[20px] max-md:leading-none max-md:whitespace-nowrap",
-								mobileStack && "max-[641px]:text-[20px] max-[641px]:leading-snug max-[641px]:break-words",
+								quiet
+									? "font-body text-[18px] font-semibold leading-snug text-text md:whitespace-nowrap lg:text-[20px]"
+									: [
+											"font-heading text-3xl text-primary",
+											three && "max-md:text-[20px] max-md:leading-none max-md:whitespace-nowrap",
+											mobileStack && "max-[641px]:text-[20px] max-[641px]:leading-snug max-[641px]:break-words",
+										],
 							]}
 						>
 							{item.value}
 						</p>
-						<p class:list={["mt-1 text-sm text-muted", mobileStack && "max-[641px]:text-[15px] max-[641px]:leading-[1.5]"]}>
+						<p
+							class:list={[
+								"mt-1 text-sm text-muted",
+								!quiet && mobileStack && "max-[641px]:text-[15px] max-[641px]:leading-[1.5]",
+							]}
+						>
 							{item.label}
 						</p>
 					</li>
