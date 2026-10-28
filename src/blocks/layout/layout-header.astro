@@ -205,7 +205,62 @@ const menuId = "layout-header-menu";
 		iconOpen?.classList.toggle("hidden", open);
 		iconClose?.classList.toggle("hidden", !open);
 		if (overlay) document.body.style.overflow = open ? "hidden" : "";
-		if (!open && wasOpen && overlay) window.setTimeout(() => toggle.focus(), 0);
+		if (!open && wasOpen && overlay) window.setTimeout(() => toggle.focus({ preventScroll: true }), 0);
+	}
+
+	function headerBar() {
+		const root = document.querySelector("[data-block='layout-header']");
+		if (!root) return null;
+		return root.querySelector("header") || root;
+	}
+
+	function syncHeaderHeight() {
+		const bar = headerBar();
+		if (!bar) return 0;
+		const height = bar.getBoundingClientRect().height;
+		document.documentElement.style.setProperty("--header-height", `${height}px`);
+		return height;
+	}
+
+	function scrollRoom() {
+		let room = document.querySelector("[data-scroll-room]");
+		if (!room) {
+			room = document.createElement("div");
+			room.setAttribute("data-scroll-room", "");
+			room.setAttribute("aria-hidden", "true");
+			document.body.appendChild(room);
+		}
+		return room;
+	}
+
+	function scrollToId(id, again = true) {
+		const section = document.getElementById(id);
+		if (!section) return;
+		const heading = section.querySelector("h2");
+		const target = heading || section;
+		const headerHeight = syncHeaderHeight();
+		const desired = target.getBoundingClientRect().top + window.scrollY - headerHeight - 16;
+		const max = document.documentElement.scrollHeight - window.innerHeight;
+		if (desired > max + 1) {
+			const room = scrollRoom();
+			room.style.height = `${room.offsetHeight + (desired - max)}px`;
+		}
+		const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 16;
+		window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+		if (again) requestAnimationFrame(() => scrollToId(id, false));
+	}
+
+	function followLocationHash() {
+		const hash = location.hash;
+		if (!hash || hash === "#") return;
+		let id = "";
+		try {
+			id = decodeURIComponent(hash.slice(1));
+		} catch {
+			return;
+		}
+		if (!document.getElementById(id)) return;
+		scrollToId(id);
 	}
 
 	document.addEventListener("click", (event) => {
@@ -228,12 +283,32 @@ const menuId = "layout-header-menu";
 			return;
 		}
 
-		const link = target.closest("[data-mobile-nav] a");
-		if (link) {
-			const header = link.closest("[data-block='layout-header']");
-			if (header) setOpen(header, false);
+		const link = target.closest("a[href^='#']");
+		if (!link || event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+		const hash = link.getAttribute("href");
+		if (!hash || hash === "#") return;
+		let id = "";
+		try {
+			id = decodeURIComponent(hash.slice(1));
+		} catch {
+			return;
 		}
+		if (!document.getElementById(id)) return;
+		event.preventDefault();
+		headers().forEach((header) => setOpen(header, false));
+		requestAnimationFrame(() => {
+			scrollToId(id);
+			if (location.hash !== hash) history.pushState(null, "", hash);
+		});
 	});
+
+	syncHeaderHeight();
+	requestAnimationFrame(followLocationHash);
+	window.addEventListener("load", followLocationHash);
+	window.addEventListener("popstate", () => requestAnimationFrame(followLocationHash));
+	window.addEventListener("resize", syncHeaderHeight);
+	const bar = headerBar();
+	if (bar && "ResizeObserver" in window) new ResizeObserver(() => syncHeaderHeight()).observe(bar);
 
 	document.addEventListener("keydown", (event) => {
 		if (event.key !== "Escape") return;
@@ -244,5 +319,13 @@ const menuId = "layout-header-menu";
 <style is:global>
 	[data-block="layout-header"] [data-overlay][hidden] {
 		display: none !important;
+	}
+
+	html:has([data-block="layout-header"]) {
+		scroll-padding-top: 0;
+	}
+
+	html:has([data-block="layout-header"]) section[id] {
+		scroll-margin-top: calc(var(--header-height, 4.25rem) + 16px);
 	}
 </style>
