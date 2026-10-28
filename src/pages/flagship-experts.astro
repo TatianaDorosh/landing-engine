@@ -22,10 +22,10 @@ import { header, hero, about, trust, steps, myths, prices, reviews, faq, booking
 <Base config={demoPsycholog}>
 	<Header {...header} overlayMenu />
 	<main data-page="flagship-experts">
-		<Hero {...hero} />
+		<Hero {...hero} mobileStack />
 		<Topics {...topics} />
 		<About {...about} />
-		<Trust {...trust} />
+		<Trust {...trust} mobileStack />
 		<Credentials {...credentials} />
 		<Steps {...steps} />
 		<Myths {...myths} />
@@ -45,5 +45,19 @@ import { header, hero, about, trust, steps, myths, prices, reviews, faq, booking
 
 	html:has([data-page="flagship-experts"]) h2 {
 		font-weight: 500;
+	}
+
+	@media (max-width: 640px) {
+		html:has([data-page="flagship-experts"]) [data-block="layout-header"] header a.font-heading {
+			display: inline-flex;
+			align-items: center;
+			min-height: 2.75rem;
+		}
+	}
+
+	@media (max-width: 767px) {
+		html:has([data-page="flagship-experts"]) body:has([data-block="layout-messengers"]:not([hidden])) {
+			padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
+		}
 	}
 </style>

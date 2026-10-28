@@ -12,9 +12,11 @@ interface Props {
 	image?: { src: string; alt: string; position?: string; positionDesktop?: string };
 	/** Нижчий hero, щоб під ним на першому екрані було видно наступний блок. */
 	compact?: boolean;
+	/** На телефоні текст зверху, фото 4:5 під кнопкою. Без пропса вигляд як раніше. */
+	mobileStack?: boolean;
 }
 
-const { eyebrow, title, text, cta, note, image, compact = false } = Astro.props;
+const { eyebrow, title, text, cta, note, image, compact = false, mobileStack = false } = Astro.props;
 const positionDesktop = image?.positionDesktop || "50% 20%";
 ---
 
@@ -23,15 +25,25 @@ const positionDesktop = image?.positionDesktop || "50% 20%";
 	data-block="hero-cover"
 	class:list={[
 		"relative overflow-hidden bg-bg",
-		compact
-			? "h-[min(62svh,500px)] lg:h-[408px]"
-			: "h-[min(calc(100svh-4.25rem),880px)] lg:h-[max(560px,min(760px,90vh,calc(100svh-4.25rem)))]",
+		!mobileStack &&
+			(compact
+				? "h-[min(62svh,500px)] lg:h-[408px]"
+				: "h-[min(calc(100svh-4.25rem),880px)] lg:h-[max(560px,min(760px,90vh,calc(100svh-4.25rem)))]"),
+		mobileStack && (compact ? "lg:h-[408px]" : "lg:h-[max(560px,min(760px,90vh,calc(100svh-4.25rem)))]"),
 	]}
 >
-	<div class="flex h-full min-w-0 items-end lg:mx-auto lg:grid lg:h-full lg:w-full lg:max-w-6xl lg:grid-cols-12 lg:items-stretch lg:px-4 xl:px-8">
+	<div
+		class:list={[
+			"flex min-w-0 lg:mx-auto lg:grid lg:h-full lg:w-full lg:max-w-6xl lg:grid-cols-12 lg:items-stretch lg:px-4 xl:px-8",
+			mobileStack ? "flex-col" : "h-full items-end",
+		]}
+	>
 		<div
 			class:list={[
-				"absolute inset-0 min-w-0 lg:relative lg:inset-auto lg:row-start-1 lg:h-full lg:overflow-hidden",
+				"min-w-0 lg:relative lg:inset-auto lg:row-start-1 lg:h-full lg:overflow-hidden",
+				mobileStack
+					? "relative max-lg:order-2 aspect-[4/5] w-full overflow-hidden lg:aspect-auto lg:w-auto"
+					: "absolute inset-0",
 				compact ? "lg:col-span-5 lg:col-start-8" : "lg:col-span-7 lg:col-start-6",
 			]}
 		>
@@ -70,11 +82,14 @@ const positionDesktop = image?.positionDesktop || "50% 20%";
 					/>
 				)
 			}
-			<div
-				class="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg from-10% via-bg/80 via-45% to-transparent lg:hidden"
-				aria-hidden="true"
-			>
-			</div>
+			{
+				!mobileStack && (
+					<div
+						class="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg from-10% via-bg/80 via-45% to-transparent lg:hidden"
+						aria-hidden="true"
+					/>
+				)
+			}
 			<div
 				class="pointer-events-none absolute inset-y-0 left-0 hidden w-1/4 bg-gradient-to-r from-bg to-transparent lg:block"
 				aria-hidden="true"
@@ -84,9 +99,11 @@ const positionDesktop = image?.positionDesktop || "50% 20%";
 		<div
 			class:list={[
 				"relative z-10 mx-auto w-full min-w-0 max-w-6xl lg:col-start-1 lg:row-start-1 lg:mx-0 lg:flex lg:h-full lg:max-w-none lg:flex-col lg:items-start lg:justify-center lg:pl-0",
+				mobileStack && "max-lg:order-1",
 				compact
 					? "px-4 pb-5 lg:col-span-7 lg:py-5 lg:pr-8"
 					: "px-4 pb-8 lg:col-span-5 lg:py-8 lg:pr-8",
+				mobileStack && "max-lg:pt-8",
 			]}
 		>
 			<p class="font-body text-[15px]">{eyebrow}</p>

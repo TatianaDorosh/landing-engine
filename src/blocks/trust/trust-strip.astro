@@ -8,9 +8,11 @@ interface Props {
 	items: Item[];
 	/** roomy — більші відступи зверху й знизу. Без пропса вигляд як раніше. */
 	spacing?: "roomy";
+	/** До 640px один стовпець і заголовок 20px. Від 641px вигляд як раніше. */
+	mobileStack?: boolean;
 }
 
-const { items, spacing } = Astro.props;
+const { items, spacing, mobileStack = false } = Astro.props;
 const three = items.length === 3;
 const roomy = spacing === "roomy";
 ---
@@ -25,7 +27,11 @@ const roomy = spacing === "roomy";
 		<ul
 			class:list={[
 				"grid list-none p-0",
-				three ? "grid-cols-3 gap-6 max-md:gap-x-2" : "grid-cols-2 gap-6 xl:grid-cols-4",
+				three
+					? "grid-cols-3 gap-6 max-md:gap-x-2"
+					: mobileStack
+						? "grid-cols-1 gap-6 min-[641px]:grid-cols-2 xl:grid-cols-4"
+						: "grid-cols-2 gap-6 xl:grid-cols-4",
 			]}
 		>
 			{
@@ -35,11 +41,14 @@ const roomy = spacing === "roomy";
 							class:list={[
 								"font-heading text-3xl text-primary",
 								three && "max-md:text-[20px] max-md:leading-none max-md:whitespace-nowrap",
+								mobileStack && "max-[641px]:text-[20px] max-[641px]:leading-snug max-[641px]:break-words",
 							]}
 						>
 							{item.value}
 						</p>
-						<p class="mt-1 text-sm text-muted">{item.label}</p>
+						<p class:list={["mt-1 text-sm text-muted", mobileStack && "max-[641px]:text-[15px] max-[641px]:leading-[1.5]"]}>
+							{item.label}
+						</p>
 					</li>
 				))
 			}
