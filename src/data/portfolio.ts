@@ -126,8 +126,13 @@ export const examples = {
 		{
 			id: "solo",
 			label: "Соло-експерти",
-			ready: false,
-			flagship: null,
+			ready: true,
+			flagship: {
+				name: "Соло-експерти · психолог",
+				href: "/flagship-experts/",
+				forWhom: "Психолог, онлайн і в Києві",
+				imageLabel: "Соло-експерти · психолог",
+			},
 			templates: [],
 			plannedTemplates: [
 				{ name: "Особистість", text: "Хто я і мій шлях" },

@@ -11,13 +11,15 @@ interface Review {
 
 interface Props {
 	title: string;
+	/** Рядок під заголовком, над картками. Якщо не передано — блок як раніше. */
+	intro?: string;
 	items: Review[];
 	allLink?: { label: string; href: string };
 	/** cards — картки з рамкою. open — текст без коробок, з лініями між колонками. */
 	variant?: "cards" | "open";
 }
 
-const { title, items, allLink, variant = "cards" } = Astro.props;
+const { title, intro, items, allLink, variant = "cards" } = Astro.props;
 const open = variant === "open";
 const ui = getUi("uk");
 ---
@@ -34,6 +36,11 @@ const ui = getUi("uk");
 				)
 			}
 		</div>
+		{
+			intro && (
+				<p class="mt-4 max-w-[760px] font-body text-base leading-relaxed">{typograf(intro)}</p>
+			)
+		}
 		<div
 			data-track
 			tabindex="0"

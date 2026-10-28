@@ -1,0 +1,49 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../blocks/layout/layout-header.astro";
+import Hero from "../blocks/hero/hero-cover.astro";
+import Topics from "../blocks/topics/topics-cards.astro";
+import About from "../blocks/about/about-me.astro";
+import Trust from "../blocks/trust/trust-strip.astro";
+import Credentials from "../blocks/credentials/credentials-list.astro";
+import Steps from "../blocks/steps/steps-visit.astro";
+import Myths from "../blocks/faq/faq-myths.astro";
+import Prices from "../blocks/prices/prices-simple.astro";
+import Reviews from "../blocks/reviews/reviews-cards.astro";
+import Faq from "../blocks/faq/faq-accordion.astro";
+import Booking from "../blocks/booking/booking-messengers.astro";
+import Messengers from "../blocks/layout/layout-messengers.astro";
+import Footer from "../blocks/layout/layout-footer.astro";
+import { demoPsycholog } from "../config/psycholog";
+import { topics, credentials } from "../data/demo-experts";
+import { header, hero, about, trust, steps, myths, prices, reviews, faq, booking } from "../data/demo-psycholog";
+---
+
+<Base config={demoPsycholog}>
+	<Header {...header} overlayMenu />
+	<main data-page="flagship-experts">
+		<Hero {...hero} />
+		<Topics {...topics} />
+		<About {...about} />
+		<Trust {...trust} />
+		<Credentials {...credentials} />
+		<Steps {...steps} />
+		<Myths {...myths} />
+		<Prices {...prices} />
+		<Reviews {...reviews} />
+		<Faq {...faq} telegram={demoPsycholog.contacts.telegram ?? ""} />
+		<Booking {...booking} contacts={demoPsycholog.contacts} locale={demoPsycholog.locale} />
+	</main>
+	<Messengers config={demoPsycholog} />
+	<Footer config={demoPsycholog} />
+</Base>
+
+<style is:global>
+	html:has([data-page="flagship-experts"]) .font-heading {
+		font-weight: 600;
+	}
+
+	html:has([data-page="flagship-experts"]) h2 {
+		font-weight: 500;
+	}
+</style>

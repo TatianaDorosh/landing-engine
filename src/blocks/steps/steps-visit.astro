@@ -9,6 +9,8 @@ interface Step {
 interface Props {
 	title: string;
 	items: Step[];
+	/** Короткий абзац під заголовком. Якщо не передано — список як раніше. */
+	intro?: string;
 	note?: string;
 	cta?: { label: string; href: string };
 	/** Номер кроку від 1. Якщо не передали, усі кроки однакові. */
@@ -17,7 +19,7 @@ interface Props {
 	trackFrom?: "xl" | "lg";
 }
 
-const { title, items, note, cta, highlightStep, trackFrom = "lg" } = Astro.props;
+const { title, items, intro, note, cta, highlightStep, trackFrom = "lg" } = Astro.props;
 const highlightIndex =
 	typeof highlightStep === "number" && highlightStep >= 1 && highlightStep <= items.length
 		? highlightStep - 1
@@ -28,6 +30,11 @@ const columnsFromXl = trackFrom === "xl";
 <section id="steps" data-block="steps-visit">
 	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
 		<h2 class="text-3xl">{typograf(title)}</h2>
+		{
+			intro && (
+				<p class="mt-4 max-w-[760px] font-body text-base leading-relaxed">{typograf(intro)}</p>
+			)
+		}
 		<ol
 			class:list={[
 				"mt-8 flex list-none flex-col gap-6 p-0",
