@@ -4,7 +4,8 @@ import { typograf } from "../../lib/typograf";
 interface Item {
 	myth: string;
 	fact: string;
-	author: string;
+	/** Якщо не передано — підпису внизу картки немає. */
+	author?: string;
 }
 
 interface Props {
@@ -27,7 +28,11 @@ const { title, items } = Astro.props;
 							<h3 class="mt-1 font-body text-[17px] font-semibold">{typograf(item.myth)}</h3>
 							<p class="mt-4 font-body text-sm font-semibold text-primary">Факт</p>
 							<p class="mt-1 font-body text-[15px] leading-[1.5]">{item.fact}</p>
-							<p class="mt-auto pt-4 font-body text-sm text-muted">{item.author}</p>
+							{
+								item.author && (
+									<p class="mt-auto pt-4 font-body text-sm text-muted">{item.author}</p>
+								)
+							}
 						</article>
 					</li>
 				))

@@ -16,12 +16,15 @@ interface Props {
 	cta: { label: string; href: string };
 	/** Символ валюти з мовного каталогу, наприклад ₴. */
 	currency: string;
+	/** Три колонки вже з 641px. Без пропса — з 1024px, як раніше. */
+	columnsFrom640?: boolean;
 }
 
-const { title, intro, items, subscription, cta, currency } = Astro.props;
+const { title, intro, items, subscription, cta, currency, columnsFrom640 = false } = Astro.props;
 
 function money(price: number) {
-	return `${price} ${currency}`;
+	const formatted = new Intl.NumberFormat("uk-UA", { maximumFractionDigits: 0 }).format(price);
+	return `${formatted}\u00A0${currency}`;
 }
 ---
 
@@ -42,14 +45,26 @@ function money(price: number) {
 				{
 					items.map((item) => (
 						<li class="border-b border-border py-4 first:pt-0">
-							<div class="lg:grid lg:grid-cols-[minmax(0,1fr)_max-content_max-content] lg:items-center lg:gap-x-8">
+							<div
+								class:list={[
+									"pr-4",
+									columnsFrom640
+										? "min-[641px]:grid min-[641px]:grid-cols-[minmax(0,1fr)_96px_120px] min-[641px]:items-center min-[641px]:gap-x-6"
+										: "lg:grid lg:grid-cols-[minmax(0,1fr)_96px_120px] lg:items-center lg:gap-x-6",
+								]}
+							>
 								<div class="min-w-0">
 									<p class="font-heading text-xl leading-snug break-words">{typograf(item.name)}</p>
 									<p class="mt-1 font-body text-[15px] leading-[1.5] text-muted">{typograf(item.forWhom)}</p>
 								</div>
-								<div class="mt-3 flex items-baseline justify-between gap-4 lg:contents">
+								<div
+									class:list={[
+										"mt-3 flex items-baseline justify-between gap-6",
+										columnsFrom640 ? "min-[641px]:contents" : "lg:contents",
+									]}
+								>
 									<p class="shrink-0 font-body text-[15px] text-muted">{item.duration}</p>
-									<p class="shrink-0 text-right font-heading text-[28px] leading-none text-primary tabular-nums">
+									<p class="shrink-0 text-right font-heading text-[28px] leading-none text-primary tabular-nums whitespace-nowrap">
 										{money(item.price)}
 									</p>
 								</div>
