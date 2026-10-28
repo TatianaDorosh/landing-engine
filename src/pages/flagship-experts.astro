@@ -32,7 +32,7 @@ import { header, hero, about, trust, steps, myths, prices, reviews, faq, booking
 		<Prices {...prices} columnsFrom640 />
 		<Reviews {...reviews} />
 		<Faq {...faq} telegram={demoPsycholog.contacts.telegram ?? ""} />
-		<Booking {...booking} contacts={demoPsycholog.contacts} locale={demoPsycholog.locale} />
+		<Booking {...booking} showHandles={false} showSchedule={false} contacts={demoPsycholog.contacts} locale={demoPsycholog.locale} />
 	</main>
 	<Messengers config={demoPsycholog} />
 	<Footer config={demoPsycholog} />

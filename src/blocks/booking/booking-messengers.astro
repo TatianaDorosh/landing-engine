@@ -12,11 +12,15 @@ interface Props {
 	captions: Record<MessengerId, string>;
 	/** Запасний рядок під кнопками. Якщо його немає, рядок збирається з графіка і телефону конфігу. */
 	hint?: string;
+	/** Нікнейм або номер під назвою месенджера. Без пропса показується. */
+	showHandles?: boolean;
+	/** Рядок графіка під кнопками. Без пропса показується. */
+	showSchedule?: boolean;
 	contacts: SiteConfig["contacts"];
 	locale: SiteConfig["locale"];
 }
 
-const { title, text, captions, hint, contacts, locale } = Astro.props;
+const { title, text, captions, hint, contacts, locale, showHandles = true, showSchedule = true } = Astro.props;
 const ui = getUi(locale);
 
 function handle(value: string) {
@@ -99,14 +103,18 @@ const tileClass =
 								</span>
 								<span class="min-w-0 flex-1">
 									<span class="block font-heading text-lg leading-snug break-words">{ui.messengers[item.id]}</span>
-									<span
-										class:list={[
-											"mt-0.5 block font-body text-[15px] leading-snug break-words",
-											item.id === "telegram" ? "text-primary-contrast" : "text-muted",
-										]}
-									>
-										{typograf(captions[item.id])}
-									</span>
+									{
+										showHandles && (
+											<span
+												class:list={[
+													"mt-0.5 block font-body text-[15px] leading-snug break-words",
+													item.id === "telegram" ? "text-primary-contrast" : "text-muted",
+												]}
+											>
+												{typograf(captions[item.id])}
+											</span>
+										)
+									}
 								</span>
 								<svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
@@ -117,7 +125,7 @@ const tileClass =
 				}
 			</ul>
 			{
-				(hint || contacts.hours || contacts.phone) && (
+				showSchedule && (hint || contacts.hours || contacts.phone) && (
 					<p class="mt-4 font-body text-[15px] leading-[1.5] break-words">
 						{hint ? (
 							typograf(hint)
