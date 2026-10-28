@@ -96,6 +96,10 @@ export interface UiStrings {
 		/** Початок доступної назви картки документа. */
 		open: string;
 	};
+	credentials: {
+		/** Кнопка, що відкриває сертифікати в блоці освіти. */
+		certificates: string;
+	};
 }
 
 export const uk = {
@@ -181,5 +185,8 @@ export const uk = {
 	},
 	licenses: {
 		open: 'Відкрити документ',
+	},
+	credentials: {
+		certificates: 'Сертифікати',
 	},
 } satisfies UiStrings;

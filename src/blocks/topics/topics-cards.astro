@@ -1,0 +1,39 @@
+---
+import { typograf } from "../../lib/typograf";
+
+interface TopicItem {
+	title: string;
+	text: string;
+}
+
+interface Props {
+	title: string;
+	intro?: string;
+	items: TopicItem[];
+}
+
+const { title, intro, items } = Astro.props;
+---
+
+<section id="topics" data-block="topics-cards">
+	<div class="mx-auto max-w-6xl px-4 py-12 xl:px-8">
+		<h2 class="text-3xl">{typograf(title)}</h2>
+		{
+			intro && (
+				<p class="mt-4 max-w-[760px] font-body text-base leading-relaxed">{typograf(intro)}</p>
+			)
+		}
+		<ul class="mt-6 grid list-none grid-cols-1 items-stretch gap-4 p-0 md:grid-cols-2 xl:grid-cols-3">
+			{
+				items.map((item) => (
+					<li class="h-full min-w-0">
+						<article class="flex h-full flex-col rounded-theme border border-border bg-surface p-6">
+							<h3 class="font-body text-[17px] font-semibold leading-snug">{typograf(item.title)}</h3>
+							<p class="mt-2 font-body text-[15px] leading-[1.5] text-muted">{typograf(item.text)}</p>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

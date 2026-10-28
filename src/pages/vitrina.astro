@@ -6,6 +6,8 @@ import HeroShowcase from "../blocks/hero/hero-showcase.astro";
 import HeroCover from "../blocks/hero/hero-cover.astro";
 import AboutMe from "../blocks/about/about-me.astro";
 import DoctorAbout from "../blocks/doctor/doctor-about.astro";
+import TopicsCards from "../blocks/topics/topics-cards.astro";
+import CredentialsList from "../blocks/credentials/credentials-list.astro";
 import PricesSimple from "../blocks/prices/prices-simple.astro";
 import BookingMessengers from "../blocks/booking/booking-messengers.astro";
 import Trust from "../blocks/trust/trust-strip.astro";
@@ -49,6 +51,7 @@ import { demoSlate } from "../config/demo-slate";
 import { effects, myths as slateMyths, booking as slateBooking, reviews as slateReviews } from "../data/demo-slate";
 import { hero as portfolioHero, services as portfolioServices, examples, examplesCount, pains, packages } from "../data/portfolio";
 import { slateThemeStyle } from "../themes/slate";
+import { topics, credentials } from "../data/demo-experts";
 
 const ui = getUi(demoBeauty.locale);
 
@@ -118,6 +121,12 @@ const rules = {
 			cta={{ label: ui.buttons.book, href: "#booking" }}
 		/>
 	</div>
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">topics-cards</p>
+	<TopicsCards {...topics} />
+
+	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">credentials-list</p>
+	<CredentialsList {...credentials} />
 
 	<p class="mx-auto max-w-6xl border-t border-border px-4 pt-3 text-sm text-muted xl:px-8">prices-simple</p>
 	<PricesSimple {...mokkaPrices} />
