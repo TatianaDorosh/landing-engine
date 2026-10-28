@@ -24,6 +24,12 @@ export const hero = {
 	text: "Працюю з дорослими й парами. Запис через месенджер, без дзвінків.",
 	cta: { label: "Записатися на знайомство", href: "#booking" },
 	note: "50 хвилин · 800 грн",
+	image: {
+		src: "/images/demo-psycholog/hero.webp",
+		alt: "Психолог з блокнотом під час розмови (демо)",
+		position: "50% 36%",
+		positionDesktop: "50% 30%",
+	},
 };
 
 export const about = {
@@ -33,7 +39,11 @@ export const about = {
 		"Я не обіцяю швидких чудес і не даю порад «візьміть себе в руки». Допомагаю побачити, що з вами відбувається, і знайти опору, яка підходить саме вам.",
 	],
 	facts: [],
-	imageLabel: "",
+	image: {
+		src: "/images/demo-psycholog/about.webp",
+		alt: "Психолог у кріслі записує в блокнот (демо)",
+		position: "24% 42%",
+	},
 };
 
 export const trust = {
