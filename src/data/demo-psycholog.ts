@@ -100,7 +100,6 @@ export const myths = {
 
 export const prices = {
 	title: "Ціни",
-	intro: "Ціна відома до зустрічі.",
 	currency: ui.currency,
 	items: [
 		{
